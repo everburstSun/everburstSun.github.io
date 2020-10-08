@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>PyMOL的基本操作</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
     <title>分子绘图软件PyMOL使用教程(3)——应用实例</title>
     <url>/pymol-xi-lie-jiao-cheng/fen-zi-hui-tu-ruan-jian-pymol-shi-yong-jiao-cheng-3-ying-yong-shi-li/</url>
     <content><![CDATA[]]></content>
@@ -83,14 +91,6 @@ python3 setup.py build install --home=$HOME/Applications/pymol --no-vmd-plugins 
 <pre><code>echo 'export PATH=$PATH:$HOME/Applications/pymol/bin' &gt;&gt; $HOME/.bash_profile</code></pre>
 <p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="/images/13526978-d8b05014ccfdb4aa.png" alt="基于X11的PyMOL界面"></p>
 ]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyMOL的基本操作</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
-    <content><![CDATA[]]></content>
       <categories>
         <category>PyMOL系列教程</category>
       </categories>
