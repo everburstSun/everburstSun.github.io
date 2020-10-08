@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>分子绘图软件PyMOL使用教程(3)——应用实例</title>
+    <url>/pymol-xi-lie-jiao-cheng/fen-zi-hui-tu-ruan-jian-pymol-shi-yong-jiao-cheng-3-ying-yong-shi-li/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>安装PyMOL</title>
+    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
+    <content><![CDATA[<p>#软件简介<br>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
+<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。<br><img src="/images/screenshot1_rhodopsin.png" alt="PyMOL的图形界面"></p>
+<p>#软件安装<br>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
+<ul>
+<li><strong>Windows</strong></li>
+</ul>
+<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
+<ul>
+<li><strong>Linux</strong></li>
+</ul>
+<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
+<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
+<pre><code># Debian/Ubuntu/Mint
+apt-get install build-essential python-dev python-pmw libglew-dev \
+  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \
+  libmsgpack-dev python-pyqt5.qtopengl libglm-dev
+
+# CentOS
+yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \
+  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel
+
+# Fedora
+dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \
+  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel
+
+# Gentoo
+emerge -av dev-lang/python dev-python/pmw media-libs/glew \
+  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm
+
+# openSUSE
+zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm
+
+# Sabayon
+equo i -av dev-lang/python dev-python/pmw media-libs/glew \
+  media-libs/freeglut media-libs/libpng media-libs/freetype</code></pre>
+<p>以Ubuntu为例，在terminal中输入：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> build-essential python-dev python-pmw libglew-dev \
+  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \
+  libmsgpack-dev python-pyqt5.qtopengl libglm-dev</code></pre>
+<p>安装git，然后将源代码拷贝到本地：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token function">git</span>
+<span class="token function">git</span> clone https://github.com/schrodinger/pymol-open-source.git</code></pre>
+<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
+<pre><code>cd pymol-open-source
+git clone https://github.com/rcsb/mmtf-cpp.git
+cp -r mmtf-cpp/include/* layer3/
+python setup.py build install --home=$HOME/pymol</code></pre>
+<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
+<pre><code>echo 'export PATH=$PATH:$HOME/pymol/bin' &gt;&gt; $HOME/.bashrc</code></pre>
+<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
+<ul>
+<li><strong>Mac OS X</strong></li>
+</ul>
+<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
+<p>首先安装依赖：</p>
+<pre><code>xcode-select --install
+brew install git glm libpng freetype glew libxml2</code></pre>
+<p>安装Pmw：</p>
+<pre><code>git clone https://github.com/schrodinger/pmw-patched.git
+cd pmw-patched
+sudo python setup.py install
+cd ..
+rm -rf pmw-patched</code></pre>
+<p>获取pymol源代码并编译安装：</p>
+<pre><code>git clone https://github.com/schrodinger/pymol-open-source.git
+cd pymol-open-source
+export PREFIX_PATH=/usr/local
+python3 setup.py build install --home=$HOME/Applications/pymol --no-vmd-plugins --jobs 4</code></pre>
+<p>最后将路径添加到<code>PATH</code>:</p>
+<pre><code>echo 'export PATH=$PATH:$HOME/Applications/pymol/bin' &gt;&gt; $HOME/.bash_profile</code></pre>
+<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="/images/13526978-d8b05014ccfdb4aa.png" alt="基于X11的PyMOL界面"></p>
+]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PyMOL的基本操作</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PyQt5多线程编程</title>
+    <url>/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/</url>
+    <content><![CDATA[<p>单位的公共仪器需要预约才能够使用，但是自从预约时间改到了早上，就很不好约了，所以决定写一个程序实现自动预约。由于还要分享给实验室其它同学使用，就得写一个GUI了，这一下代码量瞬间变成了原来的10倍，不过学到了些新东西，这波不亏。</p>
+<p>在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。例如微软的office套件为了兼容老式CPU，IO等操作都是使用的UI的线程，打开或保存大文件时，用户界面无响应；而像photoshop这样的程序由于使用了多线程，即使有大量的IO行为，UI也可以响应用户的操作。</p>
+<p>Qt引以为豪的对象通讯机制被称为<strong>信号-槽</strong>(<strong>signal-slot</strong>)机制。当特定事件被触发时（如子线程结束）将发送一个信号，而与该信号建立的连接槽，则可以接收到该信号并做出反应(根据子线程的返回值执行操作)。</p>
+<p>在我的程序中，需要在仪器开放预约前不断查询，在开放预约的第一刻立即提交表单，而为了不拖垮服务器，需要在每次查询后让线程休眠一会。如果所有这些操作都在主线程中完成，那么线程休眠的时候UI就会无响应，在我的程序中就表现为点击开始查询后UI就一直处于无响应状态，直到预约成功后才恢复响应。</p>
+<p>因此，就需要新建一个线程，这个线程只用来发送信号调用查询函数，发送完毕后即休眠，等待下一次发送或任务完成后结束线程。</p>
+<img src="/images/flowchart1.png" title="灵魂画手的流程图." alt="灵魂画手的流程图.">
+
+<hr>
+<p>要创建一个新线程，需要在程序中定义一个类，这个类要继承<code>QtCore.QThread</code>，然后把要执行的操作放进<code>run()</code>函数中，线程启动后，就会自动运行这个函数。结束线程时通过调用线程的<code>terminate()</code>方法来中止线程：</p>
+<pre><code>class QueryWaitThread(QtCore.QThread):
+    # 定义线程需要用到的信号
+    query_signal = QtCore.pyqtSignal()      # 查询信号
+    on_complete = QtCore.pyqtSignal(int)    # 每次查询完成时发送，可以发送参数，
+                                                此处参数int为查询次数
+    terminate_thread = QtCore.pyqtSignal()  # 结束线程信号
+
+    def __init__(self):
+        super(QueryWaitThread, self).__init__()
+
+    def run(self): # 只发送信号，然后休眠。
+        i = 1
+        while True:
+            self.on_complete.emit(i)        # 调用信号的emit()方法
+            i += 1
+            self.query_signal.emit()
+            sleep(60)
+
+    def kill_thread(self):
+        self.terminate()</code></pre>
+<p>我的查询函数与验证函数：</p>
+<pre><code>def auto_query(self):
+    ################
+    #    查询操作   #
+    ################
+    if self.good_to_submit():
+        self.btnstop.hide()
+        self.btn_resel.show()
+        main.Appoint(self)
+
+def good_to_submit(self):
+    if # 还无法提交表单:
+        return False
+    self.T.terminate_thread.emit() # 验证可以提交表单后发送中止信号
+    return True
+
+def print_current_count(self, i):
+    self.normalOutputWritten("当前为第 %i 次查询...\n" % i)</code></pre>
+<p><code>self.normalOutputWritten()</code>是一个我自己定义的函数，用于在窗体的文本框中打印信息，你也可以定义自己的这类函数。</p>
+<p>定义好信号以后，接下来需要调用信号的<code>connect()</code>方法将信号连接到需要执行函数上。下面的<code>start()</code>和<code>stop()</code>是窗体按钮按下后执行的操作，我们在这两个函数中使用刚刚定义好的信号：</p>
+<pre><code>def start(self):
+    ################
+    # do something #
+    ################
+    self.T = QueryWaitThread()
+    self.T.query_signal.connect(self.auto_query)
+    self.T.on_complete.connect(self.print_current_count)
+    self.T.terminate_thread.connect(self.T.kill_thread)
+    self.normalOutputWritten("已开启自动查询，当有符合条件的时间段时将自动提交预约...\n")
+    self.T.start()  # 开始执行线程函数
+    self.btnstop.show()
+    self.btn_resel.hide()
+
+def stop(self):
+    self.btnstop.hide()
+    self.btn_resel.show()
+    self.T.terminate_thread.emit() # 发送中止信号
+    self.normalOutputWritten("用户终止查询。\n")</code></pre>
+<p>当按下开始按钮后，程序会构造出一个线程<code>T</code>，执行到<code>T.start()</code>后，其中的<code>run()</code>函数便会进入<code>while</code>循环，不断发送查询信号，直到<code>good_to_submit()</code>函数返回<code>True</code>表明已经可以提交表单，或者当停止按钮按下后终止。</p>
+<p>改进后的程序只是将定时功能分离了出来，实际上联网查询功能还是使用主线程完成的，在程序等待服务器返回数据的过程中UI还是会有短暂的无响应时间，不过这是在用户点击后产生的，因此对体验影响不大。但是，严格来说联网也应该分离出一个线程，毕竟服务器有时候返回会很慢，这时候如果你的用户是一个暴躁老哥，还是会对体验有影响的。</p>
+]]></content>
+      <categories>
+        <category>Python学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Python中使用百分号格式化字符串</title>
+    <url>/python-xue-xi-bi-ji/python-zhong-shi-yong-bai-fen-hao-ge-shi-hua-zi-fu-chuan/</url>
+    <content><![CDATA[<p>我最早学习的是C++语言，对于C风格的这种字符串格式化方式不熟悉，转到Python之后觉得这种方式可以很方便地在字符串中插入变量，于是去搜索了python的官方文档，找到了一个关于<a href="https://docs.python.org/2.4/lib/typesseq-strings.html">字符串格式化</a>的页面。</p>
+<p>这种格式化方法的使用方式是*<code>format % values</code>*，其中format是字符串，value就是要插入的值。在format中，需要用值替换的位置用转换说明符(conversion specifier)进行占位，转换说明符是一组以%开头的字符，例如：</p>
+<pre><code>&gt;&gt;&gt; age = 17
+&gt;&gt;&gt; string = "Tom is %s years old."
+&gt;&gt;&gt; print(string % age)
+Tom is 17 years old.</code></pre>
+<p>在上例中，<code>%s</code>即转换说明符，<code>s</code> 表示将value转换成字符串类型，python会在内部调用<code>str(age)</code>，并把返回的字符串<code>"17"</code>插入到原来<code>%s</code>所在的位置。当然，对于上例中value是数值的情况，也可以使用整型类型说明符<code>d</code>或<code>i</code>，二者效果相同：</p>
+<pre><code>&gt;&gt;&gt; print("Tom is %d years old." % age)
+Tom is 17 years old.
+&gt;&gt;&gt; print("Tom is %i years old." % age)
+Tom is 17 years old.</code></pre>
+<p>如果format只需要一个参数，就像上例中的那样，那么后面的value必须是一个非元组对象(non-tuple object)。如果format需要多个参数，value就得是一个含有恰好满足format参数数量个元素的元组：</p>
+<pre><code>&gt;&gt;&gt; age2 = 16
+&gt;&gt;&gt; print("Tom is %s years old \
+while his brother Bob is %s years old." % (age, age2))
+Tom is 17 years old while his brother Bob is 16 years old.</code></pre>
+<p>使用字典作为value也是可以的，这种方法必须在format中写明字典的键，并用括号括起来：</p>
+<pre><code>&gt;&gt;&gt; print("Tom is %(Tom)s years old \
+while his brother Bob is %(Bob)s years old." % {'Tom': age, 'Bob': age2})
+Tom is 17 years old while his brother Bob is 16 years old.</code></pre>
+<p>format中的转换说明符一共由7部分构成，按照排列顺序依次是：<br>**<code>"%" 映射键 转换标记 最小字段宽度 精度 长度限定 转换类型</code>**<br>其中仅有起始的百分号%和末尾的转换类型是必须的，中间的5个部分都是可选参数。映射键需要使用小括号括起来，如上例中的字典键。</p>
+<p>转换标记有以下几种：</p>
+<table>
+<thead>
+<tr>
+<th align="center">转换标记</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">#</td>
+<td>转换将会使用下方定义的替代形式</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td>对于数值形式的转换，用 “0” 补齐空位</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td>居左 (如果与 “0” 同时出现，将会覆盖 “0”).</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td>(空格) 转换有符号的值时，在正数前加上一个空格</td>
+</tr>
+<tr>
+<td align="center">+</td>
+<td>转换有符号的值时，在正数前加上 “+” (会覆盖空格标记)</td>
+</tr>
+</tbody></table>
+<p>这些符号常和精度一起使用，精度既可以指定整数也可以指定小数，指定小数时需要加上小数点<code>"."</code>：</p>
+<pre><code>&gt;&gt;&gt; print("Tom is %3d years old." % age)  # 整数占三位
+Tom is  17 years old.
+&gt;&gt;&gt; print("Tom is % d years old." % age)  # 加空格
+Tom is  17 years old.
+&gt;&gt;&gt; print("Tom is %03d years old." % age)  # 用0补齐空位
+Tom is 017 years old.
+&gt;&gt;&gt; print("Tom is %-3d years old." % age)  # 居左
+Tom is 17  years old.
+&gt;&gt;&gt; print("Tom is %+d years old." % age)  # 添加+号
+Tom is +17 years old.
+&gt;&gt;&gt; print("Tom is %+.2f years old." % age)  # 指定小数位数
+Tom is +17.00 years old.</code></pre>
+<p>转换类型如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">转换类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">d</td>
+<td>十进制有符号整型</td>
+</tr>
+<tr>
+<td align="center">i</td>
+<td>十进制有符号整型</td>
+</tr>
+<tr>
+<td align="center">o</td>
+<td>无符号八进制</td>
+</tr>
+<tr>
+<td align="center">u</td>
+<td>无符号十进制</td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td>无符号十六进制（小写）</td>
+</tr>
+<tr>
+<td align="center">X</td>
+<td>无符号十六进制（大写）</td>
+</tr>
+<tr>
+<td align="center">e</td>
+<td>浮点指数格式（小写）</td>
+</tr>
+<tr>
+<td align="center">E</td>
+<td>浮点指数格式（大写）</td>
+</tr>
+<tr>
+<td align="center">f</td>
+<td>十进制浮点格式</td>
+</tr>
+<tr>
+<td align="center">F</td>
+<td>十进制浮点格式</td>
+</tr>
+<tr>
+<td align="center">g</td>
+<td>若指数大于-4或小于精度则于”e”相同，其他情况为”f”</td>
+</tr>
+<tr>
+<td align="center">G</td>
+<td>若指数大于-4或小于精度则于”E”相同，其他情况为”F”</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td>单字符（接受整型或单字符的字符串类型）</td>
+</tr>
+<tr>
+<td align="center">r</td>
+<td>字符串（使用repr()转换python对象）</td>
+</tr>
+<tr>
+<td align="center">s</td>
+<td>字符串（使用str()转换python对象）</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Python学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>youtube-dl的使用及编程应用</title>
+    <url>/python-xue-xi-bi-ji/youtube-dl-de-shi-yong-ji-bian-cheng-ying-yong/</url>
+    <content><![CDATA[<p>YouTube上有许多精彩视频，曾经chrome的应用商店里有一个叫VideoDownloader的插件可以一键下载YouTube视频，但是已经被Google封杀了。后来我发现了youtube-dl这个工具，它不仅可以用来下载YouTube视频，国内的一些视频站也可以用它进行下载。 </p>
+<p>这个程序是一个开源的python项目，详情可以访问它的<a href="http://rg3.github.io/youtube-dl/">官方网站</a>。由于是开源项目，因此支持MacOS、Linux和Windows平台，可以在官网直接下载编译好的程序。</p>
+<p>若需要使用源代码，可以使用pip安装到本地：<br><code>sudo -H pip3 install --upgrade youtube-dl</code></p>
+<p>YouTube上面视频和音频是分开存放的，当然也有合成好的，不过画质就比较一般了，想要下载高质量视频，就得分别下载音频和视频，然后再使用ffmpeg将他们合成在一起。ffmpeg的<a href="https://www.ffmpeg.org/download.html">下载地址</a>在这，这同样也是个开源项目，但是我们只下载它打包好的程序就可以了。</p>
+<p>全都下载好后，可以把这些程序都放在同一个目录下，像这样，会有4个文件：<br><img src="/images/13526978-039cc11c8b420020.png"><br>然后把该目录添加到PATH中，就可以在任意位置使用了。</p>
+<p>youtube-dl的使用非常简单，选择好要下载的文件，它会自动调用ffmpeg合成音视频，不过就是没有GUI，每次使用都得输一串命令，而且对于国内用户，还需要指定代理服务器，更增加了命令的输入量。</p>
+<ul>
+<li>获取视频信息：</li>
+</ul>
+<p><code>youtube-dl -F https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
+<p>这里我使用的是shadowsocks代理，地址和端口号可以在你的ss程序中找到，等待程序下载完成后，就会看到视频信息了。</p>
+<p><img src="/images/13526978-c354b0a2722b9cb0.png"></p>
+<ul>
+<li>下载视频</li>
+</ul>
+<p>我们选择下载最高质量的音视频，通过观察视频信息可知，该视频最高质量为3840x1920 60fps，代号315，音频为码率149k的文件，代号251，然后下载这两个文件：<br><code>youtube-dl -f 315+251 https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
+<p><img src="/images/13526978-d41991ef87b1a398.png">程序默认将下载好的文件置于用户的根目录下。</p>
+<p>虽说只输了两次命令，但是还是不够方便，不过好在程序开源，我们可以自己开发一个GUI。本文将使用PyQt5制作一个简单的GUI，实现可视化操作。其实做GUI就是要把命令行指令做进按钮里，再把它的输入输出显示在窗体上。有了这样的思路，我们首先来分析youtube-dl返回的数据。</p>
+<p>以下是python代码：</p>
+<pre><code>import youtube_dl
+
+ydl_opts = ({'outtmpl': '%(title)s%(ext)s',
+             'proxy': '127.0.0.1:1087'}) # 默认HTTP代理
+
+# retrieve video information
+with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    video = ydl.extract_info('https://www.youtube.com/watch?v=gOLlY7SV6gE',
+                              download=False)</code></pre>
+<p>把video打印出来查看，是一个巨大的字典，里面包含了视频的所有信息，我们需要的视频分辨率信息，都在该字典的formats键值中，而formats又是一个字典列表，该视频中的每个文件都是一个字典。</p>
+<p>继续处理formats，得到需要的信息：</p>
+<pre><code># sort information
+formats = video.get('formats')
+file_count = len(formats)
+for f in formats:
+    format_code.append(f.get('format_id'))
+    extension.append(f.get('ext'))
+    resolution.append(ydl.format_resolution(f))
+    format_note.append(f.get('format_note'))
+    file_size.append(f.get('filesize'))</code></pre>
+<p>使用get方法获得字典键值的好处就是，如果字典中不存在该键值，就会返回None，如果使用索引直接访问不存在的键值，则会抛出异常。</p>
+<p>现在我们已经拿到了所需的全部数据，接下来就是要在窗体中显示了。在PyQt5中，<code>QTableWidget</code>可以做这件事：</p>
+<pre><code>self.tableWidget = QtWidgets.QTableWidget(Form)
+self.tableWidget.setRowCount(main.file_count)
+self.tableWidget.setColumnCount(5)</code></pre>
+<p>然后使用循环将数据填入表格：</p>
+<pre><code>def FillInfo(w):            # fill information into table
+    for i in range(0, file_count):
+        w.tableWidget.setItem(i, 0, QTableWidgetItem(format_code[i]))
+        w.tableWidget.setItem(i, 1, QTableWidgetItem(extension[i]))
+        w.tableWidget.setItem(i, 2, QTableWidgetItem(resolution[i]))
+        w.tableWidget.setItem(i, 3, QTableWidgetItem(format_note[i]))
+        w.tableWidget.setItem(i, 4, QTableWidgetItem(str(file_size[i])))</code></pre>
+<p>youtube-dl的作者并没有给这个项目单独写一个文档，所有的信息都需要去源代码中看，经过阅读源代码，我终于找到了一个名为<code>process_video_result</code>的函数，可以指定下载哪个文件。它接受<code>extract_info</code>返回的字典对象，根据用户输入的命令行参数选择文件进行下载，所以我们只需要把需要下载的视频的format_id填入参数列表，再把视频信息字典传给函数，就可以实现指定下载的功能了。</p>
+<p>创建一个编辑框，然后取得该编辑框的输入：</p>
+<pre><code>self.SeleEdit = QtWidgets.QLineEdit(Form)
+self.SeleEdit.setObjectName("SeleEdit")
+def download(self):
+    ydl.params = {'format': self.SeleEdit.text()}
+    try:
+        main.ydl.process_video_result(main.video)
+    except Exception as e:
+        pass</code></pre>
+<p>应该像使用命令行程序那样输入format_id，对于两个文件的情况，youtube-dl只接受<code>'video+audio'</code>的形式，如果顺序颠倒则会抛出异常。</p>
+<p><img src="/images/13526978-ca7646e03b3fdee2.png" alt="程序截图"></p>
+<p>完整的代码可以在我的<a href="https://github.com/SSSSSimon/youtube-dl-GUI">Github</a>上找到。</p>
+]]></content>
+      <categories>
+        <category>Python学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ffmpeg合并视频</title>
+    <url>/sui-bi/ffmpeg-he-bing-shi-pin/</url>
+    <content><![CDATA[<p>优酷的反下载策略更新了，youtube-dl已经下载不到里面的视频了，所以只能手动从chrome里把视频地址提取出来手动下载，这样一个2分多钟的视频就下载了16个文件，都是flv格式：</p>
+<pre><code>MycBook:Downloads simon$ l
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (1).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (10).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (11).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (12).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (13).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (14).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (15).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (16).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (2).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (3).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (4).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (5).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (6).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (7).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (8).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (9).flv
+0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv.flv
+</code></pre>
+<p>将它们重命名一下，写一个shell循环：</p>
+<pre><code>for file in *.flv
+do
+name=${file%)*}
+name=${name#*(}
+mv "${file}" "${name}.flv"
+done
+mv 0* 0.flv</code></pre>
+<p>这样文件就变得有序了，接下来写一个文本文件，把这些文件名都放进去，以便ffmpeg查找：</p>
+<pre><code>for file in {0..16}
+do
+echo "file '${file}.flv'" &gt;&gt; filelist.txt
+done</code></pre>
+<p>然后我们就有了这样一个文件：</p>
+<p><img src="/images/13526978-452247138c560007.png" alt="filelist.txt"></p>
+<p>接下来输入合成命令：</p>
+<pre><code>ffmpeg -f concat -i filelist.txt -c copy output.mp4</code></pre>
+<p>搞定！</p>
+<pre><code>MycBook:Downloads simon$ ll
+-rw-r--r--@  1 simon  staff         201912 10 19 23:12 0.flv
+-rw-r--r--@  1 simon  staff         331256 10 19 23:12 1.flv
+-rw-r--r--@  1 simon  staff         337272 10 19 23:12 10.flv
+-rw-r--r--@  1 simon  staff         448568 10 19 23:12 11.flv
+-rw-r--r--@  1 simon  staff         475640 10 19 23:12 12.flv
+-rw-r--r--@  1 simon  staff         346296 10 19 23:12 13.flv
+-rw-r--r--@  1 simon  staff         607992 10 19 23:12 14.flv
+-rw-r--r--@  1 simon  staff         466616 10 19 23:13 15.flv
+-rw-r--r--@  1 simon  staff         126712 10 19 23:13 16.flv
+-rw-r--r--@  1 simon  staff         358328 10 19 23:12 2.flv
+-rw-r--r--@  1 simon  staff         412472 10 19 23:12 3.flv
+-rw-r--r--@  1 simon  staff         403448 10 19 23:12 4.flv
+-rw-r--r--@  1 simon  staff         376376 10 19 23:12 5.flv
+-rw-r--r--@  1 simon  staff         370360 10 19 23:12 6.flv
+-rw-r--r--@  1 simon  staff         361336 10 19 23:12 7.flv
+-rw-r--r--@  1 simon  staff         400440 10 19 23:12 8.flv
+-rw-r--r--@  1 simon  staff         427512 10 19 23:12 9.flv
+-rw-r--r--@  1 simon  staff        6073530 10 19 23:47 output.mp4</code></pre>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ffmpeg视频压制</title>
+    <url>/sui-bi/ffmpeg-shi-pin-ya-zhi/</url>
+    <content><![CDATA[<p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
+<pre><code>ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4</code></pre>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用ffmpeg为视频嵌入字幕</title>
+    <url>/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/</url>
+    <content><![CDATA[<p>作为一个轻度电影收藏爱好者，看过的电影都会丢到硬盘里放着，但是网络上有些电影资源并没有内嵌字幕，还需要外挂一个字幕，但是这样在保存的时候就需要保存两个文件，就令我很不爽，好在可以使用ffmpeg将字幕嵌入到视频文件中。</p>
+<p>现在的大多电影都使用mkv格式，也有部分使用mp4，mkv格式本身支持字幕轨道，而mp4则需要调用mov_text编码器，在ffmpeg中可以很方便的将字幕和视频进行整合：</p>
+<p>在我的硬盘内有一个名为<code>movie.mkv</code>的电影文件和一个名为<code>sub.srt</code>的字幕文件，在终端输入如下命令：</p>
+<pre class=" language-sh"><code class="language-sh">ffmpeg -i movie.mkv -i sub.srt -c:s copy -c:v copy -c:a copy output.mkv</code></pre>
+<p>等待程序运行完成后，得到了一个名为<code>output.mkv</code>的视频文件，打开播放后，并没有出现字幕，但是在播放器里可以看到一个字幕流，于是我使用ffprobe检查了这两个视频文件：</p>
+<p>movie.mkv:</p>
+<pre><code>MycBook:Downloads simon$ ffprobe moive.mkv
+Input #0, matroska,webm, from 'movie.mkv':
+...
+...
+    Stream #0:0(eng): Video: h264 (High), yuv420p(progressive), 1920x1040, SAR 1:1 DAR 24:13, 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default)
+    Stream #0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)
+    Metadata:
+      title           : DTS 5.1
+    Stream #0:2(fre): Subtitle: subrip (default) (forced)
+    Metadata:
+      title           : Forced</code></pre>
+<p>output.mkv:</p>
+<pre><code>MycBook:Downloads simon$ ffprobe output.mkv
+Input #0, matroska,webm, from 'output.mkv':
+...
+...
+    Stream #0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)
+    Metadata:
+      title           : DTS 5.1
+      DURATION        : 01:33:20.681000000
+    Stream #0:2(fre): Subtitle: subrip (default) (forced)
+    Metadata:
+      title           : Forced
+      DURATION        : 00:10:53.068000000</code></pre>
+<p>原来是原来的视频有一个诡异的字幕流，只有10分钟，显然我在让ffmpeg自动选择时，程序自动选择了原视频中的字幕流，而我的字幕文件根本没有被加载。找到了问题，那就手动指定要抽取的字幕流好了，这时就需要用到<code>-map</code>参数：</p>
+<pre><code>ffmpeg -i movie.mkv -i sub.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv </code></pre>
+<p>其中<code>movie.mkv</code>的编号为<code>#0</code>，<code>sub.srt</code>的是<code>#1</code>，<code>v</code>代表视频流，<code>a</code>代表音频流，<code>s</code>则代表字幕流，程序会从<code>#0</code>中抽取视频流和音频流、从<code>#1</code>中抽取字幕流，复制到<code>output.mkv</code>中。<br>另外，最后的<code>copy</code>参数一定要加上，否则ffmpeg会对音视频流进行重新编码，将极大增加处理时间。</p>
+<p>但是这时问题又出现了，在运行上述命令后，程序出现报错：</p>
+<pre><code>sub.srt: Invalid data found when processing input</code></pre>
+<p>使用less命令查看srt文件，原来是缺了一行，好在ffmpeg可以对字幕进行修复，执行命令：</p>
+<pre><code>ffmpeg -fix_sub_duration -i sub.srt sub2.srt</code></pre>
+<p>所有文件准备妥当，再重新进行合并，得到的output文件成功嵌入了字幕文件！</p>
+<pre><code>ffmpeg -i movie.mkv -i sub2.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv </code></pre>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>记《白鹿原》之白灵</title>
+    <url>/sui-bi/ji-bai-lu-yuan-zhi-bai-ling/</url>
+    <content><![CDATA[<blockquote>
+<p><em>白灵的眼晴有一缕傲气，却不像父也不像兄那样外露，而是作为聪意灵秀的底气支撑主宰着那双眸子，于是就和单纯的美女或一切俗气的女人显示出差异来。</em><br><em>这种眼睛首先给人一种厉害的感觉，有某种天然的凛凛傲气；这种傲气对于统帅，对于武将，乃至对于一家之主的家长来说是宝贵的难得的，而对于任何阶层的女人来说，就未必是吉祥了。</em></p>
+</blockquote>
+<p>——<strong>白灵的命运似乎自朱先生琢磨起她的眼睛起就已经注定。</strong></p>
+<p>这段时间得空在家，终于能把几年前买下放在书架上吃灰的《白鹿原》读完。书中人物鲜明的个性给我留下了深刻的印象，我最喜欢的角色当属白嘉轩的第四个孩子——白灵。《白鹿原》故事时空里死了的人不少，却只有白灵、兆海和兆谦的死让我难以接受，及至后来读到白灵具体的死因时，更是难过地不忍卒读。</p>
+<p>白灵是吴氏仙草生下的第八胎，哥哥孝义之前的三男一女悉数夭折，已经有了三个儿子的白嘉轩和妻子白吴氏正想要个女儿，于是对这个有幸活下来的孩子倍加宠爱。灵灵实在太招人喜爱，细嫩的皮肤，聪明稚气的两只忽闪水灵的大眼，胖乎乎的手腕，即便是族长白嘉轩那顽固的封建脑袋，也不免在面对灵灵时违背封建宗法，不仅亲自拆掉了灵灵的缠脚布，更是在灵灵的撒娇下答应让她去上学。彼时的中国虽然已经经历了辛亥革命，但在白鹿原上主导着社会运行的依然是封建的那一套东西，对于女子而言，上学实在是对”女子无才便是德“的极大不敬，白嘉轩虽犯了难，但还是无法对灵灵冷下脸来。</p>
+<p>说来灵灵能够上学也不完全是凭她惹人疼爱的脸蛋儿。灵灵过百日时正是西安城“反正”的日子，白嘉轩为女儿灵灵满月所举行的庆贺仪式相当隆重，热烈欢悦的喜庆气氛与头生儿子的满月不相上下，亲戚朋友和乡党纷纷送来礼品与祝福，唯独少了被困在城里的冷先生。回来后，冷先生向白嘉轩讲述了城里发生的事情；加上后来听了圣人朱先生孤身一人劝退二十万清军的事迹和看到二姐的两个女儿都在城里上新式学校，白嘉轩对封建礼教的执念有所放松，虽然还穿着长袍，却把自己的头发剪掉了。女子上学在白鹿村的村民看来还是一件稀罕事，白嘉轩拉着灵灵走进白鹿村私塾的时候，村民在街巷中站成两排围观，而这种情景对于白灵来说，既新奇又十分得意的事。</p>
+<p>白灵过人的聪敏和智慧此时方才慢慢显现出来，与天生就是庄稼汉的三哥孝义形成鲜明的对比。仅是写字这一件事，就让老师徐先生大为惊叹，白灵只照着徐先生起下的影格描摹半年，便可以临帖练字；两年之后，白灵的字已经在徐先生之上，徐先生发现这是个人才，赶忙让白嘉轩送她到朱先生的白鹿书院去学习。这年新年前夕，白灵写的对联被白嘉轩贴在街门的门框上，白嘉轩细细品味着，感叹根本不像一个女子的字迹。这就是白灵，字如其人，刚硬中透露出柔韧，一股豪放不羁的潇洒气度由内而外散发出来。</p>
+<p>年过完后，白灵向父亲提出要去城里念书，而这一次，白嘉轩没有再一次惯着她，他冷下脸来，对白灵说出了那些封建社会女子操守，让白灵跟着母亲学做针线活。性情耿直的白灵一听父亲改变了送她去念书的主意，哇地一声哭了出来，白嘉轩不仅没有安慰，反而更加铁青着脸对白灵说：“要哭你就扯开哭”。白灵的反叛精神从此显露出来，她赌气似的收了声，坐在纺车下摇起手柄来。十天后，白灵自己跑到城里去找了二姑，没问过父亲便在城里开始上学了。白嘉轩找到二姐家时，白灵拿着一把剪刀以死相威胁。白嘉轩没有说话，回到了原上，心里百般不是滋味，白灵似乎已经成了与他有着生死之仇的敌人。</p>
+<p>后来白灵抗婚逃婚的行为让我对这个女人的好感更上一层，她不仅是在与自己的命运抗衡，更是在挑战封建社会运行了千年的伦理纲常。这种不屈不挠的反抗精神对于一个革命者、一个共产党员、一个当时的女性而言是十分可贵的。越是读着对白灵的描写，我就越喜爱这个角色，她俊俏、活泼、勇敢又不失聪慧，敢爱敢恨、有理想又有抱负，及至后来得知建国后，共产党的干部带着“革命烈士”的牌子走进白嘉轩的宅院，我的心情一度十分沉重，再后来了解到白灵经历的被软禁、被关押又被活埋的过程时，更是难过地不忍卒读。一个革命者没有死在革命的道路上，没有死在敌人的利刃下，却死在了自己同志的手里，这让我无论如何也无法释怀。兆海和兆谦的死也一度让我心绪烦乱，却远无法与白灵相比较。</p>
+<p>同样是与命运抗争的女子，黑娃媳妇小娥就显得无力多了，芒儿师傅的大女儿小翠则更是难以望其项背。田小娥的表面上看起来是一个不守妇道的和人乱搞的女子，但我看到的却是封建制度对女性的戕害。小娥的父亲是秀才，在当时的社会，穷苦人家中有个科举考试及第者，家庭的命运便可以彻底改变，小娥在书香门第中成长，自然是不会像一般穷人家的孩子一样，她举止优雅、穿着得体还知礼数，黑娃引着她会到家中时，鹿三一眼就看出这不是穷苦人家的女子，当即断定这不是儿子能伺候得起的人；后来孝文在小娥的窑洞里与她快活的时候也将小娥与自己的媳妇暗暗比较起来，不由地对家里那个女人产生了唾弃。按照门当户对的传统，小娥本可以拥有一段不错的后半生的，可是却被嫁到了郭举人家中当小妾，只是因为郭举人想要吃“泡枣儿”。小娥从没体验过正经的夫妻生活，有的只是郭举人每月三次在她房里例行公事般的逍遥。小娥甘愿过这样的日子吗，当然不，可是没有像白灵一样接受过新式教育的她除了能把枣儿泡在尿里之外还能做什么呢？写到这里，我倒开始同情冷先生的大女儿了……</p>
+<p>白灵与兆海是在城里搬运尸体时偶然碰见的，两人对视了好久才认出是白鹿原上的乡党。那时两人是一起工作的革命同志，兆海还设法让白灵转到了他所在的学校，逐渐地，在密切的来往中，他们的关系逐渐变得不一般了起来，一种无法言说的心绪在他们心头萦绕着。终于有一天，兆海捅破了窗户纸，朝白灵吻了下去，两人私定了终身。彼时的国共合作还正有条不紊地进行着，白灵和兆海商量决定一人加入一个党，即使哪一天两党不再交好，他们也一定会继续合作，就像国与共合作一样，这誓言成了他们爱情的象征。兆海率先加入了共产党，而按照约定，白灵则要加入国民党，不过，白灵倒没有立刻入党，这也给后来他们两人婚恋的裂变埋下了伏笔。</p>
+<p>后来，立志做一名真正的军人推进国民革命的兆海去了保定陆军学校学习军事，之后不久蒋介石发动了反革命政变，国共合作全面破裂，兆海退出了共产党加入了国民党。白灵那时也还没有加入任何一个党，兆海决定加入国民党的原因究竟是不是害怕再也无法和白灵像往常一样见面呢？白灵那时正在教会女子学校上课，她看见国民党的警察冲进教室将加入共产党的女学生绑走时第一个想到的就是兆海，“他能挣脱五花大绑的麻绳吗”？白灵或许就是从看到学生被填了枯井时起开始改变主意的，她急切地想找到兆鹏打听消息，见到兆鹏后，她向兆鹏述说了自己想要加入共产党的意愿。</p>
+<blockquote>
+<p><em>“兆海哥！人想你都想死了……”</em><br><em>“我等着你的好消息啊兆海哥……”</em><br><em>“兆海哥……我还是等着你回来……”</em></p>
+</blockquote>
+<p>兆海从陆军学校学习回来后，立刻找到了白灵，白灵也难以掩饰再次见到兆海的喜悦。两人漫步在承载着他们记忆的小巷里，白灵激动地告诉兆海她也像他一样加入共产党了，然而她等到的不是与她同样激动地兆海，而是兆海已经加入国民党的消息。两个怀揣着解放中华民族的理想的苦恋的人陷入了争执，接着又失语，低头看着脚下的土地……她和他在热切的期待中突然发觉对方已不是记忆中的那个人，双方都窝了兴致，都陷入痛苦。兆海出征的前天，来到了皮匠铺子，这一次依然谁都没有说服谁，可白灵怎么甘愿就这样放弃面前这个小伙子呢？她噙着泪，“兆海哥……我还是等着你回来……”</p>
+<p>一段时间后，兆海的十七师撤回来了，白灵在豆腐巷小学校接待了鹿兆海。她瞅见他一身下级军官服装就觉得他们的关系将要完结了。鹿兆海在她心目中急遽地暗淡下去。兆海的理想和抱负曾经唤起她的毫无保留的赞同，可是，当初那种国民革命变得不再是驱逐封建军阀而是屠杀人民的时候，鹿兆海的抱负和志向就令她不仅是惋惜了。</p>
+<p>此后直到牺牲的那一刻，白灵都一直以一个共产党员的角色投身国民革命。当日本侵略者的铁骑踏到中华大地上那会，她省立师范学校的学生自治会主席，正在筹备建立一个大中学校抗日救国统一指挥机构。白灵怀上了鹿兆鹏的孩子，她与他自然地交融在一起，他隐藏在心底的那一缕歉意的畏缩已以灼干散尽。在一次对民国教育部陶部长的示威中，白灵失手将砖头丢在了陶部长的脸上，她的身份随之暴露，被迫开始转移。在几百里外的龙湾村，她生下了这个叫鹿鸣的孩子。</p>
+<p>白嘉轩的噩梦不幸被朱先生绝妙而诡秘的掐算言中，白灵在南梁根据地走向了她生命的尽头。</p>
+<p>白灵辗转在地下党的护送下，被转运到了南梁根据地，随后就被安排做文化教员。在根据地，她出色的工作和活泼开朗的性格使她得到上至廖军长下至小队长的表彰，也得到游击队员们的拥戴。她给游击队员教字学文化，也帮他们缝补撕裂磨损的衣裤鞋袜，听队员们给她唱山歌，她把那些悠扬哀婉的山歌改换唱词变成革命歌曲，朗朗上口的歌词很快在队伍中流传开来。越是看着白灵那活泼的样子，就越是让我难受，这么好的一个女子没有等来革命胜利的那一天，没有看到自己的努力汇进人民战争的洪流入海，就永远倒下了。廖军长气急骂了毕政委，也被毕政委关起来了，白灵的保护伞就此消失，她被关押的时候，那百灵鸟一般的嗓子连着嗥了三天三夜，她的嗓子依然宏亮，精神依旧亢奋，双眼仍然如炬。终于等来了毕政委，她把所有的激情都释放出来，像一头拼死的母狮咆哮起来，她把生命中最后一丝顽强全部展现出来，砖头一样的话拍击着毕政委——就像她扔向陶部长的那块砖头一样。</p>
+<p>然而在白灵被活埋完毕后，我的心情却没有之前那么低落了，这个革命者完成了她的最后一次挣扎，虽然没有被填枯井，但就像成千上万为革命牺牲的人民一样，他们的精魄铸就了中华民族之魂。她的死亡细节已经不再重要——正如鹿鸣所说——重要的是对发生这一幕历史悲剧的根源的反省。</p>
+<p>兆海也在中条山牺牲了，他曾对白灵说非她终身不娶，可后来在金关城买下一栋民房，与当地一位女子成婚了。兆海违背了他的誓言吗？这个神似灵灵的女子不过是他对她日夜思念的寄托罢了……</p>
+<p>苦命的恋人啊……</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+</search>
