@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1&#x2F;4的是有PyMOL制作的。">
@@ -98,7 +98,7 @@
 
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism-duotone-light.css" type="text/css"></head>
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container">
@@ -267,64 +267,35 @@
 </ul>
 <p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
 <p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
-<pre><code># Debian/Ubuntu/Mint
-apt-get install build-essential python-dev python-pmw libglew-dev \
-  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \
-  libmsgpack-dev python-pyqt5.qtopengl libglm-dev
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br><span class="hljs-meta">apt-get</span> <span class="hljs-string">install build-essential python-dev python-pmw libglew-dev \</span><br>  <span class="hljs-meta">freeglut3-dev</span> <span class="hljs-string">libpng-dev libfreetype6-dev libxml2-dev \</span><br>  <span class="hljs-meta">libmsgpack-dev</span> <span class="hljs-string">python-pyqt5.qtopengl libglm-dev</span><br><br><span class="hljs-comment"># CentOS</span><br><span class="hljs-attr">yum</span> <span class="hljs-string">install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \</span><br>  <span class="hljs-meta">freeglut-devel</span> <span class="hljs-string">libpng-devel freetype-devel libxml2-devel glm-devel</span><br><br><span class="hljs-comment"># Fedora</span><br><span class="hljs-attr">dnf</span> <span class="hljs-string">install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \</span><br>  <span class="hljs-meta">freeglut-devel</span> <span class="hljs-string">libpng-devel freetype-devel libxml2-devel glm-devel</span><br><br><span class="hljs-comment"># Gentoo</span><br><span class="hljs-attr">emerge</span> <span class="hljs-string">-av dev-lang/python dev-python/pmw media-libs/glew \</span><br>  <span class="hljs-meta">media-libs/freeglut</span> <span class="hljs-string">media-libs/libpng media-libs/freetype media-libs/glm</span><br><br><span class="hljs-comment"># openSUSE</span><br><span class="hljs-attr">zypper</span> <span class="hljs-string">install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm</span><br><br><span class="hljs-comment"># Sabayon</span><br><span class="hljs-attr">equo</span> <span class="hljs-string">i -av dev-lang/python dev-python/pmw media-libs/glew \</span><br>  <span class="hljs-meta">media-libs/freeglut</span> <span class="hljs-string">media-libs/libpng media-libs/freetype</span><br></code></pre></td></tr></tbody></table></figure>
 
-# CentOS
-yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \
-  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel
-
-# Fedora
-dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \
-  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel
-
-# Gentoo
-emerge -av dev-lang/python dev-python/pmw media-libs/glew \
-  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm
-
-# openSUSE
-zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm
-
-# Sabayon
-equo i -av dev-lang/python dev-python/pmw media-libs/glew \
-  media-libs/freeglut media-libs/libpng media-libs/freetype</code></pre>
 <p>以Ubuntu为例，在terminal中输入：</p>
-<pre class=" language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> build-essential python-dev python-pmw libglew-dev \
-  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \
-  libmsgpack-dev python-pyqt5.qtopengl libglm-dev</code></pre>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
+
 <p>安装git，然后将源代码拷贝到本地：</p>
-<pre class=" language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token function">git</span>
-<span class="token function">git</span> clone https://github.com/schrodinger/pymol-open-source.git</code></pre>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><code class="hljs bash">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
+
 <p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
-<pre><code>cd pymol-open-source
-git clone https://github.com/rcsb/mmtf-cpp.git
-cp -r mmtf-cpp/include/* layer3/
-python setup.py build install --home=$HOME/pymol</code></pre>
+<figure class="highlight vim"><table><tbody><tr><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> pymol-<span class="hljs-keyword">open</span>-<span class="hljs-keyword">source</span><br>git clone http<span class="hljs-variable">s:</span>//github.<span class="hljs-keyword">com</span>/rcsb/mmtf-cpp.git<br><span class="hljs-keyword">cp</span> -r mmtf-cpp/include/* layer3/<br><span class="hljs-keyword">python</span> setup.<span class="hljs-keyword">py</span> build install --home=$HOME/pymol<br></code></pre></td></tr></tbody></table></figure>
+
 <p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
-<pre><code>echo 'export PATH=$PATH:$HOME/pymol/bin' &gt;&gt; $HOME/.bashrc</code></pre>
+<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">echo</span> <span class="hljs-string">'export PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$HOME</span>/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
+
 <p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
 <ul>
 <li><strong>Mac OS X</strong></li>
 </ul>
 <p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a target="_blank" rel="noopener" href="https://www.xquartz.org/">XQuartz</a>和<a target="_blank" rel="noopener" href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a target="_blank" rel="noopener" href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
 <p>首先安装依赖：</p>
-<pre><code>xcode-select --install
-brew install git glm libpng freetype glew libxml2</code></pre>
+<figure class="highlight elm"><table><tbody><tr><td class="code"><pre><code class="hljs elm"><span class="hljs-title">xcode</span>-select <span class="hljs-comment">--install</span><br><span class="hljs-title">brew</span> install git glm libpng free<span class="hljs-keyword">type</span> glew libxml2<br></code></pre></td></tr></tbody></table></figure>
 <p>安装Pmw：</p>
-<pre><code>git clone https://github.com/schrodinger/pmw-patched.git
-cd pmw-patched
-sudo python setup.py install
-cd ..
-rm -rf pmw-patched</code></pre>
+<figure class="highlight vim"><table><tbody><tr><td class="code"><pre><code class="hljs vim">git clone http<span class="hljs-variable">s:</span>//github.<span class="hljs-keyword">com</span>/schrodinger/pmw-patched.git<br><span class="hljs-keyword">cd</span> pmw-patched<br>sudo <span class="hljs-keyword">python</span> setup.<span class="hljs-keyword">py</span> install<br><span class="hljs-keyword">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
 <p>获取pymol源代码并编译安装：</p>
-<pre><code>git clone https://github.com/schrodinger/pymol-open-source.git
-cd pymol-open-source
-export PREFIX_PATH=/usr/local
-python3 setup.py build install --home=$HOME/Applications/pymol --no-vmd-plugins --jobs 4</code></pre>
+<figure class="highlight vim"><table><tbody><tr><td class="code"><pre><code class="hljs vim">git clone http<span class="hljs-variable">s:</span>//github.<span class="hljs-keyword">com</span>/schrodinger/pymol-<span class="hljs-keyword">open</span>-<span class="hljs-keyword">source</span>.git<br><span class="hljs-keyword">cd</span> pymol-<span class="hljs-keyword">open</span>-<span class="hljs-keyword">source</span><br>export PREFIX_PATH=/usr/local<br><span class="hljs-keyword">python3</span> setup.<span class="hljs-keyword">py</span> build install --home=$HOME/Applications/pymol --<span class="hljs-keyword">no</span>-vmd-plugins --jobs <span class="hljs-number">4</span><br></code></pre></td></tr></tbody></table></figure>
+
 <p>最后将路径添加到<code>PATH</code>:</p>
-<pre><code>echo 'export PATH=$PATH:$HOME/Applications/pymol/bin' &gt;&gt; $HOME/.bash_profile</code></pre>
+<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">echo</span> <span class="hljs-string">'export PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$HOME</span>/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
+
 <p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="/images/13526978-d8b05014ccfdb4aa.png" alt="基于X11的PyMOL界面"></p>
 
     </div>
@@ -501,7 +472,7 @@ python3 setup.py build install --home=$HOME/Applications/pymol --no-vmd-plugins 
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共9.8k字</span>
+  <span class="post-count">博客全站共9.7k字</span>
 </div>
         
 <div class="busuanzi-count">

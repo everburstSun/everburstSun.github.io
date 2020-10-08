@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。">
@@ -97,7 +97,7 @@
 
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism-duotone-light.css" type="text/css"></head>
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container">
@@ -263,64 +263,15 @@
 
 <hr>
 <p>要创建一个新线程，需要在程序中定义一个类，这个类要继承<code>QtCore.QThread</code>，然后把要执行的操作放进<code>run()</code>函数中，线程启动后，就会自动运行这个函数。结束线程时通过调用线程的<code>terminate()</code>方法来中止线程：</p>
-<pre><code>class QueryWaitThread(QtCore.QThread):
-    # 定义线程需要用到的信号
-    query_signal = QtCore.pyqtSignal()      # 查询信号
-    on_complete = QtCore.pyqtSignal(int)    # 每次查询完成时发送，可以发送参数，
-                                                此处参数int为查询次数
-    terminate_thread = QtCore.pyqtSignal()  # 结束线程信号
+<figure class="highlight ruby"><table><tbody><tr><td class="code"><pre><code class="hljs ruby"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QueryWaitThread</span>(<span class="hljs-title">QtCore</span>.<span class="hljs-title">QThread</span>):</span><br>    <span class="hljs-comment"># 定义线程需要用到的信号</span><br>    query_signal = QtCore.pyqtSignal()      <span class="hljs-comment"># 查询信号</span><br>    on_complete = QtCore.pyqtSignal(int)    <span class="hljs-comment"># 每次查询完成时发送，可以发送参数，</span><br>												此处参数int为查询次数<br>    terminate_thread = QtCore.pyqtSignal()  <span class="hljs-comment"># 结束线程信号</span><br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span><span class="hljs-symbol">:</span><br>        <span class="hljs-keyword">super</span>(QueryWaitThread, <span class="hljs-keyword">self</span>).__init_<span class="hljs-number">_</span>()<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span>: <span class="hljs-comment"># 只发送信号，然后休眠。</span><br>        i = <span class="hljs-number">1</span><br>        <span class="hljs-keyword">while</span> <span class="hljs-symbol">True:</span><br>            <span class="hljs-keyword">self</span>.on_complete.emit(i)		<span class="hljs-comment"># 调用信号的emit()方法</span><br>            i += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">self</span>.query_signal.emit()<br>            sleep(<span class="hljs-number">60</span>)<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">kill_thread</span><span class="hljs-params">(<span class="hljs-keyword">self</span>)</span></span><span class="hljs-symbol">:</span><br>        <span class="hljs-keyword">self</span>.terminate()<br></code></pre></td></tr></tbody></table></figure>
 
-    def __init__(self):
-        super(QueryWaitThread, self).__init__()
-
-    def run(self): # 只发送信号，然后休眠。
-        i = 1
-        while True:
-            self.on_complete.emit(i)        # 调用信号的emit()方法
-            i += 1
-            self.query_signal.emit()
-            sleep(60)
-
-    def kill_thread(self):
-        self.terminate()</code></pre>
 <p>我的查询函数与验证函数：</p>
-<pre><code>def auto_query(self):
-    ################
-    #    查询操作   #
-    ################
-    if self.good_to_submit():
-        self.btnstop.hide()
-        self.btn_resel.show()
-        main.Appoint(self)
+<figure class="highlight clean"><table><tbody><tr><td class="code"><pre><code class="hljs clean">def auto_query(self):<br>    ################<br>    #    查询操作   #<br>    ################<br>    <span class="hljs-keyword">if</span> self.good_to_submit():<br>        self.btnstop.hide()<br>        self.btn_resel.show()<br>        main.Appoint(self)<br><br>def good_to_submit(self):<br>    <span class="hljs-keyword">if</span> # 还无法提交表单:<br>    	return <span class="hljs-literal">False</span><br>    self.T.terminate_thread.emit() # 验证可以提交表单后发送中止信号<br>    return <span class="hljs-literal">True</span><br><br>def print_current_count(self, i):<br>    self.normalOutputWritten(<span class="hljs-string">"当前为第 %i 次查询...\n"</span> % i)<br></code></pre></td></tr></tbody></table></figure>
 
-def good_to_submit(self):
-    if # 还无法提交表单:
-        return False
-    self.T.terminate_thread.emit() # 验证可以提交表单后发送中止信号
-    return True
-
-def print_current_count(self, i):
-    self.normalOutputWritten("当前为第 %i 次查询...\n" % i)</code></pre>
 <p><code>self.normalOutputWritten()</code>是一个我自己定义的函数，用于在窗体的文本框中打印信息，你也可以定义自己的这类函数。</p>
 <p>定义好信号以后，接下来需要调用信号的<code>connect()</code>方法将信号连接到需要执行函数上。下面的<code>start()</code>和<code>stop()</code>是窗体按钮按下后执行的操作，我们在这两个函数中使用刚刚定义好的信号：</p>
-<pre><code>def start(self):
-    ################
-    # do something #
-    ################
-    self.T = QueryWaitThread()
-    self.T.query_signal.connect(self.auto_query)
-    self.T.on_complete.connect(self.print_current_count)
-    self.T.terminate_thread.connect(self.T.kill_thread)
-    self.normalOutputWritten("已开启自动查询，当有符合条件的时间段时将自动提交预约...\n")
-    self.T.start()  # 开始执行线程函数
-    self.btnstop.show()
-    self.btn_resel.hide()
+<figure class="highlight clean"><table><tbody><tr><td class="code"><pre><code class="hljs clean">def start(self):<br>    ################<br>    # do something #<br>    ################<br>    self.T = QueryWaitThread()<br>    self.T.query_signal.connect(self.auto_query)<br>    self.T.on_complete.connect(self.print_current_count)<br>    self.T.terminate_thread.connect(self.T.kill_thread)<br>    self.normalOutputWritten(<span class="hljs-string">"已开启自动查询，当有符合条件的时间段时将自动提交预约...\n"</span>)<br>    self.T.start()  # 开始执行线程函数<br>    self.btnstop.show()<br>    self.btn_resel.hide()<br><br>def stop(self):<br>    self.btnstop.hide()<br>    self.btn_resel.show()<br>    self.T.terminate_thread.emit() # 发送中止信号<br>    self.normalOutputWritten(<span class="hljs-string">"用户终止查询。\n"</span>)<br></code></pre></td></tr></tbody></table></figure>
 
-def stop(self):
-    self.btnstop.hide()
-    self.btn_resel.show()
-    self.T.terminate_thread.emit() # 发送中止信号
-    self.normalOutputWritten("用户终止查询。\n")</code></pre>
 <p>当按下开始按钮后，程序会构造出一个线程<code>T</code>，执行到<code>T.start()</code>后，其中的<code>run()</code>函数便会进入<code>while</code>循环，不断发送查询信号，直到<code>good_to_submit()</code>函数返回<code>True</code>表明已经可以提交表单，或者当停止按钮按下后终止。</p>
 <p>改进后的程序只是将定时功能分离了出来，实际上联网查询功能还是使用主线程完成的，在程序等待服务器返回数据的过程中UI还是会有短暂的无响应时间，不过这是在用户点击后产生的，因此对体验影响不大。但是，严格来说联网也应该分离出一个线程，毕竟服务器有时候返回会很慢，这时候如果你的用户是一个暴躁老哥，还是会对体验有影响的。</p>
 
@@ -498,7 +449,7 @@ def stop(self):
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共9.8k字</span>
+  <span class="post-count">博客全站共9.7k字</span>
 </div>
         
 <div class="busuanzi-count">

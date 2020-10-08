@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="YouTube上有许多精彩视频，曾经chrome的应用商店里有一个叫VideoDownloader的插件可以一键下载YouTube视频，但是已经被Google封杀了。后来我发现了youtube-dl这个工具，它不仅可以用来下载YouTube视频，国内的一些视频站也可以用它进行下载。 这个程序是一个开源的python项目，详情可以访问它的官方网站。由于是开源项目，因此支持MacOS、Linux和Wi">
@@ -100,7 +100,7 @@
 
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism-duotone-light.css" type="text/css"></head>
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container">
@@ -276,49 +276,23 @@
 <p><img src="/images/13526978-d41991ef87b1a398.png">程序默认将下载好的文件置于用户的根目录下。</p>
 <p>虽说只输了两次命令，但是还是不够方便，不过好在程序开源，我们可以自己开发一个GUI。本文将使用PyQt5制作一个简单的GUI，实现可视化操作。其实做GUI就是要把命令行指令做进按钮里，再把它的输入输出显示在窗体上。有了这样的思路，我们首先来分析youtube-dl返回的数据。</p>
 <p>以下是python代码：</p>
-<pre><code>import youtube_dl
+<figure class="highlight clean"><table><tbody><tr><td class="code"><pre><code class="hljs clean"><span class="hljs-keyword">import</span> youtube_dl<br><br>ydl_opts = ({<span class="hljs-string">'outtmpl'</span>: <span class="hljs-string">'%(title)s%(ext)s'</span>,<br>             <span class="hljs-string">'proxy'</span>: <span class="hljs-string">'127.0.0.1:1087'</span>}) # 默认HTTP代理<br><br># retrieve video information<br><span class="hljs-keyword">with</span> youtube_dl.YoutubeDL(ydl_opts) <span class="hljs-keyword">as</span> ydl:<br>    video = ydl.extract_info(<span class="hljs-string">'https://www.youtube.com/watch?v=gOLlY7SV6gE'</span>,<br>                              download=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></tbody></table></figure>
 
-ydl_opts = ({'outtmpl': '%(title)s%(ext)s',
-             'proxy': '127.0.0.1:1087'}) # 默认HTTP代理
-
-# retrieve video information
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    video = ydl.extract_info('https://www.youtube.com/watch?v=gOLlY7SV6gE',
-                              download=False)</code></pre>
 <p>把video打印出来查看，是一个巨大的字典，里面包含了视频的所有信息，我们需要的视频分辨率信息，都在该字典的formats键值中，而formats又是一个字典列表，该视频中的每个文件都是一个字典。</p>
 <p>继续处理formats，得到需要的信息：</p>
-<pre><code># sort information
-formats = video.get('formats')
-file_count = len(formats)
-for f in formats:
-    format_code.append(f.get('format_id'))
-    extension.append(f.get('ext'))
-    resolution.append(ydl.format_resolution(f))
-    format_note.append(f.get('format_note'))
-    file_size.append(f.get('filesize'))</code></pre>
+<figure class="highlight vim"><table><tbody><tr><td class="code"><pre><code class="hljs vim"># <span class="hljs-keyword">sort</span> information<br>formats = video.<span class="hljs-built_in">get</span>(<span class="hljs-string">'formats'</span>)<br>file_count = <span class="hljs-built_in">len</span>(formats)<br><span class="hljs-keyword">for</span> <span class="hljs-keyword">f</span> in format<span class="hljs-variable">s:</span><br>    format_code.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">f</span>.<span class="hljs-built_in">get</span>(<span class="hljs-string">'format_id'</span>))<br>    extension.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">f</span>.<span class="hljs-built_in">get</span>(<span class="hljs-string">'ext'</span>))<br>    resolution.<span class="hljs-keyword">append</span>(ydl.format_resolution(<span class="hljs-keyword">f</span>))<br>    format_note.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">f</span>.<span class="hljs-built_in">get</span>(<span class="hljs-string">'format_note'</span>))<br>    file_size.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">f</span>.<span class="hljs-built_in">get</span>(<span class="hljs-string">'filesize'</span>))<br></code></pre></td></tr></tbody></table></figure>
+
 <p>使用get方法获得字典键值的好处就是，如果字典中不存在该键值，就会返回None，如果使用索引直接访问不存在的键值，则会抛出异常。</p>
 <p>现在我们已经拿到了所需的全部数据，接下来就是要在窗体中显示了。在PyQt5中，<code>QTableWidget</code>可以做这件事：</p>
-<pre><code>self.tableWidget = QtWidgets.QTableWidget(Form)
-self.tableWidget.setRowCount(main.file_count)
-self.tableWidget.setColumnCount(5)</code></pre>
+<figure class="highlight pf"><table><tbody><tr><td class="code"><pre><code class="hljs pf"><span class="hljs-literal">self</span>.<span class="hljs-built_in">table</span>Widget = QtWidgets.QTableWidget(Form)<br><span class="hljs-literal">self</span>.<span class="hljs-built_in">table</span>Widget.<span class="hljs-built_in">set</span>RowCount(main.file_count)<br><span class="hljs-literal">self</span>.<span class="hljs-built_in">table</span>Widget.<span class="hljs-built_in">set</span>ColumnCount(<span class="hljs-number">5</span>)<br></code></pre></td></tr></tbody></table></figure>
+
 <p>然后使用循环将数据填入表格：</p>
-<pre><code>def FillInfo(w):            # fill information into table
-    for i in range(0, file_count):
-        w.tableWidget.setItem(i, 0, QTableWidgetItem(format_code[i]))
-        w.tableWidget.setItem(i, 1, QTableWidgetItem(extension[i]))
-        w.tableWidget.setItem(i, 2, QTableWidgetItem(resolution[i]))
-        w.tableWidget.setItem(i, 3, QTableWidgetItem(format_note[i]))
-        w.tableWidget.setItem(i, 4, QTableWidgetItem(str(file_size[i])))</code></pre>
+<figure class="highlight reasonml"><table><tbody><tr><td class="code"><pre><code class="hljs reasonml">def <span class="hljs-constructor">FillInfo(<span class="hljs-params">w</span>)</span>:            # fill information into table<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, file_count):<br>        w.tableWidget.set<span class="hljs-constructor">Item(<span class="hljs-params">i</span>, 0, QTableWidgetItem(<span class="hljs-params">format_code</span>[<span class="hljs-params">i</span>])</span>)<br>        w.tableWidget.set<span class="hljs-constructor">Item(<span class="hljs-params">i</span>, 1, QTableWidgetItem(<span class="hljs-params">extension</span>[<span class="hljs-params">i</span>])</span>)<br>        w.tableWidget.set<span class="hljs-constructor">Item(<span class="hljs-params">i</span>, 2, QTableWidgetItem(<span class="hljs-params">resolution</span>[<span class="hljs-params">i</span>])</span>)<br>        w.tableWidget.set<span class="hljs-constructor">Item(<span class="hljs-params">i</span>, 3, QTableWidgetItem(<span class="hljs-params">format_note</span>[<span class="hljs-params">i</span>])</span>)<br>        w.tableWidget.set<span class="hljs-constructor">Item(<span class="hljs-params">i</span>, 4, QTableWidgetItem(<span class="hljs-params">str</span>(<span class="hljs-params">file_size</span>[<span class="hljs-params">i</span>])</span>))<br></code></pre></td></tr></tbody></table></figure>
+
 <p>youtube-dl的作者并没有给这个项目单独写一个文档，所有的信息都需要去源代码中看，经过阅读源代码，我终于找到了一个名为<code>process_video_result</code>的函数，可以指定下载哪个文件。它接受<code>extract_info</code>返回的字典对象，根据用户输入的命令行参数选择文件进行下载，所以我们只需要把需要下载的视频的format_id填入参数列表，再把视频信息字典传给函数，就可以实现指定下载的功能了。</p>
 <p>创建一个编辑框，然后取得该编辑框的输入：</p>
-<pre><code>self.SeleEdit = QtWidgets.QLineEdit(Form)
-self.SeleEdit.setObjectName("SeleEdit")
-def download(self):
-    ydl.params = {'format': self.SeleEdit.text()}
-    try:
-        main.ydl.process_video_result(main.video)
-    except Exception as e:
-        pass</code></pre>
+<figure class="highlight reasonml"><table><tbody><tr><td class="code"><pre><code class="hljs reasonml">self.SeleEdit = QtWidgets.<span class="hljs-constructor">QLineEdit(Form)</span><br>self.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">SeleEdit</span>.</span></span>set<span class="hljs-constructor">ObjectName(<span class="hljs-string">"SeleEdit"</span>)</span><br>def download(self):<br>    ydl.params = {'format': self.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">SeleEdit</span>.</span></span>text<span class="hljs-literal">()</span>}<br>    <span class="hljs-keyword">try</span>:<br>        main.ydl.process<span class="hljs-constructor">_video_result(<span class="hljs-params">main</span>.<span class="hljs-params">video</span>)</span><br>    except Exception <span class="hljs-keyword">as</span> e:<br>        pass<br></code></pre></td></tr></tbody></table></figure>
+
 <p>应该像使用命令行程序那样输入format_id，对于两个文件的情况，youtube-dl只接受<code>'video+audio'</code>的形式，如果顺序颠倒则会抛出异常。</p>
 <p><img src="/images/13526978-ca7646e03b3fdee2.png" alt="程序截图"></p>
 <p>完整的代码可以在我的<a target="_blank" rel="noopener" href="https://github.com/SSSSSimon/youtube-dl-GUI">Github</a>上找到。</p>
@@ -494,7 +468,7 @@ def download(self):
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共9.8k字</span>
+  <span class="post-count">博客全站共9.7k字</span>
 </div>
         
 <div class="busuanzi-count">
