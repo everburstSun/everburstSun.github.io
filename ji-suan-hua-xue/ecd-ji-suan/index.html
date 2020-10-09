@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="工作需要，自学了计算ECD的方法，本文参考了科音的sob老师写的帖子，记录了一种完全使用免费软件进行计算的方法，产生的结果具有较好的理论意义。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始学习ECD计算">
+<meta property="og:url" content="https://blog.simonsun.top/ji-suan-hua-xue/ecd-ji-suan/index.html">
+<meta property="og:site_name" content="碳负离子的博客">
+<meta property="og:description" content="工作需要，自学了计算ECD的方法，本文参考了科音的sob老师写的帖子，记录了一种完全使用免费软件进行计算的方法，产生的结果具有较好的理论意义。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-02T06:22:14.000Z">
+<meta property="article:modified_time" content="2020-10-09T16:11:26.226Z">
+<meta property="article:author" content="simonsun">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.simonsun.top/ji-suan-hua-xue/ecd-ji-suan/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从零开始学习ECD计算 | 碳负离子的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-174153013-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+	    <a target="_blank" rel="noopener" href="https://github.com/sssssimon" class="github-corner" aria-label="Follow me on GitHub">
+        <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+          <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+          <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+          <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+        </svg>
+      </a>
+      <style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">碳负离子的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">碳负离子的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/ji-suan-hua-xue/ecd-ji-suan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="simonsun">
+      <meta itemprop="description" content="爱摄影、爱音乐、会点py的药学🐶">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="碳负离子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从零开始学习ECD计算
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-02 14:22:14" itemprop="dateCreated datePublished" datetime="2020-09-02T14:22:14+08:00">2020-09-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-10 00:11:26" itemprop="dateModified" datetime="2020-10-10T00:11:26+08:00">2020-10-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E5%8C%96%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">计算化学</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.4k</span>
+            </span>
+            <div class="post-description">工作需要，自学了计算ECD的方法，本文参考了科音的sob老师写的帖子，记录了一种完全使用免费软件进行计算的方法，产生的结果具有较好的理论意义。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本文介绍了一种完全使用免费软件计算ECD光谱的较详细过程，产生的结果具有较好的理论意义，阅读本文需要掌握基本的Linux指令，否则可能会对本文的命令操作产生困惑。</p>
+<h1 id="计算ECD的大致过程为："><a href="#计算ECD的大致过程为：" class="headerlink" title="计算ECD的大致过程为："></a>计算ECD的大致过程为：</h1><ul>
+<li><ol>
+<li>产生数个优势构象。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>对优势构象做振动分析，得到其对应的自由能校正量。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>计算优势构象的高精度电子能量，即单点能(Single Point Energy)。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>将自由能校正量和高精度单点能相加，得到构象的精确自由能，以此计算玻尔兹曼分布。</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>计算各个构象的激发态。</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>根据激发态和玻尔兹曼分布绘制出最终的ECD图像。</li>
+</ol>
+</li>
+</ul>
+<p>下面将分步骤详细介绍软件操作。</p>
+<h2 id="产生优势构象"><a href="#产生优势构象" class="headerlink" title="产生优势构象"></a>产生优势构象</h2><p>需要用到软件有，molclus软件包（包括<code>gentor</code>、<code>molclus</code>、<code>isostat</code>）、<code>Gaussian</code>（可选）、<code>MOPAC</code>、<code>ORCA</code>。</p>
+<p>登录进服务器主节点后输入<code>cd molclus_1.9.6/</code>，再输入<code>ls</code>可以看到其包含的文件：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 给新手的提示："$"为提示符，其后跟的字符串是要输入的命令，下方没有$的行是命令的输出结果</span><br>$ <span class="hljs-built_in">cd</span> molclus_1.9.6/<br>$ ls<br>LICENSE.txt*   gentor/        molclus*       template.gjf*  template.mop*  xyz2QC*<br>genmer/        isostat*       settings.ini*  template.inp*  template2.gjf*<br></code></pre></td></tr></tbody></table></figure>
+<p>其中<code>gentor</code>可以用来产生分子的各种构象，将3D的分子结构根据<code>gentor.ini</code>中的设定进行枚举，产生大量构象；<code>molclus</code>可以调用各类计算软件对构象进行优化，并计算其自由能；<code>isostat</code>可以统计优化后的各个构象能量，并对他们进行排序；<code>genmer</code>可以用来生成分子团簇的构象；其他<code>template</code>文件则为计算软件的输入模版文件。</p>
+<p>在本文中，使用了<code>gentor</code>来产生初始构象，如果分子的柔性特别好，可旋转的键数量太多，需要用<code>gromacs</code>生成最初的构象，如果使用<code>gentor</code>则计算量过于庞大。在<code>GaussView</code>里可以观察到原子标号，以此作为<code>gentor.ini</code>的设定时的标号方式，具体设定方式可以参见文章<a target="_blank" rel="noopener" href="http://bbs.keinsci.com/thread-2388-1-1.html">gentor构象扫描</a>。</p>
+<p>设定好<code>gentor.ini</code>后，把分子转换成xyz格式移动到<code>gentor</code>所在的目录下。 此处可以调用<code>openbabel</code>进行转换，假如待转换的分子文件名为<code>aaa.mol</code>，则输入<code>obabel aaa.mol -O mol.xyz</code>。完成后即可在当前目录下看到<code>mol.xyz</code>，必须是这个名字，一个字母都不能差：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span> gentor<br>$ ls<br>gentor*  gentor.ini*  aaa.mol<br>$ obabel aaa.mol -O mol.xyz <br>1 molecule converted<br>$ ls<br>gentor*  gentor.ini*  aaa.mol mol.xyz<br></code></pre></td></tr></tbody></table></figure>
+<p>启动<code>gentor</code>：输入<code>./gentor</code>，完成后即可在当前目录下看到<code>traj.xyz</code>文件：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./gentor<br>$ ls<br>gentor*  gentor.ini*  aaa.mol mol.xyz  traj.xyz<br></code></pre></td></tr></tbody></table></figure>
+<p>如果产生的构象数量特别多，就需要先用<code>Gaussian</code>初步优化一下，如果构象数量不是很多，仅有数百个，那么直接使用<code>MOPAC</code>优化。此处对于我的分子，<code>traj.xyz</code>中含有9000多个构象，所以先用<code>Gaussian</code>优化。将<code>traj.xyz</code>移动到<code>molclus</code>目录下，修改<code>settings.ini</code>和<code>template.gjf</code>，关键词写<code>UFF=qeq opt</code>，然后运行<code>molclus</code>。可以参考<a target="_blank" rel="noopener" href="http://bbs.keinsci.com/thread-577-1-1.html">molclus构象搜索</a>。这里我的机器上<code>Gaussian</code>配置了<code>Default.route</code>，所以在模板文件中就不单独指定%mem和%cpu了，你可以根据自己的情况决定使用哪种方式。</p>
+<p>如果你的机器只有一个节点，那么可以像下面这样编辑好设置直接运行：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ mv traj.xyz ../<br>$ <span class="hljs-built_in">cd</span> ../<br>$ vi settings.ini <br>$ vi template.gjf<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
+<p>但是如果你像我一样在计算集群上运行，有好几个节点，可以使用我编写的脚本<code>split_molclus.sh</code>，在<a target="_blank" rel="noopener" href="https://github.com/SSSSSimon/ECD-widgets">我的github</a>上可以下载到。此脚本接受三个参数，分别是“份数”、“总构象数”、“程序编号”。<br>例如，<code>settings.ini</code>中<code>Gaussian</code>对于的程序编号为1，我的集群有3个节点，每节点都支持超线程，构象总共有9000个，那么就输入：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./split_molclus.sh 6 9000 1<br></code></pre></td></tr></tbody></table></figure>
+<p>完成后就可以在当前目录下看到1 2 3 4 5 6共六个目录，每个目录中都有相同的文件，不同的是<code>settings.ini</code>中要计算的结构都被平均分了，这样在相应的节点运行目录内的<code>molclus</code>程序即可。运行完成后将六个目录中生成的<code>isomers.xyz</code>全部输出到一起去，可以编写一个循环：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> {1..6}<br>&gt; <span class="hljs-keyword">do</span><br>&gt; cat <span class="hljs-variable">$i</span>/isomer* &gt;&gt; isomers.xyz<br>&gt; <span class="hljs-keyword">done</span><br></code></pre></td></tr></tbody></table></figure>
+<p>这样，六个目录中的<code>isomers.xyz</code>就被汇总到了一起，现在可以输入<code>rm -rf {1..6}</code>把六个目录删掉了。接下来就要对汇总后的<code>isomers.xyz</code>进行分析，科音的sob老师编写的<code>isostat</code>程序就是用来干这个的，但是他这个程序遇到构象多的文件的时候就会特别慢，而且会排序的时候会把整个文件里的构象全部进行排序，虽然没有开源但是根据程序的输出可以推测就是使用了一个for循环加getline()函数读取文件，然后用了个sort()给数组排序。我之前用它统计过一个2万构象的文件，硬生生耗了我2个小时，这其实完全没有必要，因为我们给到下一步的构象只需要取能量最低的100个就可以了，把整个数组排序费事费力还做大量无用功，因此我编写了一个名为<code>get_first_100_geoms</code>的程序，使用了随机存取技术读取<code>isomers.xyz</code>，并只输出其中能量最低的100个构象到<code>isomers100.xyz</code>，笔者尝试过最高30万个构象的文件，即使是如此庞大的文件也可以在瞬间完成操作。文本文件其实按道理来说是不适合随机访问的，但是仔细观察sob老师的<code>molclus</code>输出的<code>isomers.xyz</code>可以发现其中的输出都是经过格式化的，这就给随机访问创造了可能，程序源代码同样可以在上文的github链接中下载到。需要注意的是，由于程序使用了某些C++11的特性，如果你的g++版本太低是没法编译的，比如CentOS自带的g++就不行，如果你使用CentOS需要先升级g++。要编译该程序，输入<code>g++ get_first_100_geoms.cpp -o get_first_100_geoms</code>即可。</p>
+<p>运行完<code>get_first_100_geoms</code>，再输入<code>./isostat</code>运行<code>isostat</code>，分析<code>isomers100.xyz</code>，会得到<code>cluster.xyz</code>。然后使用<code>MOPAC</code>在<code>PM7</code>级别下进行优化，同样，这个也可以并行，根据自己的机器选择合适的方式：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./get_first_100_geoms<br>$ ./isostat<br>$ rm traj.xyz<br>$ mv cluster.xyz traj.xyz<br>$ vi settings.ini<br>$ vi template.mop<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
+<p>输入<code>./isostat</code>运行<code>isostat</code>，敲三次回车开始分析，最后查看一下300K的玻尔兹曼分布。取几个占比高的构象（2kcal/mol以内）进行下一步，使用<code>ORCA</code>进行优化+振动分析，根据你的机器情况选择内存数量和CPU核心数量，对单个任务不要使用多于CPU物理核心的核心数量，<code>template.inp</code>关键词如下：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">! B3LYP D3 <span class="hljs-number">6</span><span class="hljs-number">-311</span>G* RIJCOSX opt freq tightSCF miniprint nopop noautostart<br>%maxcore <span class="hljs-number">2000</span><br>%pal nprocs <span class="hljs-number">36</span> end<br></code></pre></td></tr></tbody></table></figure>
+<p>然后按照同样的方法设置<code>settings.ini</code>，这里建议把备份输出文件的选项打开，然后再运行<code>molclus</code>：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./isostat<br>$ rm traj.xyz<br>$ mv cluster.xyz traj.xyz<br>$ vi settings.ini<br>$ vi template.inp<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
+
+<h2 id="计算电子能量"><a href="#计算电子能量" class="headerlink" title="计算电子能量"></a>计算电子能量</h2><p>以下是<code>ORCA</code>输入文件的关键词，可以使用<code>Multiwfn</code>来生成输入文件，但记得添加<code>CFLOAT</code>关键词，否则会报内存不足的错误，我的机器上36核心128G内存会报错，如果你的内存更大可以不用加；另外，<strong>还需要加入SMD溶剂模型</strong>。参见<a target="_blank" rel="noopener" href="http://sobereva.com/490">Multiwfn产生ORCA输入文件详解</a>：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">! PWPB95 D3 def2-TZVPP def2/J def2-TZVPP/C RIJCOSX CFLOAT grid4 gridx4 tightSCF noautostart miniprint nopop<br>%maxcore 2000<br>%pal nprocs 36 end<br>%cpcm<br>smd <span class="hljs-literal">true</span><br>SMDsolvent <span class="hljs-string">"methanol"</span><br>end<br></code></pre></td></tr></tbody></table></figure>
+<p>然后在此处运行<code>xyz2QC</code>，选4生成分离的ORCA输入文件，载入上一步生成的<code>cluster.xyz</code>，选择要计算的构象，然后就会生成许多inp文件，ORCA官方建议为每个inp都建一个文件夹，然后把inp文件移进去计算。假设构象1的输入文件命名为<code>SP00001.inp</code>，输入以下命令运行<code>ORCA</code>：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 下面的命令会运行orca，将SP1.inp作为输入，把结果输出到SP1.out中，并忽略错误输出</span><br><span class="hljs-comment"># 一定要使用绝对路径调用orca</span><br>$ nohup <span class="hljs-variable">$HOME</span>/orca/orca SP1.inp &gt; SP1.out 2&gt; /dev/null &amp;<br></code></pre></td></tr></tbody></table></figure>
+<p>计算完成后，输入以下命令即可看到电子能量：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ tail SP1.out -n 100 | grep <span class="hljs-string">"FINAL"</span><br>FINAL SINGLE POINT ENERGY     -1970.760258748528<br></code></pre></td></tr></tbody></table></figure>
+<p>将此电子能量保存下来以备下一步使用，同样的方法可以获得构象2和构象3的电子能量。<br>##计算自由能和玻尔兹曼分布<br>详细用法看这里：<a target="_blank" rel="noopener" href="http://sobereva.com/552">Shermo计算自由能和玻尔兹曼分布</a></p>
+<p>在<code>Shermo</code>的目录下建立一个名为<code>list.txt</code>的文件。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span><br>$ <span class="hljs-built_in">cd</span> Shermo_2.0.3/<br>$ touch list.txt<br>$ vi list.txt<br></code></pre></td></tr></tbody></table></figure>
+<p>将优化+振动分析一步的输出文件和得到的电子能量写入其中，格式为：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">/home/visitor/research/simon/orca1.out;-1970.760258748528<br>/home/visitor/research/simon/orca2.out;-1970.755539822519<br>/home/visitor/research/simon/orca3.out;-1970.754969829706<br></code></pre></td></tr></tbody></table></figure>
+<p>保存并退出<code>vi</code>，这里也可以使用我编写的脚本<code>write_list.sh</code>，用法非常简单，看下脚本的内容应该也知道怎么用了，就不在这再说一遍了。运行<code>Shermo</code>，将<code>list.txt</code>载入，即可自动算出玻尔兹曼分布：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">[visitor@307workstation Shermo_2.0.3]$ Shermo list.txt<br>...<br>...<br>Low frequencies treatment: Harmonic approximation<br>Processing /home/visitor/research/simon/orca1.out... (    1  of    3 )<br>Processing /home/visitor/research/simon/orca2.out... (    2  of    3 )<br>Processing /home/visitor/research/simon/orca3.out... (    3  of    3 )<br><br><span class="hljs-comment">#System       U               H               G             S          CV</span><br>             a.u.            a.u.            a.u.        J/mol/K     J/mol/K<br>   1    -1969.815591    -1969.814647    -1969.948557    1179.203     783.166<br>   2    -1969.809359    -1969.808415    -1969.940882    1166.504     789.267<br>   3    -1969.809932    -1969.808988    -1969.937499    1131.665     781.476<br><br>System    1     Relative G=    0.000 kJ/mol     Boltzmann weight=  99.970 %<br>System    2     Relative G=   20.149 kJ/mol     Boltzmann weight=   0.030 %<br>System    3     Relative G=   29.033 kJ/mol     Boltzmann weight=   0.001 %<br><br>Conformation weighted data:<br>Electronic energy:     -1970.760257 a.u.<br>U:     -1969.815590 a.u.<br>H:     -1969.814645 a.u.<br>G:     -1969.948557 a.u.<br>S:      1179.222 J/mol/K    Conformation entropy:     0.023 J/mol/K<br>CV:      783.168 J/mol/K<br>CP:      791.483 J/mol/K<br></code></pre></td></tr></tbody></table></figure>
+<p>另外可看参考文章：<a target="_blank" rel="noopener" href="http://bbs.keinsci.com/thread-3805-1-1.html">频率校正因子</a>、<a target="_blank" rel="noopener" href="http://sobereva.com/327">隐式溶剂模型和自由能计算</a></p>
+<h2 id="计算激发态能量"><a href="#计算激发态能量" class="headerlink" title="计算激发态能量"></a>计算激发态能量</h2><p><code>ORCA</code> 使用 <code>TDDFT</code> 在 <code>RI-wB2GP-PLYP/def2-TZVP</code> 级别下计算激发态，还是使用<code>Multiwfn</code>生成输入文件，关键词为：</p>
+<figure class="highlight llvm"><table><tbody><tr><td class="code"><pre><code class="hljs llvm">! PBE<span class="hljs-number">0</span> def<span class="hljs-number">2</span>-SV(P) def<span class="hljs-number">2</span>/J RIJCOSX CFLOAT grid<span class="hljs-number">4</span> gridx<span class="hljs-number">4</span> tightSCF noautostart miniprint nopop<br><span class="hljs-symbol">%maxcore</span>  <span class="hljs-number">1600</span><br><span class="hljs-symbol">%pal</span> nprocs <span class="hljs-number">36</span> <span class="hljs-keyword">end</span><br><span class="hljs-symbol">%cpcm</span><br>smd <span class="hljs-keyword">true</span><br>SMDsolvent <span class="hljs-string">"methanol"</span><br><span class="hljs-keyword">end</span><br><span class="hljs-symbol">%tddft</span><br>nroots <span class="hljs-number">30</span><br>TDA <span class="hljs-keyword">false</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></tbody></table></figure>
+<p>一般算30个states就够了，仅需要把<code>Multiwfn</code>生成的文件中的<code>nroots</code>改为30，然后运行<code>ORCA</code>，完成后得到<code>tddft1.out</code>。</p>
+<h2 id="绘制平均光谱"><a href="#绘制平均光谱" class="headerlink" title="绘制平均光谱"></a>绘制平均光谱</h2><p>如果计算得到的能量最低的结构的玻尔兹曼分布占比很高，那么就不需要计算其他的构象了，反之则需要计算多个构象，再绘制其平均化之后的光谱，具体可参考<a target="_blank" rel="noopener" href="http://sobereva.com/383">Multiwfn绘制平均光谱</a>。</p>
+<p>启动<code>Multiwfn</code>，先绘制<code>UV-Vis</code>光谱，然后再绘制<code>ECD</code>光谱，并根据<code>UV-Vis</code>计算光谱和实际值的偏移量给<code>ECD</code>光谱加上同样的偏移量。</p>
+<p>本文中使用的软件<code>Molclus</code>、<code>MOPAC</code>、<code>Multiwfn</code>、<code>Shermo</code>、<code>ORCA</code>均为免费软件，将其使用在自己的工作中一定需要引用对应的文献：</p>
+<blockquote>
+<p>Molclus引用文献：Tian Lu, molclus program, Version 1.9.6, <a target="_blank" rel="noopener" href="http://www.keinsci.com/research/molclus.html">http://www.keinsci.com/research/molclus.html</a> (accessed Sep 2, 2020)</p>
+</blockquote>
+<blockquote>
+<p>MOPAC2016引用文献：MOPAC2016, James J. P. Stewart, Stewart Computational Chemistry, Colorado Springs, CO, USA, HTTP://OpenMOPAC.net (2016).</p>
+</blockquote>
+<blockquote>
+<p>Multiwfn引用文献：Tian Lu, Feiwu Chen, J. Comput. Chem., 33, 580-592 (2012).</p>
+</blockquote>
+<blockquote>
+<p>Shermo引用文献：Tian Lu, Qinxue Chen, Shermo: A general code for calculating molecular thermodynamic properties, ChemRxiv (2020) DOI: 10.26434/chemrxiv.12278801</p>
+</blockquote>
+<blockquote>
+<p>ORCA引用文献：WIREs Comput Mol Sci 2012, 2: 73–78 doi: 10.1002/wcms.81</p>
+</blockquote>
+<p>如果你使用了我开发的小工具，别忘了在github上给我一个star😜</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>simonsun
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.simonsun.top/ji-suan-hua-xue/ecd-ji-suan/" title="从零开始学习ECD计算">https://blog.simonsun.top/ji-suan-hua-xue/ecd-ji-suan/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/sui-bi/ji-bai-lu-yuan-zhi-bai-ling/" rel="prev" title="记《白鹿原》之白灵">
+      <i class="fa fa-chevron-left"></i> 记《白鹿原》之白灵
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97ECD%E7%9A%84%E5%A4%A7%E8%87%B4%E8%BF%87%E7%A8%8B%E4%B8%BA%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">计算ECD的大致过程为：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A7%E7%94%9F%E4%BC%98%E5%8A%BF%E6%9E%84%E8%B1%A1"><span class="nav-number">2.1.</span> <span class="nav-text">产生优势构象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E7%94%B5%E5%AD%90%E8%83%BD%E9%87%8F"><span class="nav-number">2.2.</span> <span class="nav-text">计算电子能量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%BF%80%E5%8F%91%E6%80%81%E8%83%BD%E9%87%8F"><span class="nav-number">2.3.</span> <span class="nav-text">计算激发态能量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%98%E5%88%B6%E5%B9%B3%E5%9D%87%E5%85%89%E8%B0%B1"><span class="nav-number">2.4.</span> <span class="nav-text">绘制平均光谱</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">simonsun</p>
+  <div class="site-description" itemprop="description">爱摄影、爱音乐、会点py的药学🐶</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sssssimon" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sssssimon" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:simonsun132@hotmail.com" title="E-Mail → mailto:simonsun132@hotmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/1b5e8cb8dffb" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;1b5e8cb8dffb" rel="noopener" target="_blank"><i class="icon-jianti fa-fw"></i>简书</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">simonsun</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">26k</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共12.7k字</span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
