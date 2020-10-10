@@ -265,6 +265,72 @@
       </categories>
   </entry>
   <entry>
+    <title>使用Vina进行分子对接</title>
+    <url>/ji-suan-hua-xue/docking-vina/</url>
+    <content><![CDATA[<p>使用Vina进行分子对接，各种蛋白与配体文件均需使用pdbqt格式，scripps研究所提供了Autodock Tools可以进行可视化转换。下面是使用adt准备文件的步骤：</p>
+<ul>
+<li>安装好adt后，在终端内输入adt以启动。</li>
+</ul>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ adt<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="屏幕快照 2020-10-11 上午12.42.31.png" title="Autodock Tools" width="50%" height="50%">
+
+<hr>
+<ul>
+<li><p>处理大分子</p>
+<p>  <strong>File -&gt; Read Molecule -&gt; Open</strong></p>
+<p>  <strong>Edit -&gt; Hydrogens -&gt; Add -&gt; Polar Only -&gt; OK</strong></p>
+<p>  <strong>Grid -&gt; Macromolecule -&gt; Choose -&gt; Select molecule -&gt; Save</strong></p>
+</li>
+</ul>
+<p>将大分子保存为pdbqt文件后，大分子的处理就完成了。</p>
+<hr>
+<ul>
+<li><p>限定搜索区域</p>
+<p>  <strong>Grid -&gt; Grid Box</strong> </p>
+</li>
+</ul>
+<img src="屏幕快照 2020-10-11 上午1.04.44.png" title="划定搜索区域" width="50%" height="50%">
+
+<p>这里调整好后不用保存，需要把它们记录在文本文件中备用。</p>
+<p><font color="#FF0000"><strong>注意</strong></font>：与Autodock4不同，Vina中的空间单位为埃（Å），需先将<code>Spacing</code>调至1再调整xyz。</p>
+<hr>
+<ul>
+<li><p>处理小分子</p>
+<p>  <strong>Ligand -&gt; Input -&gt; Open</strong> </p>
+<p>  <strong>Ligand -&gt; Torsion Tree -&gt; Choose Torsion</strong></p>
+<p>  按住Shift再单击键以切换扭转类型，可以先在DashBoard中将大分子隐藏。</p>
+<p>  <strong>Ligand -&gt; Output -&gt; Save as PDBQT -&gt; Save</strong></p>
+</li>
+</ul>
+<p>处理完文件后即可进行分子对接</p>
+<hr>
+<ul>
+<li>Redocking</li>
+</ul>
+<p>运行Vina需要给它提供一个配置文件，写法如下，random seed是可选项：</p>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">receptor</span> = ./PDBQT/<span class="hljs-number">5</span>un1.pdbqt<br><span class="hljs-attr">ligand</span> = ./PDBQT/mk-<span class="hljs-number">801</span>.pdbqt<br><br><span class="hljs-attr">center_x</span> = <span class="hljs-number">24.188</span><br><span class="hljs-attr">center_y</span> = -<span class="hljs-number">14.09</span><br><span class="hljs-attr">center_z</span> = <span class="hljs-number">108.227</span><br><br><span class="hljs-attr">size_x</span> = <span class="hljs-number">20</span><br><span class="hljs-attr">size_y</span> = <span class="hljs-number">20</span><br><span class="hljs-attr">size_z</span> = <span class="hljs-number">20</span><br><br><span class="hljs-attr">out</span> = ./DockingResult/rslt-mk801.pdbqt<br><span class="hljs-attr">log</span> = ./log/log-mk801.log<br><br><span class="hljs-attr">seed</span> = -<span class="hljs-number">1661955048</span><br><span class="hljs-attr">exhaustiveness</span> = <span class="hljs-number">30</span><br></code></pre></td></tr></tbody></table></figure>
+<p>保存为mk801-conf.txt，然后就可以运行vina了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ vina --config mk801-conf.txt<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>对接目标化合物</li>
+</ul>
+<p>对接目标化合物的过程同上。对于分子对接的结果一定要谨慎对待，因为无论给定的分子有没有活性、是否契合活性口袋，程序都能给出一个结果，一定要根据相互作用知识来进行判断。</p>
+<p>最后，需要调用<code>MGLTools</code>里的python脚本将pdbqt转换成pdb，就可以在各种可视化程序中查看了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ convertqt=mglTools/MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py<br>$ pythonsh <span class="hljs-variable">$convertqt</span> -s rslt-mk801.pdbqt<br></code></pre></td></tr></tbody></table></figure>
+<p>原始的脚本只能将对接产生的能量最低的一个结构输出出来，如果你需要把所有结构都输出的话，需要修改两个函数：</p>
+<p>找到<code>MolKit/pdbWriter.py</code>，在<code>write</code>函数后面定义一个新函数，名叫<code>write2</code>，函数定义如下：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write2</span>(<span class="hljs-params">self, filename, nodes, sort=False, sortFunc=None,</span></span><br><span class="hljs-function"><span class="hljs-params">          records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'CONECT'</span>], bondOrigin=(<span class="hljs-params"><span class="hljs-string">'File'</span>,<span class="hljs-string">'UserDefined'</span></span>),</span></span><br><span class="hljs-function"><span class="hljs-params">          ssOrigin=<span class="hljs-string">'File'</span></span>):</span><br>    <span class="hljs-string">"""</span><br><span class="hljs-string">    required argument:</span><br><span class="hljs-string">    filename  -- path to the new file, a .pdb extension will be added</span><br><span class="hljs-string">                 when missing.</span><br><span class="hljs-string">    nodes     -- TreeNode, TreeNodeSet instance to save as PDB</span><br><span class="hljs-string"></span><br><span class="hljs-string">    optional arguments:</span><br><span class="hljs-string">    sort  -- (False) Boolean flag to specify whether or not to sort the</span><br><span class="hljs-string">             given nodes</span><br><span class="hljs-string">    sortFunc  -- (None) sort function that will be used to sort the nodes</span><br><span class="hljs-string">                 when specified.This function has to return (-1, 0 or 1).</span><br><span class="hljs-string">    records -- list of PDB record to write out</span><br><span class="hljs-string">    bondOrigin -- (('File', 'UserDefined')) This will be used if the CONECT records are</span><br><span class="hljs-string">                  written out. Can be any combination of 'File',</span><br><span class="hljs-string">                  'BuiltByDistance' and 'UserDefined'.</span><br><span class="hljs-string">    ssOrigin -- 'File' This will be used if the TURN, HELIX and SHEET</span><br><span class="hljs-string">                 records are written. Can be either from the originating</span><br><span class="hljs-string">                 PDB file or from the data structure.</span><br><span class="hljs-string">    """</span><br>    self.records = records<br>    <span class="hljs-comment"># If the filename doesn't have a pdb extension add it</span><br>    fileExt = os.path.splitext(filename)[<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">if</span> fileExt==<span class="hljs-string">''</span>:<br>        filename = <span class="hljs-string">'%s.pdb'</span> %filename<br>    <span class="hljs-comment"># Nodes need to be either a TreeNode or a TreeNodeSet instance.</span><br>    <span class="hljs-keyword">assert</span> isinstance(nodes, TreeNode) <span class="hljs-keyword">or</span> isinstance(nodes, TreeNodeSet)<br>    <br>    <span class="hljs-comment"># sort the nodes</span><br>    <span class="hljs-keyword">if</span> sort <span class="hljs-keyword">and</span> hasattr(nodes, <span class="hljs-string">'sort'</span>):<br>        nodes.sort(sortFunc)<br><br>    <span class="hljs-keyword">if</span> isinstance(nodes, TreeNode): mol = nodes.top   <br>    <span class="hljs-keyword">elif</span> isinstance(nodes, TreeNodeSet): mol = nodes.top.uniq()[<span class="hljs-number">0</span>]<br>    <span class="hljs-comment"># get a handle on the molecule parser</span><br>    parser = mol.parser<br><br>    <span class="hljs-comment"># get the atoms in nodes</span><br>    atmInNode = nodes.findType(Atom)<br>    <br>    <span class="hljs-comment"># Create all the records to be written out.</span><br>    <span class="hljs-comment"># Get the from file records this is possible only if the file</span><br>    <span class="hljs-comment"># comes from a PDB parser.</span><br>    <span class="hljs-keyword">if</span> isinstance(parser, PdbParser):<br>        fileRec = filter(<span class="hljs-keyword">lambda</span> x: <span class="hljs-keyword">not</span> x <span class="hljs-keyword">in</span> self.FROMDATASTRUCT, records)<br>        <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> fileRec:<br>            self.recordsToWrite[rec] = parser.getRecords(parser.allLines,rec)<br><br>    <span class="hljs-comment"># Create the records from the data structure:</span><br>    <span class="hljs-comment"># secondary structure 'HELIX', 'SHEET', 'TURN', 'REMARK 650 HELIX',</span><br>    <span class="hljs-comment"># 'REMARK 700 SHEET', 'REMARK 750 TURN'</span><br>    ssRec = filter(<span class="hljs-keyword">lambda</span> x: x <span class="hljs-keyword">in</span> [<span class="hljs-string">'HELIX'</span>, <span class="hljs-string">'SHEET'</span>, <span class="hljs-string">'TURN'</span>], records)<br>    <span class="hljs-keyword">if</span> len(ssRec):<br>        self.defineSecondaryStructureSection(mol, origin=ssOrigin)<br><br>    <span class="hljs-comment"># Atom records (ATOM, TER and HETATM)</span><br>    atmRec = <span class="hljs-string">'ATOM'</span> <span class="hljs-keyword">in</span> records<br>    hetRec = <span class="hljs-string">'HETATM'</span> <span class="hljs-keyword">in</span> records<br>    <span class="hljs-keyword">if</span> atmRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">or</span> hetRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> : <br>        <span class="hljs-comment">#self.defineCoordsSection(nodes, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)</span><br>        self.defineCoordsSection(atmInNode, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)<br>        <br>    <span class="hljs-comment"># Hydrogen bonds (HYDBND)</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'HYDBND'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineHYDBNDRecords(atmInNode)<br><br>    <span class="hljs-comment"># CONECT records</span><br>    <span class="hljs-comment">#build excluded Bonds from recType here</span><br>    <span class="hljs-comment">#possible recTypes are:</span><br>    <span class="hljs-comment">#all, fileUser, fileDist, file, user, userDist, dist, none</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'CONECT'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineConnectSection(atmInNode, bondOrigin)<br><br>    file = open(filename, <span class="hljs-string">'a'</span>)      <br><br>    <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> self.PDBRECORDS:<br>        <span class="hljs-keyword">if</span> self.recordsToWrite.has_key(rec):<br>            recLine = self.recordsToWrite[rec]<br>            <span class="hljs-keyword">if</span> type(recLine) <span class="hljs-keyword">is</span> types.ListType:<br>                <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> recLine:<br>                    file.write(line)<br>            <span class="hljs-keyword">else</span>:<br>                file.write(line)<br>    file.close()<br>    <br>    <span class="hljs-comment">#self.recordsToWrite = {}</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后找到<code>MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py</code>，把它复制一份，命名为<code>pdbqt_to_pdb2.py</code>，将里面的<code>mols = Read(pdbqt_filename)</code>一直到最后的代码替换成如下所示：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">mols = Read(pdbqt_filename)<br>mol2 = []<br><br><span class="hljs-keyword">if</span> verbose: <span class="hljs-keyword">print</span> <span class="hljs-string">'read '</span>, pdbqt_filename    <br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> mols:<br>    mol = i<br>    mol.buildBondsByDistance()<br>    <span class="hljs-comment">#fix number for problem files with alternative positions</span><br>    mol.allAtoms.number = range(<span class="hljs-number">1</span>, len(mol.allAtoms)+<span class="hljs-number">1</span>)<br>    mol2.append(mol)<br>    <br><span class="hljs-comment">#pdb_filename = mol.name + '.pdb'</span><br>writer = PdbWriter()<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(mol2)):<br>    file = open(pdb_filename, <span class="hljs-string">'a'</span>)<br>    file.write(<span class="hljs-string">'MODEL '</span>)<br>    file.write(str(i+<span class="hljs-number">1</span>))<br>    file.write(<span class="hljs-string">'\n'</span>)<br>    file.close()<br>    writer.write2(pdb_filename, mol2[i].allAtoms, records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'HETATM'</span>])<br><br><span class="hljs-keyword">if</span> verbose:<br>    <span class="hljs-keyword">print</span> <span class="hljs-string">"wrote "</span>, ctr, <span class="hljs-string">" atoms to"</span>, pdb_filename<br></code></pre></td></tr></tbody></table></figure>
+<p>最后运行脚本的时候就用<code>pdbqt_to_pdb2.py</code>就可以了，其他的照抄，就能把对接出的所有结构都转换出来了。</p>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>从零开始学习ECD计算</title>
     <url>/ji-suan-hua-xue/ecd-ji-suan/</url>
     <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本文介绍了一种完全使用免费软件计算ECD光谱的较详细过程，产生的结果具有较好的理论意义，阅读本文需要掌握基本的Linux指令，否则可能会对本文的命令操作产生困惑。</p>
@@ -354,6 +420,85 @@
 <blockquote>
 <p>ORCA引用文献：WIREs Comput Mol Sci 2012, 2: 73–78 doi: 10.1002/wcms.81</p>
 </blockquote>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在Discovery Studio中进行同源模建</title>
+    <url>/ji-suan-hua-xue/homologymodeling-ds/</url>
+    <content><![CDATA[<p>在药物设计中，如果目标蛋白质还没有被结晶出来，我们无法对其进行分子对接，但是，同源蛋白质三级结构的保守性远高于一级结构，因此可以通过已知三级结构的同源蛋白来模拟目标蛋白的空间结构，这就是同源模建技术。</p>
+<p>商业软件如<code>Discovery Studio 2016</code>中集成了同源模建功能，我们可以通过操作图形界面很方便的使用。要进行同源模建，通常需要进行以下几个步骤：</p>
+<ol>
+<li>使用BLAST或PSI-BLAST查找模板。这是一种基于序列相似度的搜索算法。</li>
+<li>使用结构对齐工具将找到的模板叠合在一起。</li>
+<li>使用序列对齐工具将我们研究的蛋白模型的序列与模板序列对齐。</li>
+<li>使用MODELER创建同源模型。</li>
+</ol>
+<p>在本例中，我们使用淀粉酶P41131演示。其序列可以点击<a href="http://www.uniprot.org/uniprot/P41131.fasta">这里下载</a>。</p>
+<h1 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h1><p><font color="#FF0000">在菜单栏点击 <strong>File -&gt; Open</strong>，打开<code>p41131.fasta</code>，P41131的序列会显示在序列窗口中。</font></p>
+<p>在序列比对算法中，BLAST是常用的方法。</p>
+<p><font color="#FF0000">在<strong>Macromolecules</strong>选项卡中选择<strong>Search Sequences by Similarity -&gt; BLAST Search</strong></font></p>
+<p>PDB和PDB_nr95数据库都可以检索，但最常用的是非冗余(non-redundant, nr)的PDB_nr95数据库。</p>
+<p><font color="#FF0000">在弹出的BLAST对话框中选择<strong>Input Sequence</strong>为<code>P41131:P41131</code>，<strong>Input Database</strong>为<code>PDB_nr95</code></font></p>
+<p>运行完后，关闭弹出的对话框，在右侧的Blast窗口可以看到检索到的模板，在下方的选项卡<strong>Table View</strong>中可以看到hits，每行都是一个序列；<strong>Map View</strong>中的bar的排序和Table View中是一一对应的，每条bar以评分高低着色，评分高的靠上，大于400的红色hits是最好的。</p>
+<p><font color="#FF0000">按住shift键选中前五个最好的模板，右键单击并选择<strong>Load Structure and Alignment</strong></font></p>
+<p>软件会自动从网站上下载蛋白质，然后将他们叠合在一起。如果想看二级结构，可以在菜单栏选择<font color="#FF0000"><strong>Sequence -&gt; Secondary Structure -&gt; Visibility</strong></font>，然后把<strong>Kabsch Sander</strong>和<strong>PDB</strong>都打勾，再点OK，下方序列窗口就会显示二级结构，蓝色的箭头是beta折叠，橙色的是alpha螺旋。</p>
+<h1 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h1><p>要进行同源模建，我们首先需要将相同或相似度高的序列片段对齐，这样作出的模型才会最接近实验结果。要对齐序列，最好是先生成一个序列预设，然后将预设应用到叠合好的结构上，这种序列预设以包含最多同源结构为好。</p>
+<p>接下来我们使用BLAST搜索Swiss-Prot数据库来创建序列预设。</p>
+<p><font color="#FF0000">点击序列窗口的P41131(1)选项卡，展开<strong>Macromolecules -&gt; Create Homology Models</strong>，点击<strong>Align Sequence to Templates</strong></font></p>
+<p>在弹出的对话框中设置：</p>
+<p><font color="#FF0000"><strong>Input Model Sequence</strong>为<code>P41131-(1):P41131</code></font></p><font color="#FF0000">
+<p><strong>Input Template Structures</strong>为<code>1G94A::All</code>（这样可以指定我们加载的全部5个结构）</p>
+</font><p><font color="#FF0000"><strong>Create Sequence Profile</strong>为<code>Ture</code></font></p>
+<p>若本地没有安装<strong>Swiss-Prot BLAST</strong>数据库，此时无法启动对齐作业，但软件为我们提供的在线搜索功能，可以展开<font color="#FF0000"><strong>Create Sequence Profile</strong>，将<strong>server</strong>改为<strong>NCBI</strong>，下一个选项选择swissprot，然后点击Run。</font>待软件执行完后，点击Report可以查看RMSD值。</p>
+<h1 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h1><p>点击分子窗口中的1G94A(1)选项卡，使其处于活跃状态。</p>
+<p><font color="#FF0000">点击<strong>Macromolecules -&gt; Create Homology Models -&gt; Build Homology Models</strong></font><br>在弹出的对话框中设置：</p>
+<p><font color="#FF0000"><strong>Input Sequence Alignment</strong>为<code>P41131_templates:All</code></font></p><font color="#FF0000">
+<p><strong>Input Template Structures</strong>中5个结构都被选中</p>
+<p><strong>Input Model Sequence</strong>为<code>P41131</code></p>
+<p><strong>Number of Models</strong>为<code>2</code></p>
+</font><p><font color="#FF0000"><strong>Optimization Level</strong>为<code>Low</code></font></p>
+<p>Optimization Level越高，模型越准确，但运行速度也越慢。建模完成后，点击Report，在右侧会出现报告，结果以<strong>PDF Total Energy</strong>排序，能量越低越好，如果能量相差很小，可以看最右侧的DOPE得分，同样的越低越好。</p>
+<p>最佳的模型会自动被显示在分子窗口中，此时你可以检查一下这个结构。</p>
+<p><font color="#FF0000">在分子窗口下方点击<strong>AminoAcid</strong>选项卡，然后把滚动条拉到最右边，可以看到<strong>PDF Total</strong>的那一列，选中这一列，在菜单栏选择<strong>Chart -&gt; Line Plot</strong></font></p>
+<p>这时右侧会出现一个曲线图，这个图里的Peak是需要注意的，鼠标左键画圈选中以后，下方序列窗口里相应的氨基酸残基会被高亮显示，检查一下有无异样。</p>
+<h1 id="结构评估"><a href="#结构评估" class="headerlink" title="结构评估"></a>结构评估</h1><p>DS中提供了一个评估结构的工具，它可以评价蛋白模型的三级结构与其序列的相容性。</p>
+<p><font color="#FF0000">按Ctrl + H打开分类视图，选择P41131.M0001分子，然后点击<strong>Macromolecules -&gt; Create Homology Models -&gt; Verify Protein (Profiles-3D)</strong></font></p><font color="#FF0000">
+</font><p><font color="#FF0000">在弹出的对话框中<strong>Input Protein Molecules</strong>设定为<strong>P41131:Selected</strong>，点Run启动分析</font></p>
+<p>运行结束后在弹出的对话框中点击Report，分析结果会被添加到AminoAcid选项卡中。现在分子窗口的蛋白模型会被重新着色，蓝色表示高分，白色表示中等，红色得分较低。在这里，得分越高越好。接下来可以在AminoAcid选项卡中找到Verify Score列，然后按之前提到过的方法创建曲线图，检查得分低的地方的氨基酸残基有无异样。</p>
+<p>到这里就完成了DS中同源模型的创建与检查工作。</p>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Homology Modeling——同源模建简介</title>
+    <url>/ji-suan-hua-xue/homologymodeling/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
+<h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
+<h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
+<img src="/images/scorearray.png" title="一种得分矩阵" width="50%" height="50%">
+
+<p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
+<h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>
+<p>在建模时我们自然希望模板链和目标链重合的越多越好，那样我们的模型就越可靠，但是事情并不总是我们期待的那样。设想一下这种情况：我们的模板链由100个氨基酸残基，通过查询，有3条蛋白链分别有一部分与未知链重合，那么最好的情况就是我们把这最好的三个部分分别作为目标链对应区域的模板。MSA可以生成一种称为“序列谱”（profile）的东西<a href="#ref-5"><sup>5</sup></a>，也被称为“位置特异性得分矩阵”，它可以在搜索时匹配到更多的模板，在建模时把最佳的模板赋给目标链，保证保守区域不会发生变化。</p>
+<p>在Discovery Studio中，同源模建时查询的数据库都是非冗余数据库。例如查找模板时查询的不是PDB数据库，而是<code>PDB_nr95</code>数据库（nr即non-redundant），多重序列对齐时查询的是<code>SWISS-Prot</code>数据库，这些数据库都经过人工审查，没有重复数据，能节省查询时间，同时它们中的数据还经过人工校对，可以使建模效果更好。</p>
+<h2 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h2><p>序列对齐好后，我们的建模工作就可以开始了。同源模建工作发展到现在已经实现了自动化，执行这一步只需要点几下鼠标，但是其内部的工作过程其实可以分成三步：<strong>生成主链（Backbone）、生成回环（Loop）、生成侧链（Side-Chain）</strong>。</p>
+<p>在主链建模时，只需要简单地把对齐好的模版链片段的坐标赋给目标链。与多重序列对齐相同，主链建模时使用一种叫“多模板建模”的思想，即将各个模版中的最优部分作为模型赋给目标链。对于蛋白上的保守区域，同源蛋白间的序列一致度很高，侧链构象也倾向于保守，因此可以把这些氨基酸残基上携带的侧链一并复制到目标链中，这种直接复制坐标的方法被称作“刚体装配法”。还有一种方法是“空间限制法”，它根据几何和约束关系进行建模，使模型满足空间限制，<code>MODELLER</code>就是使用这种方法。</p>
+<p>Loop区的建模一直是同源模建工作的难点，原因在于Loop区不保守，有着很大的变动性，准确预测其结构较为困难。目前对Loop区进行建模主要有两种方法：基于现有知识的数据库查询和基于能量的构象搜索。查询数据库虽然简单快捷，但是由于数据不完整，能不能找到好模板还是要看运气，并且随着Loop的增长，匹配难度也越发增加。因此对于Loop区的预测主要还是应用能量计算，对于5-8个氨基酸残基的Loop，已经能给出比较准确的预测，例如蒙特卡洛方法<a href="#ref-6"><sup>6</sup></a>、模拟退火<a href="#ref-7"><sup>7</sup></a>等。近年来新发展了一些构象搜索方法<a href="#ref-8"><sup>8</sup></a>，使得通过计算得到的模型越来越精准，10-12个氨基酸残基的Loop的预测准确度有了较大的改善。</p>
+<p>当主链构象固定后，保守区的侧链氨基酸残基可以直接复制到模型中，因此侧链建模准确的前提是主链构象准确。基本上所有的侧链建模都会依赖于片段搜索，因为利用实验手段测出的结构都符合能量约束，构建侧链时先从未知特异性旋转异构体库中搜索相似构象，然后使用能量约束进行优化。</p>
+<h2 id="优化与验证"><a href="#优化与验证" class="headerlink" title="优化与验证"></a>优化与验证</h2><p>对整个蛋白质进行构象扫描来优化，即使是以今天的计算机水平也是几乎不可能完成的任务，而侧链建模依赖于主链，主链又会受到侧链影响，这似乎陷入了一个死循环。为了解决模型的优化问题，一种方法是先使用已有的主链预测一次侧链，然后根据侧链的空间与能量关系对主链进行调整，如此反复，直至结果自洽。使用这种方法进行预测，能量方程越精确，模型质量自然也就越高，即使是最直接的分子动力学模拟也是有赖于力场数据。在Discovery Studio中，模型的优化与验证都是依靠自由能数据的，但是仅仅能量低并不够，在有些情况下，错误折叠的蛋白质会带来比正确结构更加稳定的能量，因此，在进行同源模建工作时，每一步都应当考虑如何能够最少地引入错误，才能使我们的模型更佳具有实用性。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><div id="ref-1">1. C. Chothial, A. M.Lesk, “The relation between the divergence of sequence and structure in proteins”. EMBO J. (1986) Vol.5: 823-836.</div>
+<div id="ref-2">2. Sander C, Schneider R, “Database of homology-derived protein structures and the structural meaning of sequence alignment”. Proteins (1991). Vol.9: 56–68.</div>
+<div id="ref-3">3. Lipman, DJ; Pearson, WR. "Rapid and sensitive protein similarity searches". Science (1985). 227 (4693): 1435–1341.</div>
+<div id="ref-4">4. Altschul SF. “Basic local alignment search tool.” J Mol Biol. (1990 Oct 5);215(3): 403-410.</div>
+<div id="ref-5">5. Taylor WR. “Identification of protein sequence homology by consensus template alignment.” J Mol Biol. (1986 Mar 20); 188(2):233-258.</div>
+<div id="ref-6">6. Hansmann UH. “ew Monte Carlo algorithms for protein folding.” Curr Opin Struct Biol. 1999 Apr;9(2):177-183.</div>
+<div id="ref-7">7. Kim T. Simons. “Assembly of Protein Tertiary Structures from Fragments with Similar Local Sequences using Simulated Annealing and Bayesian Scoring Functions” J. Mol. Biol. (1997) 268, 209-225</div>
+<div id="ref-8">8. 袁飞. “基于氨基酸位置特异性的蛋白质Loop区结构预测” Acta Phys. Sin. Vol. 65, No. 15 (2016) 158701</div>
 ]]></content>
       <categories>
         <category>计算化学</category>

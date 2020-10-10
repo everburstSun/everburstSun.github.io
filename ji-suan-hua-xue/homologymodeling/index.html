@@ -21,21 +21,21 @@
     var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。">
+  <meta name="description" content="同源模建是药物研发中的一种常用方法。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。这时就需要用到同源模建技术。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PyQt5多线程编程">
-<meta property="og:url" content="https://blog.simonsun.top/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/index.html">
+<meta property="og:title" content="Homology Modeling——同源模建简介">
+<meta property="og:url" content="https://blog.simonsun.top/ji-suan-hua-xue/homologymodeling/index.html">
 <meta property="og:site_name" content="泠霖的博客">
-<meta property="og:description" content="在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。">
+<meta property="og:description" content="同源模建是药物研发中的一种常用方法。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。这时就需要用到同源模建技术。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.simonsun.top/images/flowchart1.png">
-<meta property="article:published_time" content="2019-08-04T09:43:05.000Z">
-<meta property="article:modified_time" content="2020-10-09T13:28:22.305Z">
+<meta property="og:image" content="https://blog.simonsun.top/images/scorearray.png">
+<meta property="article:published_time" content="2017-08-15T06:43:11.000Z">
+<meta property="article:modified_time" content="2020-10-10T16:48:29.318Z">
 <meta property="article:author" content="泠霖">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.simonsun.top/images/flowchart1.png">
+<meta name="twitter:image" content="https://blog.simonsun.top/images/scorearray.png">
 
-<link rel="canonical" href="https://blog.simonsun.top/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/">
+<link rel="canonical" href="https://blog.simonsun.top/ji-suan-hua-xue/homologymodeling/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>PyQt5多线程编程 | 泠霖的博客</title>
+  <title>Homology Modeling——同源模建简介 | 泠霖的博客</title>
   
     <script>
       function sendPageView() {
@@ -186,7 +186,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/">
+    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/ji-suan-hua-xue/homologymodeling/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -199,7 +199,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          PyQt5多线程编程
+          Homology Modeling——同源模建简介
         </h1>
 
         <div class="post-meta">
@@ -209,14 +209,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-08-04 17:43:05" itemprop="dateCreated datePublished" datetime="2019-08-04T17:43:05+08:00">2019-08-04</time>
+              <time title="创建时间：2017-08-15 14:43:11" itemprop="dateCreated datePublished" datetime="2017-08-15T14:43:11+08:00">2017-08-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-09 21:28:22" itemprop="dateModified" datetime="2020-10-09T21:28:22+08:00">2020-10-09</time>
+                <time title="修改时间：2020-10-11 00:48:29" itemprop="dateModified" datetime="2020-10-11T00:48:29+08:00">2020-10-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -224,7 +224,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">Python学习笔记</span></a>
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E5%8C%96%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">计算化学</span></a>
                 </span>
             </span>
 
@@ -241,9 +241,9 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
+              <span>3.6k</span>
             </span>
-            <div class="post-description">在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。</div>
+            <div class="post-description">同源模建是药物研发中的一种常用方法。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。这时就需要用到同源模建技术。</div>
 
         </div>
       </header>
@@ -254,26 +254,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>单位的公共仪器需要预约才能够使用，但是自从预约时间改到了早上，就很不好约了，所以决定写一个程序实现自动预约。由于还要分享给实验室其它同学使用，就得写一个GUI了，这一下代码量瞬间变成了原来的10倍，不过学到了些新东西，这波不亏。</p>
-<p>在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。例如微软的office套件为了兼容老式CPU，IO等操作都是使用的UI的线程，打开或保存大文件时，用户界面无响应；而像photoshop这样的程序由于使用了多线程，即使有大量的IO行为，UI也可以响应用户的操作。</p>
-<p>Qt引以为豪的对象通讯机制被称为<strong>信号-槽</strong>(<strong>signal-slot</strong>)机制。当特定事件被触发时（如子线程结束）将发送一个信号，而与该信号建立的连接槽，则可以接收到该信号并做出反应(根据子线程的返回值执行操作)。</p>
-<p>在我的程序中，需要在仪器开放预约前不断查询，在开放预约的第一刻立即提交表单，而为了不拖垮服务器，需要在每次查询后让线程休眠一会。如果所有这些操作都在主线程中完成，那么线程休眠的时候UI就会无响应，在我的程序中就表现为点击开始查询后UI就一直处于无响应状态，直到预约成功后才恢复响应。</p>
-<p>因此，就需要新建一个线程，这个线程只用来发送信号调用查询函数，发送完毕后即休眠，等待下一次发送或任务完成后结束线程。</p>
-<img src="/images/flowchart1.png" title="灵魂画手的流程图." alt="灵魂画手的流程图.">
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
+<h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
+<h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
+<img src="/images/scorearray.png" title="一种得分矩阵" width="50%" height="50%">
 
-<hr>
-<p>要创建一个新线程，需要在程序中定义一个类，这个类要继承<code>QtCore.QThread</code>，然后把要执行的操作放进<code>run()</code>函数中，线程启动后，就会自动运行这个函数。结束线程时通过调用线程的<code>terminate()</code>方法来中止线程：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QueryWaitThread</span>(<span class="hljs-params">QtCore.QThread</span>):</span><br>    <span class="hljs-comment"># 定义线程需要用到的信号</span><br>    query_signal = QtCore.pyqtSignal()      <span class="hljs-comment"># 查询信号</span><br>    on_complete = QtCore.pyqtSignal(int)    <span class="hljs-comment"># 每次查询完成时发送，可以发送参数，</span><br>												此处参数int为查询次数<br>    terminate_thread = QtCore.pyqtSignal()  <span class="hljs-comment"># 结束线程信号</span><br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span><br>        super(QueryWaitThread, self).__init__()<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self</span>):</span> <span class="hljs-comment"># 只发送信号，然后休眠。</span><br>        i = <span class="hljs-number">1</span><br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            self.on_complete.emit(i)		<span class="hljs-comment"># 调用信号的emit()方法</span><br>            i += <span class="hljs-number">1</span><br>            self.query_signal.emit()<br>            sleep(<span class="hljs-number">60</span>)<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">kill_thread</span>(<span class="hljs-params">self</span>):</span><br>        self.terminate()<br></code></pre></td></tr></tbody></table></figure>
-
-<p>我的查询函数与验证函数：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_query</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-comment">#    查询操作   #</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-keyword">if</span> self.good_to_submit():<br>        self.btnstop.hide()<br>        self.btn_resel.show()<br>        main.Appoint(self)<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">good_to_submit</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-comment"># 还无法提交表单:</span><br>    	<span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    self.T.terminate_thread.emit() <span class="hljs-comment"># 验证可以提交表单后发送中止信号</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_current_count</span>(<span class="hljs-params">self, i</span>):</span><br>    self.normalOutputWritten(<span class="hljs-string">"当前为第 %i 次查询...\n"</span> % i)<br></code></pre></td></tr></tbody></table></figure>
-
-<p><code>self.normalOutputWritten()</code>是一个我自己定义的函数，用于在窗体的文本框中打印信息，你也可以定义自己的这类函数。</p>
-<p>定义好信号以后，接下来需要调用信号的<code>connect()</code>方法将信号连接到需要执行函数上。下面的<code>start()</code>和<code>stop()</code>是窗体按钮按下后执行的操作，我们在这两个函数中使用刚刚定义好的信号：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-comment"># do something #</span><br>    <span class="hljs-comment">################</span><br>    self.T = QueryWaitThread()<br>    self.T.query_signal.connect(self.auto_query)<br>    self.T.on_complete.connect(self.print_current_count)<br>    self.T.terminate_thread.connect(self.T.kill_thread)<br>    self.normalOutputWritten(<span class="hljs-string">"已开启自动查询，当有符合条件的时间段时将自动提交预约...\n"</span>)<br>    self.T.start()  <span class="hljs-comment"># 开始执行线程函数</span><br>    self.btnstop.show()<br>    self.btn_resel.hide()<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stop</span>(<span class="hljs-params">self</span>):</span><br>    self.btnstop.hide()<br>    self.btn_resel.show()<br>    self.T.terminate_thread.emit() <span class="hljs-comment"># 发送中止信号</span><br>    self.normalOutputWritten(<span class="hljs-string">"用户终止查询。\n"</span>)<br></code></pre></td></tr></tbody></table></figure>
-
-<p>当按下开始按钮后，程序会构造出一个线程<code>T</code>，执行到<code>T.start()</code>后，其中的<code>run()</code>函数便会进入<code>while</code>循环，不断发送查询信号，直到<code>good_to_submit()</code>函数返回<code>True</code>表明已经可以提交表单，或者当停止按钮按下后终止。</p>
-<p>改进后的程序只是将定时功能分离了出来，实际上联网查询功能还是使用主线程完成的，在程序等待服务器返回数据的过程中UI还是会有短暂的无响应时间，不过这是在用户点击后产生的，因此对体验影响不大。但是，严格来说联网也应该分离出一个线程，毕竟服务器有时候返回会很慢，这时候如果你的用户是一个暴躁老哥，还是会对体验有影响的。</p>
+<p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
+<h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>
+<p>在建模时我们自然希望模板链和目标链重合的越多越好，那样我们的模型就越可靠，但是事情并不总是我们期待的那样。设想一下这种情况：我们的模板链由100个氨基酸残基，通过查询，有3条蛋白链分别有一部分与未知链重合，那么最好的情况就是我们把这最好的三个部分分别作为目标链对应区域的模板。MSA可以生成一种称为“序列谱”（profile）的东西<a href="#ref-5"><sup>5</sup></a>，也被称为“位置特异性得分矩阵”，它可以在搜索时匹配到更多的模板，在建模时把最佳的模板赋给目标链，保证保守区域不会发生变化。</p>
+<p>在Discovery Studio中，同源模建时查询的数据库都是非冗余数据库。例如查找模板时查询的不是PDB数据库，而是<code>PDB_nr95</code>数据库（nr即non-redundant），多重序列对齐时查询的是<code>SWISS-Prot</code>数据库，这些数据库都经过人工审查，没有重复数据，能节省查询时间，同时它们中的数据还经过人工校对，可以使建模效果更好。</p>
+<h2 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h2><p>序列对齐好后，我们的建模工作就可以开始了。同源模建工作发展到现在已经实现了自动化，执行这一步只需要点几下鼠标，但是其内部的工作过程其实可以分成三步：<strong>生成主链（Backbone）、生成回环（Loop）、生成侧链（Side-Chain）</strong>。</p>
+<p>在主链建模时，只需要简单地把对齐好的模版链片段的坐标赋给目标链。与多重序列对齐相同，主链建模时使用一种叫“多模板建模”的思想，即将各个模版中的最优部分作为模型赋给目标链。对于蛋白上的保守区域，同源蛋白间的序列一致度很高，侧链构象也倾向于保守，因此可以把这些氨基酸残基上携带的侧链一并复制到目标链中，这种直接复制坐标的方法被称作“刚体装配法”。还有一种方法是“空间限制法”，它根据几何和约束关系进行建模，使模型满足空间限制，<code>MODELLER</code>就是使用这种方法。</p>
+<p>Loop区的建模一直是同源模建工作的难点，原因在于Loop区不保守，有着很大的变动性，准确预测其结构较为困难。目前对Loop区进行建模主要有两种方法：基于现有知识的数据库查询和基于能量的构象搜索。查询数据库虽然简单快捷，但是由于数据不完整，能不能找到好模板还是要看运气，并且随着Loop的增长，匹配难度也越发增加。因此对于Loop区的预测主要还是应用能量计算，对于5-8个氨基酸残基的Loop，已经能给出比较准确的预测，例如蒙特卡洛方法<a href="#ref-6"><sup>6</sup></a>、模拟退火<a href="#ref-7"><sup>7</sup></a>等。近年来新发展了一些构象搜索方法<a href="#ref-8"><sup>8</sup></a>，使得通过计算得到的模型越来越精准，10-12个氨基酸残基的Loop的预测准确度有了较大的改善。</p>
+<p>当主链构象固定后，保守区的侧链氨基酸残基可以直接复制到模型中，因此侧链建模准确的前提是主链构象准确。基本上所有的侧链建模都会依赖于片段搜索，因为利用实验手段测出的结构都符合能量约束，构建侧链时先从未知特异性旋转异构体库中搜索相似构象，然后使用能量约束进行优化。</p>
+<h2 id="优化与验证"><a href="#优化与验证" class="headerlink" title="优化与验证"></a>优化与验证</h2><p>对整个蛋白质进行构象扫描来优化，即使是以今天的计算机水平也是几乎不可能完成的任务，而侧链建模依赖于主链，主链又会受到侧链影响，这似乎陷入了一个死循环。为了解决模型的优化问题，一种方法是先使用已有的主链预测一次侧链，然后根据侧链的空间与能量关系对主链进行调整，如此反复，直至结果自洽。使用这种方法进行预测，能量方程越精确，模型质量自然也就越高，即使是最直接的分子动力学模拟也是有赖于力场数据。在Discovery Studio中，模型的优化与验证都是依靠自由能数据的，但是仅仅能量低并不够，在有些情况下，错误折叠的蛋白质会带来比正确结构更加稳定的能量，因此，在进行同源模建工作时，每一步都应当考虑如何能够最少地引入错误，才能使我们的模型更佳具有实用性。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><div id="ref-1">1. C. Chothial, A. M.Lesk, “The relation between the divergence of sequence and structure in proteins”. EMBO J. (1986) Vol.5: 823-836.</div>
+<div id="ref-2">2. Sander C, Schneider R, “Database of homology-derived protein structures and the structural meaning of sequence alignment”. Proteins (1991). Vol.9: 56–68.</div>
+<div id="ref-3">3. Lipman, DJ; Pearson, WR. "Rapid and sensitive protein similarity searches". Science (1985). 227 (4693): 1435–1341.</div>
+<div id="ref-4">4. Altschul SF. “Basic local alignment search tool.” J Mol Biol. (1990 Oct 5);215(3): 403-410.</div>
+<div id="ref-5">5. Taylor WR. “Identification of protein sequence homology by consensus template alignment.” J Mol Biol. (1986 Mar 20); 188(2):233-258.</div>
+<div id="ref-6">6. Hansmann UH. “ew Monte Carlo algorithms for protein folding.” Curr Opin Struct Biol. 1999 Apr;9(2):177-183.</div>
+<div id="ref-7">7. Kim T. Simons. “Assembly of Protein Tertiary Structures from Fragments with Similar Local Sequences using Simulated Annealing and Bayesian Scoring Functions” J. Mol. Biol. (1997) 268, 209-225</div>
+<div id="ref-8">8. 袁飞. “基于氨基酸位置特异性的蛋白质Loop区结构预测” Acta Phys. Sin. Vol. 65, No. 15 (2016) 158701</div>
 
     </div>
 
@@ -289,7 +291,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.simonsun.top/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/" title="PyQt5多线程编程">https://blog.simonsun.top/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/</a>
+    <a href="https://blog.simonsun.top/ji-suan-hua-xue/homologymodeling/" title="Homology Modeling——同源模建简介">https://blog.simonsun.top/ji-suan-hua-xue/homologymodeling/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
@@ -306,12 +308,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/" rel="prev" title="PyMOL的基本操作">
-      <i class="fa fa-chevron-left"></i> PyMOL的基本操作
+    <a href="/ji-suan-hua-xue/homologymodeling-ds/" rel="prev" title="在Discovery Studio中进行同源模建">
+      <i class="fa fa-chevron-left"></i> 在Discovery Studio中进行同源模建
     </a></div>
       <div class="post-nav-item">
-    <a href="/sui-bi/ji-bai-lu-yuan-zhi-bai-ling/" rel="next" title="记《白鹿原》之白灵">
-      记《白鹿原》之白灵 <i class="fa fa-chevron-right"></i>
+    <a href="/ji-suan-hua-xue/docking-vina/" rel="next" title="使用Vina进行分子对接">
+      使用Vina进行分子对接 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -371,6 +373,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%BA%90%E6%A8%A1%E5%BB%BA%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">同源模建基本流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.1.</span> <span class="nav-text">查找模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E9%BD%90%E5%BA%8F%E5%88%97"><span class="nav-number">2.2.</span> <span class="nav-text">对齐序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E6%A8%A1"><span class="nav-number">2.3.</span> <span class="nav-text">建模</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E4%B8%8E%E9%AA%8C%E8%AF%81"><span class="nav-number">2.4.</span> <span class="nav-text">优化与验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
