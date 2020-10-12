@@ -21,19 +21,27 @@
     var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="作为一个轻度电影收藏爱好者，看过的电影都会丢到硬盘里放着，但是网络上有些电影资源并没有内嵌字幕，还需要外挂一个字幕，但是这样在保存的时候就需要保存两个文件，就令我很不爽，好在可以使用ffmpeg将字幕嵌入到视频文件中。现在的大多电影都使用mkv格式，也有部分使用mp4，mkv格式本身支持字幕轨道，而mp4则需要调用mov_text编码器，在ffmpeg中可以很方便的将字幕和视频进行整合">
+  <meta name="description" content="在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为J. Med. Chem. 2016, 59, 4087−4102，本文将尝试绘制Figure 2b，原图如下所示：   本例中使用的PDB code: 3kwf 首先加载大分子：  fetch 3kwfbg white 接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用ffmpeg为视频嵌入字幕">
-<meta property="og:url" content="https://blog.simonsun.top/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/index.html">
+<meta property="og:title" content="PyMOL做出非氢键相互作用图">
+<meta property="og:url" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/index.html">
 <meta property="og:site_name" content="泠霖的博客">
-<meta property="og:description" content="作为一个轻度电影收藏爱好者，看过的电影都会丢到硬盘里放着，但是网络上有些电影资源并没有内嵌字幕，还需要外挂一个字幕，但是这样在保存的时候就需要保存两个文件，就令我很不爽，好在可以使用ffmpeg将字幕嵌入到视频文件中。现在的大多电影都使用mkv格式，也有部分使用mp4，mkv格式本身支持字幕轨道，而mp4则需要调用mov_text编码器，在ffmpeg中可以很方便的将字幕和视频进行整合">
+<meta property="og:description" content="在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为J. Med. Chem. 2016, 59, 4087−4102，本文将尝试绘制Figure 2b，原图如下所示：   本例中使用的PDB code: 3kwf 首先加载大分子：  fetch 3kwfbg white 接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-12-30T08:30:05.000Z">
-<meta property="article:modified_time" content="2020-10-09T13:26:45.175Z">
+<meta property="og:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact1.png">
+<meta property="og:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact2.png">
+<meta property="og:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact3.png">
+<meta property="og:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact4.png">
+<meta property="og:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact5.png">
+<meta property="og:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact6.png">
+<meta property="og:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact7.png">
+<meta property="article:published_time" content="2017-05-28T04:31:52.000Z">
+<meta property="article:modified_time" content="2020-10-12T17:02:19.516Z">
 <meta property="article:author" content="泠霖">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/interact1.png">
 
-<link rel="canonical" href="https://blog.simonsun.top/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/">
+<link rel="canonical" href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/">
 
 
 <script id="page-configurations">
@@ -46,7 +54,7 @@
   };
 </script>
 
-  <title>使用ffmpeg为视频嵌入字幕 | 泠霖的博客</title>
+  <title>PyMOL做出非氢键相互作用图 | 泠霖的博客</title>
   
     <script>
       function sendPageView() {
@@ -184,7 +192,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/">
+    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -197,7 +205,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          使用ffmpeg为视频嵌入字幕
+          PyMOL做出非氢键相互作用图
         </h1>
 
         <div class="post-meta">
@@ -207,14 +215,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-12-30 16:30:05" itemprop="dateCreated datePublished" datetime="2018-12-30T16:30:05+08:00">2018-12-30</time>
+              <time title="创建时间：2017-05-28 12:31:52" itemprop="dateCreated datePublished" datetime="2017-05-28T12:31:52+08:00">2017-05-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-09 21:26:45" itemprop="dateModified" datetime="2020-10-09T21:26:45+08:00">2020-10-09</time>
+                <time title="修改时间：2020-10-13 01:02:19" itemprop="dateModified" datetime="2020-10-13T01:02:19+08:00">2020-10-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -222,7 +230,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                  <a href="/categories/PyMOL%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">PyMOL系列教程</span></a>
                 </span>
             </span>
 
@@ -239,9 +247,8 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>941</span>
             </span>
-            <div class="post-description">作为一个轻度电影收藏爱好者，看过的电影都会丢到硬盘里放着，但是网络上有些电影资源并没有内嵌字幕，还需要外挂一个字幕，但是这样在保存的时候就需要保存两个文件，就令我很不爽，好在可以使用ffmpeg将字幕嵌入到视频文件中。现在的大多电影都使用mkv格式，也有部分使用mp4，mkv格式本身支持字幕轨道，而mp4则需要调用mov_text编码器，在ffmpeg中可以很方便的将字幕和视频进行整合</div>
 
         </div>
       </header>
@@ -252,31 +259,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>作为一个轻度电影收藏爱好者，看过的电影都会丢到硬盘里放着，但是网络上有些电影资源并没有内嵌字幕，还需要外挂一个字幕，但是这样在保存的时候就需要保存两个文件，就令我很不爽，好在可以使用ffmpeg将字幕嵌入到视频文件中。</p>
-<p>现在的大多电影都使用mkv格式，也有部分使用mp4，mkv格式本身支持字幕轨道，而mp4则需要调用mov_text编码器，在ffmpeg中可以很方便的将字幕和视频进行整合：</p>
-<p>在我的硬盘内有一个名为<code>movie.mkv</code>的电影文件和一个名为<code>sub.srt</code>的字幕文件，在终端输入如下命令：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub.srt -c:s copy -c:v copy -c:a copy output.mkv<br></code></pre></td></tr></tbody></table></figure>
+        <p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a target="_blank" rel="noopener" href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
+<img src="interact1.png" title="Figure 2" width="75%" height="75%">
 
-<p>等待程序运行完成后，得到了一个名为<code>output.mkv</code>的视频文件，打开播放后，并没有出现字幕，但是在播放器里可以看到一个字幕流，于是我使用ffprobe检查了这两个视频文件：</p>
-<p>movie.mkv:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ffprobe moive.mkv<br>Input <span class="hljs-comment">#0, matroska,webm, from 'movie.mkv':</span><br>...<br>...<br>    Stream <span class="hljs-comment">#0:0(eng): Video: h264 (High), yuv420p(progressive), 1920x1040, SAR 1:1 DAR 24:13, 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default)</span><br>    Stream <span class="hljs-comment">#0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)</span><br>    Metadata:<br>      title           : DTS 5.1<br>    Stream <span class="hljs-comment">#0:2(fre): Subtitle: subrip (default) (forced)</span><br>    Metadata:<br>      title           : Forced<br></code></pre></td></tr></tbody></table></figure>
+<p>本例中使用的PDB code: 3kwf</p>
+<p>首先加载大分子： </p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
+<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
+<img src="interact2.png" title="" width="65%" height="65%">
 
-<p>output.mkv:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ffprobe output.mkv<br>Input <span class="hljs-comment">#0, matroska,webm, from 'output.mkv':</span><br>...<br>...<br>    Stream <span class="hljs-comment">#0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)</span><br>    Metadata:<br>      title           : DTS 5.1<br>      DURATION        : 01:33:20.681000000<br>    Stream <span class="hljs-comment">#0:2(fre): Subtitle: subrip (default) (forced)</span><br>    Metadata:<br>      title           : Forced<br>      DURATION        : 00:10:53.068000000<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
+<p>单独显示我们的研究对象：</p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后修改配体颜色，使其按元素显示。<br><img src="interact3.png" title="" width="65%" height="65%"></p>
+<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
+<img src="interact4.png" title="" width="65%" height="65%">
 
-<p>原来是原来的视频有一个诡异的字幕流，只有10分钟，显然我在让ffmpeg自动选择时，程序自动选择了原视频中的字幕流，而我的字幕文件根本没有被加载。找到了问题，那就手动指定要抽取的字幕流好了，这时就需要用到<code>-map</code>参数：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv <br></code></pre></td></tr></tbody></table></figure>
+<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
 
-<p>其中<code>movie.mkv</code>的编号为<code>#0</code>，<code>sub.srt</code>的是<code>#1</code>，<code>v</code>代表视频流，<code>a</code>代表音频流，<code>s</code>则代表字幕流，程序会从<code>#0</code>中抽取视频流和音频流、从<code>#1</code>中抽取字幕流，复制到<code>output.mkv</code>中。<br>另外，最后的<code>copy</code>参数一定要加上，否则ffmpeg会对音视频流进行重新编码，将极大增加处理时间。</p>
-<p>但是这时问题又出现了，在运行上述命令后，程序出现报错：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sub.srt: Invalid data found when processing input<br></code></pre></td></tr></tbody></table></figure>
-
-<p>使用less命令查看srt文件，原来是缺了一行，好在ffmpeg可以对字幕进行修复，执行命令：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -fix_sub_duration -i sub.srt sub2.srt<br></code></pre></td></tr></tbody></table></figure>
-
-<p>所有文件准备妥当，再重新进行合并，得到的output文件成功嵌入了字幕文件！</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub2.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv <br></code></pre></td></tr></tbody></table></figure>
-
+<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="interact5.png" title="" width="35%" height="35%"></p>
+<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
+<img src="interact6.png" title="" width="65%" height="65%">
+最后设定好视角，就可以输出了。
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
+<img src="interact7.png" title="效果图" width="65%" height="65%">
     </div>
 
     
@@ -291,7 +298,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.simonsun.top/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/" title="使用ffmpeg为视频嵌入字幕">https://blog.simonsun.top/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/</a>
+    <a href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/" title="PyMOL做出非氢键相互作用图">https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
@@ -308,12 +315,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/" rel="prev" title="安装PyMOL">
-      <i class="fa fa-chevron-left"></i> 安装PyMOL
+    <a href="/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/" rel="prev" title="利用PyMOL做出大分子-配体相互作用图">
+      <i class="fa fa-chevron-left"></i> 利用PyMOL做出大分子-配体相互作用图
     </a></div>
       <div class="post-nav-item">
-    <a href="/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/" rel="next" title="PyMOL的基本操作">
-      PyMOL的基本操作 <i class="fa fa-chevron-right"></i>
+    <a href="/ji-suan-hua-xue/homologymodeling-ds/" rel="next" title="在Discovery Studio中进行同源模建">
+      在Discovery Studio中进行同源模建 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
