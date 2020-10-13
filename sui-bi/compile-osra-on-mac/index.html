@@ -21,19 +21,19 @@
     var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="ffmpeg转换视频码率与格式">
+  <meta name="description" content="规制结构是化学工作者的基本功，但是如果想做大数据相关的工作，人工绘制就有些不现实，不过有大佬开发了识别程序，在此记录下编译过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ffmpeg视频压制">
-<meta property="og:url" content="https://blog.simonsun.top/sui-bi/ffmpeg-shi-pin-ya-zhi/index.html">
+<meta property="og:title" content="在MacOS上编译OSRA（光学结构识别程序）">
+<meta property="og:url" content="https://blog.simonsun.top/sui-bi/compile-osra-on-mac/index.html">
 <meta property="og:site_name" content="泠霖的博客">
-<meta property="og:description" content="ffmpeg转换视频码率与格式">
+<meta property="og:description" content="规制结构是化学工作者的基本功，但是如果想做大数据相关的工作，人工绘制就有些不现实，不过有大佬开发了识别程序，在此记录下编译过程。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-10-28T11:33:05.000Z">
-<meta property="article:modified_time" content="2020-10-09T13:26:41.404Z">
+<meta property="article:published_time" content="2020-08-02T08:40:47.000Z">
+<meta property="article:modified_time" content="2020-10-13T14:37:43.393Z">
 <meta property="article:author" content="泠霖">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://blog.simonsun.top/sui-bi/ffmpeg-shi-pin-ya-zhi/">
+<link rel="canonical" href="https://blog.simonsun.top/sui-bi/compile-osra-on-mac/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>ffmpeg视频压制 | 泠霖的博客</title>
+  <title>在MacOS上编译OSRA（光学结构识别程序） | 泠霖的博客</title>
   
     <script>
       function sendPageView() {
@@ -184,7 +184,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/sui-bi/ffmpeg-shi-pin-ya-zhi/">
+    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/sui-bi/compile-osra-on-mac/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -197,7 +197,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ffmpeg视频压制
+          在MacOS上编译OSRA（光学结构识别程序）
         </h1>
 
         <div class="post-meta">
@@ -207,14 +207,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-10-28 19:33:05" itemprop="dateCreated datePublished" datetime="2018-10-28T19:33:05+08:00">2018-10-28</time>
+              <time title="创建时间：2020-08-02 16:40:47" itemprop="dateCreated datePublished" datetime="2020-08-02T16:40:47+08:00">2020-08-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-09 21:26:41" itemprop="dateModified" datetime="2020-10-09T21:26:41+08:00">2020-10-09</time>
+                <time title="修改时间：2020-10-13 22:37:43" itemprop="dateModified" datetime="2020-10-13T22:37:43+08:00">2020-10-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,9 +239,9 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>383</span>
+              <span>1.6k</span>
             </span>
-            <div class="post-description">ffmpeg转换视频码率与格式</div>
+            <div class="post-description">规制结构是化学工作者的基本功，但是如果想做大数据相关的工作，人工绘制就有些不现实，不过有大佬开发了识别程序，在此记录下编译过程。</div>
 
         </div>
       </header>
@@ -252,8 +252,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4<br></code></pre></td></tr></tbody></table></figure>
+        <figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># must use svn version code</span><br>svn checkout https:<span class="hljs-regexp">//</span>svn.code.sf.net<span class="hljs-regexp">/p/</span>osra<span class="hljs-regexp">/code/</span>tags/<span class="hljs-number">2.1</span>.<span class="hljs-number">1</span> osra-code<br><br>brew install libiconv, zlib, bzip2, freetype, libpng, libtiff, lcms, jasper, libjpeg<br><br><span class="hljs-comment">#libxml2</span><br>./autogen.sh<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#Compile OCRAD and TCLAP as follows:</span><br>./configure<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#Potrace:</span><br>./configure --with-libpotrace --disable-shared<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#GOCR:</span><br>./configure<br>make libs<br>sudo make install<br><br><span class="hljs-comment">#Openbabel</span><br>export LDFLAGS=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/opt/</span>libiconv<span class="hljs-regexp">/lib/</span>libiconv.a<br>mkdir build<br>cd build<br>cmake -DBUILD_SHARED=OFF ..<br>sudo make install<br><br><span class="hljs-comment">#GraphicsMagick</span><br>export LDFLAGS=<br>./configure --disable-shared --with-x=no --disable-openmp --without-threads<br>make -j4<br>sudo make install<br><span class="hljs-comment"># to have graphicsmagick++-config in yout PATH</span><br>export PATH=<span class="hljs-regexp">/Users/</span>simon<span class="hljs-regexp">/Downloads/</span>GraphicsMagick-<span class="hljs-number">1.3</span>.<span class="hljs-number">21</span><span class="hljs-regexp">/Magick++/</span>bin:<span class="hljs-variable">$PATH</span><br>export LD_LIBRARY_PATH=<span class="hljs-regexp">/usr/</span>local/lib<br><br><span class="hljs-comment">#Poppler</span><br>sudo chown -R $(whoami) <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/share/m</span>an/man4<br>brew install pkgconfig openjpeg<br>mkdir build<br>cd build<br>cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<span class="hljs-regexp">/usr/</span>local -DENABLE_UNSTABLE_API_ABI_HEADERS=ON ..<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#osra</span><br><span class="hljs-comment"># remove -static-libgcc from configure</span><br><span class="hljs-comment"># replace ${MACPORTLIBS} with corresponding path in configure</span><br><span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libxml2.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/Cellar/</span>libiconv<span class="hljs-regexp">/1.16/</span>lib<span class="hljs-regexp">/libiconv.a /u</span>sr<span class="hljs-regexp">/local/</span>Cellar<span class="hljs-regexp">/zlib/</span><span class="hljs-number">1.2</span>.<span class="hljs-number">11</span><span class="hljs-regexp">/lib/</span>libz.a<br><span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>liblcms2.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libtiff.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libfreetype.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libjasper.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libpng.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/Cellar/</span>bzip2<span class="hljs-regexp">/1.0.8/</span>lib<span class="hljs-regexp">/libbz2.a /u</span>sr<span class="hljs-regexp">/local/</span>Cellar<span class="hljs-regexp">/zlib/</span><span class="hljs-number">1.2</span>.<span class="hljs-number">11</span><span class="hljs-regexp">/lib/</span>libz.a<br>.<span class="hljs-regexp">/configure --enable-static-linking --with-graphicsmagick-lib=/u</span>sr<span class="hljs-regexp">/local/</span>lib --with-graphicsmagick-include=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/include/</span>GraphicsMagick<br></code></pre></td></tr></tbody></table></figure>
     </div>
 
     
@@ -268,7 +267,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.simonsun.top/sui-bi/ffmpeg-shi-pin-ya-zhi/" title="ffmpeg视频压制">https://blog.simonsun.top/sui-bi/ffmpeg-shi-pin-ya-zhi/</a>
+    <a href="https://blog.simonsun.top/sui-bi/compile-osra-on-mac/" title="在MacOS上编译OSRA（光学结构识别程序）">https://blog.simonsun.top/sui-bi/compile-osra-on-mac/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
@@ -285,12 +284,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/python-xue-xi-bi-ji/python-zhong-shi-yong-bai-fen-hao-ge-shi-hua-zi-fu-chuan/" rel="prev" title="Python中使用百分号格式化字符串">
-      <i class="fa fa-chevron-left"></i> Python中使用百分号格式化字符串
+    <a href="/sui-bi/ji-bai-lu-yuan-zhi-bai-ling/" rel="prev" title="记《白鹿原》之白灵">
+      <i class="fa fa-chevron-left"></i> 记《白鹿原》之白灵
     </a></div>
       <div class="post-nav-item">
-    <a href="/sui-bi/ffmpeg-he-bing-shi-pin/" rel="next" title="ffmpeg合并视频">
-      ffmpeg合并视频 <i class="fa fa-chevron-right"></i>
+    <a href="/ji-suan-hua-xue/ecd-ji-suan/" rel="next" title="从零开始学习ECD计算">
+      从零开始学习ECD计算 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
