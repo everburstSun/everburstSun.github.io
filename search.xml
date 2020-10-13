@@ -1,9 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>PyMOL做出非氢键相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3kwf</p>
+<p>首先加载大分子： </p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
+<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
+
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
+<p>单独显示我们的研究对象：</p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
+<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
+<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
+
+<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
+<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
+最后设定好视角，就可以输出了。
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
     <title>PyMOL的基本操作</title>
     <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
     <content><![CDATA[]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>利用PyMOL做出大分子-配体相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3oc0</p>
+<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
+<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
+
+<p>改变大分子和配体的显示样式：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
+<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
+
+<p>将我们需要的氨基酸残基复制到新对象中</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
+<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
+<p>改变残基显示样式</p>
+<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
+
+<p>现在你可以看到，已经有文献里图片的内味了。</p>
+<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
+
+<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
+
+<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
       <categories>
         <category>PyMOL系列教程</category>
       </categories>
@@ -210,53 +284,6 @@
       </categories>
   </entry>
   <entry>
-    <title>youtube-dl的使用及编程应用</title>
-    <url>/python-xue-xi-bi-ji/youtube-dl-de-shi-yong-ji-bian-cheng-ying-yong/</url>
-    <content><![CDATA[<p>YouTube上有许多精彩视频，曾经chrome的应用商店里有一个叫VideoDownloader的插件可以一键下载YouTube视频，但是已经被Google封杀了。后来我发现了youtube-dl这个工具，它不仅可以用来下载YouTube视频，国内的一些视频站也可以用它进行下载。 </p>
-<p>这个程序是一个开源的python项目，详情可以访问它的<a href="http://rg3.github.io/youtube-dl/">官方网站</a>。由于是开源项目，因此支持MacOS、Linux和Windows平台，可以在官网直接下载编译好的程序。</p>
-<p>若需要使用源代码，可以使用pip安装到本地：<br><code>sudo -H pip3 install --upgrade youtube-dl</code></p>
-<p>YouTube上面视频和音频是分开存放的，当然也有合成好的，不过画质就比较一般了，想要下载高质量视频，就得分别下载音频和视频，然后再使用ffmpeg将他们合成在一起。ffmpeg的<a href="https://www.ffmpeg.org/download.html">下载地址</a>在这，这同样也是个开源项目，但是我们只下载它打包好的程序就可以了。</p>
-<p>全都下载好后，可以把这些程序都放在同一个目录下，像这样，会有4个文件：<br><img src="/images/13526978-039cc11c8b420020.png"><br>然后把该目录添加到PATH中，就可以在任意位置使用了。</p>
-<p>youtube-dl的使用非常简单，选择好要下载的文件，它会自动调用ffmpeg合成音视频，不过就是没有GUI，每次使用都得输一串命令，而且对于国内用户，还需要指定代理服务器，更增加了命令的输入量。</p>
-<ul>
-<li>获取视频信息：</li>
-</ul>
-<p><code>youtube-dl -F https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
-<p>这里我使用的是shadowsocks代理，地址和端口号可以在你的ss程序中找到，等待程序下载完成后，就会看到视频信息了。</p>
-<p><img src="/images/13526978-c354b0a2722b9cb0.png"></p>
-<ul>
-<li>下载视频</li>
-</ul>
-<p>我们选择下载最高质量的音视频，通过观察视频信息可知，该视频最高质量为3840x1920 60fps，代号315，音频为码率149k的文件，代号251，然后下载这两个文件：<br><code>youtube-dl -f 315+251 https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
-<p><img src="/images/13526978-d41991ef87b1a398.png">程序默认将下载好的文件置于用户的根目录下。</p>
-<p>虽说只输了两次命令，但是还是不够方便，不过好在程序开源，我们可以自己开发一个GUI。本文将使用PyQt5制作一个简单的GUI，实现可视化操作。其实做GUI就是要把命令行指令做进按钮里，再把它的输入输出显示在窗体上。有了这样的思路，我们首先来分析youtube-dl返回的数据。</p>
-<p>以下是python代码：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">import</span> youtube_dl<br><br>ydl_opts = ({<span class="hljs-string">'outtmpl'</span>: <span class="hljs-string">'%(title)s%(ext)s'</span>,<br>             <span class="hljs-string">'proxy'</span>: <span class="hljs-string">'127.0.0.1:1087'</span>}) <span class="hljs-comment"># 默认HTTP代理</span><br><br><span class="hljs-comment"># retrieve video information</span><br><span class="hljs-keyword">with</span> youtube_dl.YoutubeDL(ydl_opts) <span class="hljs-keyword">as</span> ydl:<br>    video = ydl.extract_info(<span class="hljs-string">'https://www.youtube.com/watch?v=gOLlY7SV6gE'</span>,<br>                              download=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></tbody></table></figure>
-
-<p>把video打印出来查看，是一个巨大的字典，里面包含了视频的所有信息，我们需要的视频分辨率信息，都在该字典的formats键值中，而formats又是一个字典列表，该视频中的每个文件都是一个字典。</p>
-<p>继续处理formats，得到需要的信息：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># sort information</span><br>formats = video.get(<span class="hljs-string">'formats'</span>)<br>file_count = len(formats)<br><span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> formats:<br>    format_code.append(f.get(<span class="hljs-string">'format_id'</span>))<br>    extension.append(f.get(<span class="hljs-string">'ext'</span>))<br>    resolution.append(ydl.format_resolution(f))<br>    format_note.append(f.get(<span class="hljs-string">'format_note'</span>))<br>    file_size.append(f.get(<span class="hljs-string">'filesize'</span>))<br></code></pre></td></tr></tbody></table></figure>
-
-<p>使用get方法获得字典键值的好处就是，如果字典中不存在该键值，就会返回None，如果使用索引直接访问不存在的键值，则会抛出异常。</p>
-<p>现在我们已经拿到了所需的全部数据，接下来就是要在窗体中显示了。在PyQt5中，<code>QTableWidget</code>可以做这件事：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">self.tableWidget = QtWidgets.QTableWidget(Form)<br>self.tableWidget.setRowCount(main.file_count)<br>self.tableWidget.setColumnCount(<span class="hljs-number">5</span>)<br></code></pre></td></tr></tbody></table></figure>
-
-<p>然后使用循环将数据填入表格：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">FillInfo</span>(<span class="hljs-params">w</span>):</span>            <span class="hljs-comment"># fill information into table</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, file_count):<br>        w.tableWidget.setItem(i, <span class="hljs-number">0</span>, QTableWidgetItem(format_code[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">1</span>, QTableWidgetItem(extension[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">2</span>, QTableWidgetItem(resolution[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">3</span>, QTableWidgetItem(format_note[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">4</span>, QTableWidgetItem(str(file_size[i])))<br></code></pre></td></tr></tbody></table></figure>
-
-<p>youtube-dl的作者并没有给这个项目单独写一个文档，所有的信息都需要去源代码中看，经过阅读源代码，我终于找到了一个名为<code>process_video_result</code>的函数，可以指定下载哪个文件。它接受<code>extract_info</code>返回的字典对象，根据用户输入的命令行参数选择文件进行下载，所以我们只需要把需要下载的视频的format_id填入参数列表，再把视频信息字典传给函数，就可以实现指定下载的功能了。</p>
-<p>创建一个编辑框，然后取得该编辑框的输入：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">self.SeleEdit = QtWidgets.QLineEdit(Form)<br>self.SeleEdit.setObjectName(<span class="hljs-string">"SeleEdit"</span>)<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">download</span>(<span class="hljs-params">self</span>):</span><br>    ydl.params = {<span class="hljs-string">'format'</span>: self.SeleEdit.text()}<br>    <span class="hljs-keyword">try</span>:<br>        main.ydl.process_video_result(main.video)<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">pass</span><br></code></pre></td></tr></tbody></table></figure>
-
-<p>应该像使用命令行程序那样输入format_id，对于两个文件的情况，youtube-dl只接受<code>'video+audio'</code>的形式，如果顺序颠倒则会抛出异常。</p>
-<p><img src="/images/13526978-ca7646e03b3fdee2.png" alt="程序截图"></p>
-<p>完整的代码可以在我的<a href="https://github.com/SSSSSimon/youtube-dl-GUI">Github</a>上找到。</p>
-]]></content>
-      <categories>
-        <category>Python学习笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>使用Vina进行分子对接</title>
     <url>/ji-suan-hua-xue/docking-vina/</url>
     <content><![CDATA[<p>使用Vina进行分子对接，各种蛋白与配体文件均需使用pdbqt格式，scripps研究所提供了Autodock Tools可以进行可视化转换。下面是使用adt准备文件的步骤：</p>
@@ -320,6 +347,53 @@
 ]]></content>
       <categories>
         <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>youtube-dl的使用及编程应用</title>
+    <url>/python-xue-xi-bi-ji/youtube-dl-de-shi-yong-ji-bian-cheng-ying-yong/</url>
+    <content><![CDATA[<p>YouTube上有许多精彩视频，曾经chrome的应用商店里有一个叫VideoDownloader的插件可以一键下载YouTube视频，但是已经被Google封杀了。后来我发现了youtube-dl这个工具，它不仅可以用来下载YouTube视频，国内的一些视频站也可以用它进行下载。 </p>
+<p>这个程序是一个开源的python项目，详情可以访问它的<a href="http://rg3.github.io/youtube-dl/">官方网站</a>。由于是开源项目，因此支持MacOS、Linux和Windows平台，可以在官网直接下载编译好的程序。</p>
+<p>若需要使用源代码，可以使用pip安装到本地：<br><code>sudo -H pip3 install --upgrade youtube-dl</code></p>
+<p>YouTube上面视频和音频是分开存放的，当然也有合成好的，不过画质就比较一般了，想要下载高质量视频，就得分别下载音频和视频，然后再使用ffmpeg将他们合成在一起。ffmpeg的<a href="https://www.ffmpeg.org/download.html">下载地址</a>在这，这同样也是个开源项目，但是我们只下载它打包好的程序就可以了。</p>
+<p>全都下载好后，可以把这些程序都放在同一个目录下，像这样，会有4个文件：<br><img src="/images/13526978-039cc11c8b420020.png"><br>然后把该目录添加到PATH中，就可以在任意位置使用了。</p>
+<p>youtube-dl的使用非常简单，选择好要下载的文件，它会自动调用ffmpeg合成音视频，不过就是没有GUI，每次使用都得输一串命令，而且对于国内用户，还需要指定代理服务器，更增加了命令的输入量。</p>
+<ul>
+<li>获取视频信息：</li>
+</ul>
+<p><code>youtube-dl -F https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
+<p>这里我使用的是shadowsocks代理，地址和端口号可以在你的ss程序中找到，等待程序下载完成后，就会看到视频信息了。</p>
+<p><img src="/images/13526978-c354b0a2722b9cb0.png"></p>
+<ul>
+<li>下载视频</li>
+</ul>
+<p>我们选择下载最高质量的音视频，通过观察视频信息可知，该视频最高质量为3840x1920 60fps，代号315，音频为码率149k的文件，代号251，然后下载这两个文件：<br><code>youtube-dl -f 315+251 https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
+<p><img src="/images/13526978-d41991ef87b1a398.png">程序默认将下载好的文件置于用户的根目录下。</p>
+<p>虽说只输了两次命令，但是还是不够方便，不过好在程序开源，我们可以自己开发一个GUI。本文将使用PyQt5制作一个简单的GUI，实现可视化操作。其实做GUI就是要把命令行指令做进按钮里，再把它的输入输出显示在窗体上。有了这样的思路，我们首先来分析youtube-dl返回的数据。</p>
+<p>以下是python代码：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">import</span> youtube_dl<br><br>ydl_opts = ({<span class="hljs-string">'outtmpl'</span>: <span class="hljs-string">'%(title)s%(ext)s'</span>,<br>             <span class="hljs-string">'proxy'</span>: <span class="hljs-string">'127.0.0.1:1087'</span>}) <span class="hljs-comment"># 默认HTTP代理</span><br><br><span class="hljs-comment"># retrieve video information</span><br><span class="hljs-keyword">with</span> youtube_dl.YoutubeDL(ydl_opts) <span class="hljs-keyword">as</span> ydl:<br>    video = ydl.extract_info(<span class="hljs-string">'https://www.youtube.com/watch?v=gOLlY7SV6gE'</span>,<br>                              download=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></tbody></table></figure>
+
+<p>把video打印出来查看，是一个巨大的字典，里面包含了视频的所有信息，我们需要的视频分辨率信息，都在该字典的formats键值中，而formats又是一个字典列表，该视频中的每个文件都是一个字典。</p>
+<p>继续处理formats，得到需要的信息：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># sort information</span><br>formats = video.get(<span class="hljs-string">'formats'</span>)<br>file_count = len(formats)<br><span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> formats:<br>    format_code.append(f.get(<span class="hljs-string">'format_id'</span>))<br>    extension.append(f.get(<span class="hljs-string">'ext'</span>))<br>    resolution.append(ydl.format_resolution(f))<br>    format_note.append(f.get(<span class="hljs-string">'format_note'</span>))<br>    file_size.append(f.get(<span class="hljs-string">'filesize'</span>))<br></code></pre></td></tr></tbody></table></figure>
+
+<p>使用get方法获得字典键值的好处就是，如果字典中不存在该键值，就会返回None，如果使用索引直接访问不存在的键值，则会抛出异常。</p>
+<p>现在我们已经拿到了所需的全部数据，接下来就是要在窗体中显示了。在PyQt5中，<code>QTableWidget</code>可以做这件事：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">self.tableWidget = QtWidgets.QTableWidget(Form)<br>self.tableWidget.setRowCount(main.file_count)<br>self.tableWidget.setColumnCount(<span class="hljs-number">5</span>)<br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后使用循环将数据填入表格：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">FillInfo</span>(<span class="hljs-params">w</span>):</span>            <span class="hljs-comment"># fill information into table</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, file_count):<br>        w.tableWidget.setItem(i, <span class="hljs-number">0</span>, QTableWidgetItem(format_code[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">1</span>, QTableWidgetItem(extension[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">2</span>, QTableWidgetItem(resolution[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">3</span>, QTableWidgetItem(format_note[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">4</span>, QTableWidgetItem(str(file_size[i])))<br></code></pre></td></tr></tbody></table></figure>
+
+<p>youtube-dl的作者并没有给这个项目单独写一个文档，所有的信息都需要去源代码中看，经过阅读源代码，我终于找到了一个名为<code>process_video_result</code>的函数，可以指定下载哪个文件。它接受<code>extract_info</code>返回的字典对象，根据用户输入的命令行参数选择文件进行下载，所以我们只需要把需要下载的视频的format_id填入参数列表，再把视频信息字典传给函数，就可以实现指定下载的功能了。</p>
+<p>创建一个编辑框，然后取得该编辑框的输入：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">self.SeleEdit = QtWidgets.QLineEdit(Form)<br>self.SeleEdit.setObjectName(<span class="hljs-string">"SeleEdit"</span>)<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">download</span>(<span class="hljs-params">self</span>):</span><br>    ydl.params = {<span class="hljs-string">'format'</span>: self.SeleEdit.text()}<br>    <span class="hljs-keyword">try</span>:<br>        main.ydl.process_video_result(main.video)<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">pass</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>应该像使用命令行程序那样输入format_id，对于两个文件的情况，youtube-dl只接受<code>'video+audio'</code>的形式，如果顺序颠倒则会抛出异常。</p>
+<p><img src="/images/13526978-ca7646e03b3fdee2.png" alt="程序截图"></p>
+<p>完整的代码可以在我的<a href="https://github.com/SSSSSimon/youtube-dl-GUI">Github</a>上找到。</p>
+]]></content>
+      <categories>
+        <category>Python学习笔记</category>
       </categories>
   </entry>
   <entry>
@@ -497,6 +571,14 @@
       </categories>
   </entry>
   <entry>
+    <title>在MacOS上编译OSRA（光学结构识别程序）</title>
+    <url>/sui-bi/compile-osra-on-mac/</url>
+    <content><![CDATA[<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># must use svn version code</span><br>svn checkout https:<span class="hljs-regexp">//</span>svn.code.sf.net<span class="hljs-regexp">/p/</span>osra<span class="hljs-regexp">/code/</span>tags/<span class="hljs-number">2.1</span>.<span class="hljs-number">1</span> osra-code<br><br>brew install libiconv, zlib, bzip2, freetype, libpng, libtiff, lcms, jasper, libjpeg<br><br><span class="hljs-comment">#libxml2</span><br>./autogen.sh<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#Compile OCRAD and TCLAP as follows:</span><br>./configure<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#Potrace:</span><br>./configure --with-libpotrace --disable-shared<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#GOCR:</span><br>./configure<br>make libs<br>sudo make install<br><br><span class="hljs-comment">#Openbabel</span><br>export LDFLAGS=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/opt/</span>libiconv<span class="hljs-regexp">/lib/</span>libiconv.a<br>mkdir build<br>cd build<br>cmake -DBUILD_SHARED=OFF ..<br>sudo make install<br><br><span class="hljs-comment">#GraphicsMagick</span><br>export LDFLAGS=<br>./configure --disable-shared --with-x=no --disable-openmp --without-threads<br>make -j4<br>sudo make install<br><span class="hljs-comment"># to have graphicsmagick++-config in yout PATH</span><br>export PATH=<span class="hljs-regexp">/Users/</span>simon<span class="hljs-regexp">/Downloads/</span>GraphicsMagick-<span class="hljs-number">1.3</span>.<span class="hljs-number">21</span><span class="hljs-regexp">/Magick++/</span>bin:<span class="hljs-variable">$PATH</span><br>export LD_LIBRARY_PATH=<span class="hljs-regexp">/usr/</span>local/lib<br><br><span class="hljs-comment">#Poppler</span><br>sudo chown -R $(whoami) <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/share/m</span>an/man4<br>brew install pkgconfig openjpeg<br>mkdir build<br>cd build<br>cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<span class="hljs-regexp">/usr/</span>local -DENABLE_UNSTABLE_API_ABI_HEADERS=ON ..<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#osra</span><br><span class="hljs-comment"># remove -static-libgcc from configure</span><br><span class="hljs-comment"># replace ${MACPORTLIBS} with corresponding path in configure</span><br><span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libxml2.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/Cellar/</span>libiconv<span class="hljs-regexp">/1.16/</span>lib<span class="hljs-regexp">/libiconv.a /u</span>sr<span class="hljs-regexp">/local/</span>Cellar<span class="hljs-regexp">/zlib/</span><span class="hljs-number">1.2</span>.<span class="hljs-number">11</span><span class="hljs-regexp">/lib/</span>libz.a<br><span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>liblcms2.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libtiff.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libfreetype.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libjasper.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libpng.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/Cellar/</span>bzip2<span class="hljs-regexp">/1.0.8/</span>lib<span class="hljs-regexp">/libbz2.a /u</span>sr<span class="hljs-regexp">/local/</span>Cellar<span class="hljs-regexp">/zlib/</span><span class="hljs-number">1.2</span>.<span class="hljs-number">11</span><span class="hljs-regexp">/lib/</span>libz.a<br>.<span class="hljs-regexp">/configure --enable-static-linking --with-graphicsmagick-lib=/u</span>sr<span class="hljs-regexp">/local/</span>lib --with-graphicsmagick-include=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/include/</span>GraphicsMagick<br></code></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>ffmpeg合并视频</title>
     <url>/sui-bi/ffmpeg-he-bing-shi-pin/</url>
     <content><![CDATA[<p>优酷的反下载策略更新了，youtube-dl已经下载不到里面的视频了，所以只能手动从chrome里把视频地址提取出来手动下载，这样一个2分多钟的视频就下载了16个文件，都是flv格式：</p>
@@ -588,88 +670,6 @@
 <p>兆海也在中条山牺牲了，他曾对白灵说非她终身不娶，可后来在金关城买下一栋民房，与当地一位女子成婚了。兆海违背了他的誓言吗？这个神似灵灵的女子不过是他对她日夜思念的寄托罢了……</p>
 <p>苦命的恋人啊……</p>
 ]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>利用PyMOL做出大分子-配体相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3oc0</p>
-<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
-<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
-
-<p>改变大分子和配体的显示样式：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
-<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
-
-<p>将我们需要的氨基酸残基复制到新对象中</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
-<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
-<p>改变残基显示样式</p>
-<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
-
-<p>现在你可以看到，已经有文献里图片的内味了。</p>
-<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
-
-<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
-
-<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
-
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyMOL做出非氢键相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3kwf</p>
-<p>首先加载大分子： </p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
-<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
-<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
-
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
-<p>单独显示我们的研究对象：</p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
-<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
-<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
-<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
-
-<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
-
-<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
-<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
-最后设定好视角，就可以输出了。
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>在MacOS上编译OSRA（光学结构识别程序）</title>
-    <url>/sui-bi/compile-osra-on-mac/</url>
-    <content><![CDATA[<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># must use svn version code</span><br>svn checkout https:<span class="hljs-regexp">//</span>svn.code.sf.net<span class="hljs-regexp">/p/</span>osra<span class="hljs-regexp">/code/</span>tags/<span class="hljs-number">2.1</span>.<span class="hljs-number">1</span> osra-code<br><br>brew install libiconv, zlib, bzip2, freetype, libpng, libtiff, lcms, jasper, libjpeg<br><br><span class="hljs-comment">#libxml2</span><br>./autogen.sh<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#Compile OCRAD and TCLAP as follows:</span><br>./configure<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#Potrace:</span><br>./configure --with-libpotrace --disable-shared<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#GOCR:</span><br>./configure<br>make libs<br>sudo make install<br><br><span class="hljs-comment">#Openbabel</span><br>export LDFLAGS=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/opt/</span>libiconv<span class="hljs-regexp">/lib/</span>libiconv.a<br>mkdir build<br>cd build<br>cmake -DBUILD_SHARED=OFF ..<br>sudo make install<br><br><span class="hljs-comment">#GraphicsMagick</span><br>export LDFLAGS=<br>./configure --disable-shared --with-x=no --disable-openmp --without-threads<br>make -j4<br>sudo make install<br><span class="hljs-comment"># to have graphicsmagick++-config in yout PATH</span><br>export PATH=<span class="hljs-regexp">/Users/</span>simon<span class="hljs-regexp">/Downloads/</span>GraphicsMagick-<span class="hljs-number">1.3</span>.<span class="hljs-number">21</span><span class="hljs-regexp">/Magick++/</span>bin:<span class="hljs-variable">$PATH</span><br>export LD_LIBRARY_PATH=<span class="hljs-regexp">/usr/</span>local/lib<br><br><span class="hljs-comment">#Poppler</span><br>sudo chown -R $(whoami) <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/share/m</span>an/man4<br>brew install pkgconfig openjpeg<br>mkdir build<br>cd build<br>cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<span class="hljs-regexp">/usr/</span>local -DENABLE_UNSTABLE_API_ABI_HEADERS=ON ..<br>make -j4<br>sudo make install<br><br><span class="hljs-comment">#osra</span><br><span class="hljs-comment"># remove -static-libgcc from configure</span><br><span class="hljs-comment"># replace ${MACPORTLIBS} with corresponding path in configure</span><br><span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libxml2.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/Cellar/</span>libiconv<span class="hljs-regexp">/1.16/</span>lib<span class="hljs-regexp">/libiconv.a /u</span>sr<span class="hljs-regexp">/local/</span>Cellar<span class="hljs-regexp">/zlib/</span><span class="hljs-number">1.2</span>.<span class="hljs-number">11</span><span class="hljs-regexp">/lib/</span>libz.a<br><span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>liblcms2.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libtiff.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libfreetype.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libjasper.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/lib/</span>libpng.a <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/Cellar/</span>bzip2<span class="hljs-regexp">/1.0.8/</span>lib<span class="hljs-regexp">/libbz2.a /u</span>sr<span class="hljs-regexp">/local/</span>Cellar<span class="hljs-regexp">/zlib/</span><span class="hljs-number">1.2</span>.<span class="hljs-number">11</span><span class="hljs-regexp">/lib/</span>libz.a<br>.<span class="hljs-regexp">/configure --enable-static-linking --with-graphicsmagick-lib=/u</span>sr<span class="hljs-regexp">/local/</span>lib --with-graphicsmagick-include=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/include/</span>GraphicsMagick<br></code></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
