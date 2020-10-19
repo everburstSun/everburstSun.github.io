@@ -28,12 +28,12 @@
 <meta property="og:site_name" content="泠霖的博客">
 <meta property="og:description" content="同源模建是药物研发中的一种常用方法。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。这时就需要用到同源模建技术。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.simonsun.top/images/scorearray.png">
+<meta property="og:image" content="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg">
 <meta property="article:published_time" content="2017-08-15T06:43:11.000Z">
-<meta property="article:modified_time" content="2020-10-10T16:48:29.318Z">
+<meta property="article:modified_time" content="2020-10-19T15:11:28.190Z">
 <meta property="article:author" content="泠霖">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.simonsun.top/images/scorearray.png">
+<meta name="twitter:image" content="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg">
 
 <link rel="canonical" href="https://blog.simonsun.top/ji-suan-hua-xue/homologymodeling/">
 
@@ -216,7 +216,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-11 00:48:29" itemprop="dateModified" datetime="2020-10-11T00:48:29+08:00">2020-10-11</time>
+                <time title="修改时间：2020-10-19 23:11:28" itemprop="dateModified" datetime="2020-10-19T23:11:28+08:00">2020-10-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,7 +257,7 @@
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
 <h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
 <h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
-<img src="/images/scorearray.png" title="一种得分矩阵" width="50%" height="50%">
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg" title="一种得分矩阵" width="50%" height="50%">
 
 <p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
 <h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>

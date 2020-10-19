@@ -86,7 +86,10 @@
     <title>安装PyMOL</title>
     <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
-<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。<br><img src="/images/screenshot1_rhodopsin.png" alt="PyMOL的图形界面"></p>
+<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
+
+
 <h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
 <ul>
 <li><strong>Windows</strong></li>
@@ -126,7 +129,7 @@
 <p>最后将路径添加到<code>PATH</code>:</p>
 <figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
 
-<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="/images/13526978-d8b05014ccfdb4aa.png" alt="基于X11的PyMOL界面"></p>
+<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
 ]]></content>
       <categories>
         <category>PyMOL系列教程</category>
@@ -140,7 +143,7 @@
 <p>Qt引以为豪的对象通讯机制被称为<strong>信号-槽</strong>(<strong>signal-slot</strong>)机制。当特定事件被触发时（如子线程结束）将发送一个信号，而与该信号建立的连接槽，则可以接收到该信号并做出反应(根据子线程的返回值执行操作)。</p>
 <p>在我的程序中，需要在仪器开放预约前不断查询，在开放预约的第一刻立即提交表单，而为了不拖垮服务器，需要在每次查询后让线程休眠一会。如果所有这些操作都在主线程中完成，那么线程休眠的时候UI就会无响应，在我的程序中就表现为点击开始查询后UI就一直处于无响应状态，直到预约成功后才恢复响应。</p>
 <p>因此，就需要新建一个线程，这个线程只用来发送信号调用查询函数，发送完毕后即休眠，等待下一次发送或任务完成后结束线程。</p>
-<img src="/images/flowchart1.png" title="灵魂画手的流程图." alt="灵魂画手的流程图.">
+<img src="https://tva2.sinaimg.cn/large/005Vgpymly1gjv1m17p0oj316u0bgwgh.jpg" title="灵魂画手的流程图." alt="灵魂画手的流程图.">
 
 <hr>
 <p>要创建一个新线程，需要在程序中定义一个类，这个类要继承<code>QtCore.QThread</code>，然后把要执行的操作放进<code>run()</code>函数中，线程启动后，就会自动运行这个函数。结束线程时通过调用线程的<code>terminate()</code>方法来中止线程：</p>
@@ -290,19 +293,22 @@
 <p>这个程序是一个开源的python项目，详情可以访问它的<a href="http://rg3.github.io/youtube-dl/">官方网站</a>。由于是开源项目，因此支持MacOS、Linux和Windows平台，可以在官网直接下载编译好的程序。</p>
 <p>若需要使用源代码，可以使用pip安装到本地：<br><code>sudo -H pip3 install --upgrade youtube-dl</code></p>
 <p>YouTube上面视频和音频是分开存放的，当然也有合成好的，不过画质就比较一般了，想要下载高质量视频，就得分别下载音频和视频，然后再使用ffmpeg将他们合成在一起。ffmpeg的<a href="https://www.ffmpeg.org/download.html">下载地址</a>在这，这同样也是个开源项目，但是我们只下载它打包好的程序就可以了。</p>
-<p>全都下载好后，可以把这些程序都放在同一个目录下，像这样，会有4个文件：<br><img src="/images/13526978-039cc11c8b420020.png"><br>然后把该目录添加到PATH中，就可以在任意位置使用了。</p>
+<p>全都下载好后，可以把这些程序都放在同一个目录下，像这样，会有4个文件：<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m07ydjj30qy03mjs6.jpg"><br>然后把该目录添加到PATH中，就可以在任意位置使用了。</p>
 <p>youtube-dl的使用非常简单，选择好要下载的文件，它会自动调用ffmpeg合成音视频，不过就是没有GUI，每次使用都得输一串命令，而且对于国内用户，还需要指定代理服务器，更增加了命令的输入量。</p>
 <ul>
 <li>获取视频信息：</li>
 </ul>
 <p><code>youtube-dl -F https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
 <p>这里我使用的是shadowsocks代理，地址和端口号可以在你的ss程序中找到，等待程序下载完成后，就会看到视频信息了。</p>
-<p><img src="/images/13526978-c354b0a2722b9cb0.png"></p>
+<img src="https://tvax1.sinaimg.cn/large/005Vgpymly1gjv1m0g1tnj30yg0n0e1j.jpg">
+
 <ul>
 <li>下载视频</li>
 </ul>
 <p>我们选择下载最高质量的音视频，通过观察视频信息可知，该视频最高质量为3840x1920 60fps，代号315，音频为码率149k的文件，代号251，然后下载这两个文件：<br><code>youtube-dl -f 315+251 https://www.youtube.com/watch?v=gOLlY7SV6gE --proxy 'socks5://127.0.0.1:1086'</code></p>
-<p><img src="/images/13526978-d41991ef87b1a398.png">程序默认将下载好的文件置于用户的根目录下。</p>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjv1m0ylwtj30yg06twm3.jpg">
+
+<p>程序默认将下载好的文件置于用户的根目录下。</p>
 <p>虽说只输了两次命令，但是还是不够方便，不过好在程序开源，我们可以自己开发一个GUI。本文将使用PyQt5制作一个简单的GUI，实现可视化操作。其实做GUI就是要把命令行指令做进按钮里，再把它的输入输出显示在窗体上。有了这样的思路，我们首先来分析youtube-dl返回的数据。</p>
 <p>以下是python代码：</p>
 <figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">import</span> youtube_dl<br><br>ydl_opts = ({<span class="hljs-string">'outtmpl'</span>: <span class="hljs-string">'%(title)s%(ext)s'</span>,<br>             <span class="hljs-string">'proxy'</span>: <span class="hljs-string">'127.0.0.1:1087'</span>}) <span class="hljs-comment"># 默认HTTP代理</span><br><br><span class="hljs-comment"># retrieve video information</span><br><span class="hljs-keyword">with</span> youtube_dl.YoutubeDL(ydl_opts) <span class="hljs-keyword">as</span> ydl:<br>    video = ydl.extract_info(<span class="hljs-string">'https://www.youtube.com/watch?v=gOLlY7SV6gE'</span>,<br>                              download=<span class="hljs-literal">False</span>)<br></code></pre></td></tr></tbody></table></figure>
@@ -323,7 +329,9 @@
 <figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">self.SeleEdit = QtWidgets.QLineEdit(Form)<br>self.SeleEdit.setObjectName(<span class="hljs-string">"SeleEdit"</span>)<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">download</span>(<span class="hljs-params">self</span>):</span><br>    ydl.params = {<span class="hljs-string">'format'</span>: self.SeleEdit.text()}<br>    <span class="hljs-keyword">try</span>:<br>        main.ydl.process_video_result(main.video)<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">pass</span><br></code></pre></td></tr></tbody></table></figure>
 
 <p>应该像使用命令行程序那样输入format_id，对于两个文件的情况，youtube-dl只接受<code>'video+audio'</code>的形式，如果顺序颠倒则会抛出异常。</p>
-<p><img src="/images/13526978-ca7646e03b3fdee2.png" alt="程序截图"></p>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjv1m0nigqj30yg0eqjw4.jpg" title="程序截图">
+
+
 <p>完整的代码可以在我的<a href="https://github.com/SSSSSimon/youtube-dl-GUI">Github</a>上找到。</p>
 ]]></content>
       <categories>
@@ -339,7 +347,7 @@
 </ul>
 <figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ adt<br></code></pre></td></tr></tbody></table></figure>
 
-<img src="屏幕快照 2020-10-11 上午12.42.31.png" title="Autodock Tools" width="50%" height="50%">
+<img src="https://tvax1.sinaimg.cn/large/005Vgpymly1gjv1llzrwjj317e0xsgpd.jpg" title="Autodock Tools" width="50%" height="50%">
 
 <hr>
 <ul>
@@ -356,7 +364,7 @@
 <p>  <strong>Grid -&gt; Grid Box</strong> </p>
 </li>
 </ul>
-<img src="屏幕快照 2020-10-11 上午1.04.44.png" title="划定搜索区域" width="50%" height="50%">
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjv1llr4k7j31800ww79p.jpg" title="划定搜索区域" width="50%" height="50%">
 
 <p>这里调整好后不用保存，需要把它们记录在文本文件中备用。</p>
 <p><font color="#FF0000"><strong>注意</strong></font>：与Autodock4不同，Vina中的空间单位为埃（Å），需先将<code>Spacing</code>调至1再调整xyz。</p>
@@ -546,7 +554,7 @@
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
 <h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
 <h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
-<img src="/images/scorearray.png" title="一种得分矩阵" width="50%" height="50%">
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg" title="一种得分矩阵" width="50%" height="50%">
 
 <p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
 <h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>
@@ -613,7 +621,8 @@
 <figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> {0..16}<br><span class="hljs-keyword">do</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">"file '<span class="hljs-variable">${file}</span>.flv'"</span> &gt;&gt; filelist.txt<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></tbody></table></figure>
 
 <p>然后我们就有了这样一个文件：</p>
-<p><img src="/images/13526978-452247138c560007.png" alt="filelist.txt"></p>
+<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjv1m0a3w2j303b07iq2w.jpg" title="filelist.txt">
+
 <p>接下来输入合成命令：</p>
 <figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -f concat -i filelist.txt -c copy output.mp4<br></code></pre></td></tr></tbody></table></figure>
 
