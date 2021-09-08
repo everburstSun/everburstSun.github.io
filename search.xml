@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ffmpeg视频压制</title>
-    <url>/sui-bi/ffmpeg-shi-pin-ya-zhi/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4<br></code></pre></td></tr></tbody></table></figure>]]></content>
+    <title>在MacOS上编译OSRA（光学结构识别程序）</title>
+    <url>/sui-bi/compile-osra-on-mac/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>绘制结构是化学工作者的基本功，但是对于大数据相关的工作，人工绘制数十万个结构就有些不现实，所以如果能实现类似OCR的功能，将对机器学习有很大帮助。2008年，一个叫Igor V. Filippov的老哥发布了名为OSRA的程序，即Optical Structure Recognition Application(光学结构识别程序）。这是一种类似于传统的OCR式程序，能将图片中的化学结构式转换成计算机可以读取的格式如SMILES、SDF等，它后来Schrödinger公司做的那种基于神经网络的结构识别系统有本质区别。第二年，老哥把工作写成了论文，如果想详细了解，可以看这篇文章：<a href="https://pubs.acs.org/doi/abs/10.1021/ci800067r"><em>J. Chem. Inf. Model.</em> 2009, 49, 3, 740–743</a>。</p>
+<p>这个程序的编译并不怎么顺利，遇到了挺多坑的，我是好几年前知道它的存在的，但是由于一直没时间排坑，就总在用它的<a href="https://cactus.nci.nih.gov/cgi-bin/osra/index.cgi">在线版</a>，但是长久以来在线版都没办法导出SDF，而SMILES的转换又没法跟图片上一致，而且最要命的是，它的图像API居然完全无法识别MacOS下生成的图片！！所以还是得编译本地版。这段时间由于肺炎疫情一直在家呆着，终于有时间仔细研究一下了。（果然闲出屁可以作出奇怪的工作2333）</p>
+<p>本文的编译环境为MacOS 10.13.6，没有在其他系统上使过，并不推荐Windows系统，似乎挺麻烦的，作者也不推荐。首先，电脑上需要安装<a href="https://subversion.apache.org/download.cgi#recommended-release">subversion</a>和<a href="https://brew.sh/">homebrew</a>，subversion用来下载源代码，homebrew则用来安装依赖。</p>
+<p>不知道出于什么原因，作者只会把BUG修复到svn版的代码里（可能是懒癌？），所以先用svn把代码check出来：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># must use svn version code</span><br>svn checkout https:<span class="hljs-regexp">//</span>svn.code.sf.net<span class="hljs-regexp">/p/</span>osra<span class="hljs-regexp">/code/</span>tags/<span class="hljs-number">2.1</span>.<span class="hljs-number">1</span> osra-code<br></code></pre></td></tr></tbody></table></figure>
+<p>然后安装依赖，有一些是可以直接用brew安装的，有一些还是需要编译安装，先说brew安装的：</p>
+<figure class="highlight mipsasm"><table><tbody><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>libiconv, zlib, <span class="hljs-keyword">bzip2, </span>freetype, libpng, libtiff, lcms, <span class="hljs-keyword">jasper, </span>libjpeg<br></code></pre></td></tr></tbody></table></figure>
+<p>下面的一些依赖需要编译安装，用户要去对应的库的官网下载代码，然后按照如下的命令逐个安装：</p>
+<figure class="highlight gauss"><table><tbody><tr><td class="code"><pre><code class="hljs gauss"><span class="hljs-meta">#libxml2</span><br>./autogen.sh<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Compile OCRAD and TCLAP as follows:</span><br>./configure<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Potrace:</span><br>./configure --with-libpotrace --<span class="hljs-keyword">disable</span>-shared<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#GOCR:</span><br>./configure<br><span class="hljs-built_in">make</span> libs<br>sudo <span class="hljs-built_in">make</span> install<br><br></code></pre></td></tr></tbody></table></figure>
+<p>注意这里，Openbabel需要使用作者patch过的版本，可以在<a href="https://sourceforge.net/projects/osra/files/openbabel-patched/openbabel-3-0-0-patched.tgz/download">他的sourceforge</a>下载到，下载完成后按如下命令安装：</p>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">#Openbabel</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LDFLAGS</span>=/usr/local/opt/libiconv/lib/libiconv.a<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DBUILD_SHARED</span>=OFF <span class="hljs-built_in">..</span><br>sudo make install<br><br><span class="hljs-comment">#GraphicsMagick</span><br><span class="hljs-builtin-name">export</span> LDFLAGS=<br>./configure --disable-shared <span class="hljs-attribute">--with-x</span>=<span class="hljs-literal">no</span> --disable-openmp --without-threads<br>make -j4<br>sudo make install<br><span class="hljs-comment"># 要保证你的PATH里可以找到graphicsmagick++-config</span><br><span class="hljs-comment"># 把下面的路径换成你自己存储GraphicsMagick源代码的位置</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">PATH</span>=/Users/simon/Downloads/GraphicsMagick-1.3.21/Magick++/bin:$PATH<br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LD_LIBRARY_PATH</span>=/usr/local/lib<br><br><span class="hljs-comment">#Poppler</span><br>sudo chown -R $(whoami) /usr/local/share/man/man4<br>brew install pkgconfig openjpeg<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DCMAKE_BUILD_TYPE</span>=Release <span class="hljs-attribute">-DCMAKE_INSTALL_PREFIX</span>=/usr/local <span class="hljs-attribute">-DENABLE_UNSTABLE_API_ABI_HEADERS</span>=ON <span class="hljs-built_in">..</span><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
+<p>到这里依赖就全部安装好了，然后就是编译OSRA主程序了。你遇到的第一个大坑就是<code>configure</code>文件。作者原始的文件应该是没对mac优化过，所以configure就过不了，得手动把里面的某些参数改一改。用文本编辑器打开<code>configure</code>，找到所有的<code>-static-libgcc</code>，把它们全都删掉。然后搜索<code>${MACPORTLIBS}</code>，然后把这个变量替换成相应位置显示的库文件，你安装的库版本可能会和我的不一样，所以你需要确认一下你电脑上安装的真实版本，然后把路径改成你的，挨个替换。通过HomeBrew安装的库文件会在<code>/usr/local/Cellar/</code>里，而编译安装的库则在<code>/usr/local/lib/</code>里。有以下几个库需要替换：</p>
+<figure class="highlight crystal"><table><tbody><tr><td class="code"><pre><code class="hljs crystal">/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libxml2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/libiconv/<span class="hljs-number">1.16</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libiconv</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">liblcms2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libtiff</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libfreetype</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libjasper</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libpng</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/bzip2/<span class="hljs-number">1.0</span>.<span class="hljs-number">8</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libbz2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br></code></pre></td></tr></tbody></table></figure>
+<p>完成后，再运行<code>configure</code>就可以通过了，然后按照前面一样的方法make再install就可以了：</p>
+<figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><code class="hljs gradle">.<span class="hljs-regexp">/configure --enable-static-linking --with-graphicsmagick-lib=/u</span>sr<span class="hljs-regexp">/local/</span>lib --with-graphicsmagick-<span class="hljs-keyword">include</span>=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/include/G</span>raphicsMagick<br><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<center><b><font color="#FF0000">以下是我的私货时间</font></b>（笑）</center>
+
+<hr>
+<p>化学专业的学生写毕业论文综述要画上好几百个结构，手动画太令人头大了，有了OSRA后，就可以直接识别PDF里的结构了，于是乎我写了一个截图的GUI小程序，直接在结构上画个框就能把图截下来，然后自动调用OSRA把结构识别成SDF格式，PNG和SDF会被分别保存下来，SDF打开以后套一个模板就可以复制到word里去用了。</p>
+<p>程序源代码我发布在了<a href="https://github.com/SSSSSimon/OSRA-screenshot-GUI">我的github</a>上，用python写成，需要先用pip安装PyQt5，如果对你有帮助，别忘了在github上给我一个star😋下方是一个演示视频～</p>
+<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","video":{"url":"/images/osra-demo.mov","pic":"/images/osra-demo.png"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -34,32 +56,10 @@
       </categories>
   </entry>
   <entry>
-    <title>在MacOS上编译OSRA（光学结构识别程序）</title>
-    <url>/sui-bi/compile-osra-on-mac/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>绘制结构是化学工作者的基本功，但是对于大数据相关的工作，人工绘制数十万个结构就有些不现实，所以如果能实现类似OCR的功能，将对机器学习有很大帮助。2008年，一个叫Igor V. Filippov的老哥发布了名为OSRA的程序，即Optical Structure Recognition Application(光学结构识别程序）。这是一种类似于传统的OCR式程序，能将图片中的化学结构式转换成计算机可以读取的格式如SMILES、SDF等，它后来Schrödinger公司做的那种基于神经网络的结构识别系统有本质区别。第二年，老哥把工作写成了论文，如果想详细了解，可以看这篇文章：<a href="https://pubs.acs.org/doi/abs/10.1021/ci800067r"><em>J. Chem. Inf. Model.</em> 2009, 49, 3, 740–743</a>。</p>
-<p>这个程序的编译并不怎么顺利，遇到了挺多坑的，我是好几年前知道它的存在的，但是由于一直没时间排坑，就总在用它的<a href="https://cactus.nci.nih.gov/cgi-bin/osra/index.cgi">在线版</a>，但是长久以来在线版都没办法导出SDF，而SMILES的转换又没法跟图片上一致，而且最要命的是，它的图像API居然完全无法识别MacOS下生成的图片！！所以还是得编译本地版。这段时间由于肺炎疫情一直在家呆着，终于有时间仔细研究一下了。（果然闲出屁可以作出奇怪的工作2333）</p>
-<p>本文的编译环境为MacOS 10.13.6，没有在其他系统上使过，并不推荐Windows系统，似乎挺麻烦的，作者也不推荐。首先，电脑上需要安装<a href="https://subversion.apache.org/download.cgi#recommended-release">subversion</a>和<a href="https://brew.sh/">homebrew</a>，subversion用来下载源代码，homebrew则用来安装依赖。</p>
-<p>不知道出于什么原因，作者只会把BUG修复到svn版的代码里（可能是懒癌？），所以先用svn把代码check出来：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># must use svn version code</span><br>svn checkout https:<span class="hljs-regexp">//</span>svn.code.sf.net<span class="hljs-regexp">/p/</span>osra<span class="hljs-regexp">/code/</span>tags/<span class="hljs-number">2.1</span>.<span class="hljs-number">1</span> osra-code<br></code></pre></td></tr></tbody></table></figure>
-<p>然后安装依赖，有一些是可以直接用brew安装的，有一些还是需要编译安装，先说brew安装的：</p>
-<figure class="highlight mipsasm"><table><tbody><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>libiconv, zlib, <span class="hljs-keyword">bzip2, </span>freetype, libpng, libtiff, lcms, <span class="hljs-keyword">jasper, </span>libjpeg<br></code></pre></td></tr></tbody></table></figure>
-<p>下面的一些依赖需要编译安装，用户要去对应的库的官网下载代码，然后按照如下的命令逐个安装：</p>
-<figure class="highlight gauss"><table><tbody><tr><td class="code"><pre><code class="hljs gauss"><span class="hljs-meta">#libxml2</span><br>./autogen.sh<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Compile OCRAD and TCLAP as follows:</span><br>./configure<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Potrace:</span><br>./configure --with-libpotrace --<span class="hljs-keyword">disable</span>-shared<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#GOCR:</span><br>./configure<br><span class="hljs-built_in">make</span> libs<br>sudo <span class="hljs-built_in">make</span> install<br><br></code></pre></td></tr></tbody></table></figure>
-<p>注意这里，Openbabel需要使用作者patch过的版本，可以在<a href="https://sourceforge.net/projects/osra/files/openbabel-patched/openbabel-3-0-0-patched.tgz/download">他的sourceforge</a>下载到，下载完成后按如下命令安装：</p>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">#Openbabel</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LDFLAGS</span>=/usr/local/opt/libiconv/lib/libiconv.a<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DBUILD_SHARED</span>=OFF <span class="hljs-built_in">..</span><br>sudo make install<br><br><span class="hljs-comment">#GraphicsMagick</span><br><span class="hljs-builtin-name">export</span> LDFLAGS=<br>./configure --disable-shared <span class="hljs-attribute">--with-x</span>=<span class="hljs-literal">no</span> --disable-openmp --without-threads<br>make -j4<br>sudo make install<br><span class="hljs-comment"># 要保证你的PATH里可以找到graphicsmagick++-config</span><br><span class="hljs-comment"># 把下面的路径换成你自己存储GraphicsMagick源代码的位置</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">PATH</span>=/Users/simon/Downloads/GraphicsMagick-1.3.21/Magick++/bin:$PATH<br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LD_LIBRARY_PATH</span>=/usr/local/lib<br><br><span class="hljs-comment">#Poppler</span><br>sudo chown -R $(whoami) /usr/local/share/man/man4<br>brew install pkgconfig openjpeg<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DCMAKE_BUILD_TYPE</span>=Release <span class="hljs-attribute">-DCMAKE_INSTALL_PREFIX</span>=/usr/local <span class="hljs-attribute">-DENABLE_UNSTABLE_API_ABI_HEADERS</span>=ON <span class="hljs-built_in">..</span><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
-<p>到这里依赖就全部安装好了，然后就是编译OSRA主程序了。你遇到的第一个大坑就是<code>configure</code>文件。作者原始的文件应该是没对mac优化过，所以configure就过不了，得手动把里面的某些参数改一改。用文本编辑器打开<code>configure</code>，找到所有的<code>-static-libgcc</code>，把它们全都删掉。然后搜索<code>${MACPORTLIBS}</code>，然后把这个变量替换成相应位置显示的库文件，你安装的库版本可能会和我的不一样，所以你需要确认一下你电脑上安装的真实版本，然后把路径改成你的，挨个替换。通过HomeBrew安装的库文件会在<code>/usr/local/Cellar/</code>里，而编译安装的库则在<code>/usr/local/lib/</code>里。有以下几个库需要替换：</p>
-<figure class="highlight crystal"><table><tbody><tr><td class="code"><pre><code class="hljs crystal">/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libxml2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/libiconv/<span class="hljs-number">1.16</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libiconv</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">liblcms2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libtiff</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libfreetype</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libjasper</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libpng</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/bzip2/<span class="hljs-number">1.0</span>.<span class="hljs-number">8</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libbz2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br></code></pre></td></tr></tbody></table></figure>
-<p>完成后，再运行<code>configure</code>就可以通过了，然后按照前面一样的方法make再install就可以了：</p>
-<figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><code class="hljs gradle">.<span class="hljs-regexp">/configure --enable-static-linking --with-graphicsmagick-lib=/u</span>sr<span class="hljs-regexp">/local/</span>lib --with-graphicsmagick-<span class="hljs-keyword">include</span>=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/include/G</span>raphicsMagick<br><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
-
-<hr>
-<center><b><font color="#FF0000">以下是我的私货时间</font></b>（笑）</center>
-
-<hr>
-<p>化学专业的学生写毕业论文综述要画上好几百个结构，手动画太令人头大了，有了OSRA后，就可以直接识别PDF里的结构了，于是乎我写了一个截图的GUI小程序，直接在结构上画个框就能把图截下来，然后自动调用OSRA把结构识别成SDF格式，PNG和SDF会被分别保存下来，SDF打开以后套一个模板就可以复制到word里去用了。</p>
-<p>程序源代码我发布在了<a href="https://github.com/SSSSSimon/OSRA-screenshot-GUI">我的github</a>上，用python写成，需要先用pip安装PyQt5，如果对你有帮助，别忘了在github上给我一个star😋下方是一个演示视频～</p>
-<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","video":{"url":"/images/osra-demo.mov","pic":"/images/osra-demo.png"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
-]]></content>
+    <title>ffmpeg视频压制</title>
+    <url>/sui-bi/ffmpeg-shi-pin-ya-zhi/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4<br></code></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -134,6 +134,141 @@
 ]]></content>
       <categories>
         <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PyMOL做出非氢键相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3kwf</p>
+<p>首先加载大分子： </p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
+<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
+
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
+<p>单独显示我们的研究对象：</p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
+<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
+<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
+
+<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
+<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
+最后设定好视角，就可以输出了。
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PyMOL的基本操作</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>安装PyMOL</title>
+    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
+<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
+
+
+<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
+<ul>
+<li><strong>Windows</strong></li>
+</ul>
+<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
+<ul>
+<li><strong>Linux</strong></li>
+</ul>
+<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
+<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
+
+<p>以Ubuntu为例，在terminal中输入：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
+
+<p>安装git，然后将源代码拷贝到本地：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
+
+<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
+
+<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
+
+<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
+<ul>
+<li><strong>Mac OS X</strong></li>
+</ul>
+<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
+<p>首先安装依赖：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
+<p>安装Pmw：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
+<p>获取pymol源代码并编译安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
+
+<p>最后将路径添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
+
+<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
+]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>利用PyMOL做出大分子-配体相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3oc0</p>
+<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
+<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
+
+<p>改变大分子和配体的显示样式：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
+<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
+
+<p>将我们需要的氨基酸残基复制到新对象中</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
+<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
+<p>改变残基显示样式</p>
+<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
+
+<p>现在你可以看到，已经有文献里图片的内味了。</p>
+<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
+
+<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
+
+<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
       </categories>
   </entry>
   <entry>
@@ -260,6 +395,34 @@
       </categories>
   </entry>
   <entry>
+    <title>PyQt5多线程编程</title>
+    <url>/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>单位的公共仪器需要预约才能够使用，但是自从预约时间改到了早上，就很不好约了，所以决定写一个程序实现自动预约。由于还要分享给实验室其它同学使用，就得写一个GUI了，这一下代码量瞬间变成了原来的10倍，不过学到了些新东西，这波不亏。</p>
+<p>在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。例如微软的office套件为了兼容老式CPU，IO等操作都是使用的UI的线程，打开或保存大文件时，用户界面无响应；而像photoshop这样的程序由于使用了多线程，即使有大量的IO行为，UI也可以响应用户的操作。</p>
+<p>Qt引以为豪的对象通讯机制被称为<strong>信号-槽</strong>(<strong>signal-slot</strong>)机制。当特定事件被触发时（如子线程结束）将发送一个信号，而与该信号建立的连接槽，则可以接收到该信号并做出反应(根据子线程的返回值执行操作)。</p>
+<p>在我的程序中，需要在仪器开放预约前不断查询，在开放预约的第一刻立即提交表单，而为了不拖垮服务器，需要在每次查询后让线程休眠一会。如果所有这些操作都在主线程中完成，那么线程休眠的时候UI就会无响应，在我的程序中就表现为点击开始查询后UI就一直处于无响应状态，直到预约成功后才恢复响应。</p>
+<p>因此，就需要新建一个线程，这个线程只用来发送信号调用查询函数，发送完毕后即休眠，等待下一次发送或任务完成后结束线程。</p>
+<img src="https://tva2.sinaimg.cn/large/005Vgpymly1gjv1m17p0oj316u0bgwgh.jpg" title="灵魂画手的流程图." alt="灵魂画手的流程图.">
+
+<hr>
+<p>要创建一个新线程，需要在程序中定义一个类，这个类要继承<code>QtCore.QThread</code>，然后把要执行的操作放进<code>run()</code>函数中，线程启动后，就会自动运行这个函数。结束线程时通过调用线程的<code>terminate()</code>方法来中止线程：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QueryWaitThread</span>(<span class="hljs-params">QtCore.QThread</span>):</span><br>    <span class="hljs-comment"># 定义线程需要用到的信号</span><br>    query_signal = QtCore.pyqtSignal()      <span class="hljs-comment"># 查询信号</span><br>    on_complete = QtCore.pyqtSignal(int)    <span class="hljs-comment"># 每次查询完成时发送，可以发送参数，</span><br>												此处参数int为查询次数<br>    terminate_thread = QtCore.pyqtSignal()  <span class="hljs-comment"># 结束线程信号</span><br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span><br>        super(QueryWaitThread, self).__init__()<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self</span>):</span> <span class="hljs-comment"># 只发送信号，然后休眠。</span><br>        i = <span class="hljs-number">1</span><br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            self.on_complete.emit(i)		<span class="hljs-comment"># 调用信号的emit()方法</span><br>            i += <span class="hljs-number">1</span><br>            self.query_signal.emit()<br>            sleep(<span class="hljs-number">60</span>)<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">kill_thread</span>(<span class="hljs-params">self</span>):</span><br>        self.terminate()<br></code></pre></td></tr></tbody></table></figure>
+
+<p>我的查询函数与验证函数：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_query</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-comment">#    查询操作   #</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-keyword">if</span> self.good_to_submit():<br>        self.btnstop.hide()<br>        self.btn_resel.show()<br>        main.Appoint(self)<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">good_to_submit</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-comment"># 还无法提交表单:</span><br>    	<span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    self.T.terminate_thread.emit() <span class="hljs-comment"># 验证可以提交表单后发送中止信号</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_current_count</span>(<span class="hljs-params">self, i</span>):</span><br>    self.normalOutputWritten(<span class="hljs-string">"当前为第 %i 次查询...\n"</span> % i)<br></code></pre></td></tr></tbody></table></figure>
+
+<p><code>self.normalOutputWritten()</code>是一个我自己定义的函数，用于在窗体的文本框中打印信息，你也可以定义自己的这类函数。</p>
+<p>定义好信号以后，接下来需要调用信号的<code>connect()</code>方法将信号连接到需要执行函数上。下面的<code>start()</code>和<code>stop()</code>是窗体按钮按下后执行的操作，我们在这两个函数中使用刚刚定义好的信号：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-comment"># do something #</span><br>    <span class="hljs-comment">################</span><br>    self.T = QueryWaitThread()<br>    self.T.query_signal.connect(self.auto_query)<br>    self.T.on_complete.connect(self.print_current_count)<br>    self.T.terminate_thread.connect(self.T.kill_thread)<br>    self.normalOutputWritten(<span class="hljs-string">"已开启自动查询，当有符合条件的时间段时将自动提交预约...\n"</span>)<br>    self.T.start()  <span class="hljs-comment"># 开始执行线程函数</span><br>    self.btnstop.show()<br>    self.btn_resel.hide()<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stop</span>(<span class="hljs-params">self</span>):</span><br>    self.btnstop.hide()<br>    self.btn_resel.show()<br>    self.T.terminate_thread.emit() <span class="hljs-comment"># 发送中止信号</span><br>    self.normalOutputWritten(<span class="hljs-string">"用户终止查询。\n"</span>)<br></code></pre></td></tr></tbody></table></figure>
+
+<p>当按下开始按钮后，程序会构造出一个线程<code>T</code>，执行到<code>T.start()</code>后，其中的<code>run()</code>函数便会进入<code>while</code>循环，不断发送查询信号，直到<code>good_to_submit()</code>函数返回<code>True</code>表明已经可以提交表单，或者当停止按钮按下后终止。</p>
+<p>改进后的程序只是将定时功能分离了出来，实际上联网查询功能还是使用主线程完成的，在程序等待服务器返回数据的过程中UI还是会有短暂的无响应时间，不过这是在用户点击后产生的，因此对体验影响不大。但是，严格来说联网也应该分离出一个线程，毕竟服务器有时候返回会很慢，这时候如果你的用户是一个暴躁老哥，还是会对体验有影响的。</p>
+]]></content>
+      <categories>
+        <category>Python学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
     <title>youtube-dl的使用及编程应用</title>
     <url>/python-xue-xi-bi-ji/youtube-dl-de-shi-yong-ji-bian-cheng-ying-yong/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>YouTube上有许多精彩视频，曾经chrome的应用商店里有一个叫VideoDownloader的插件可以一键下载YouTube视频，但是已经被Google封杀了。后来我发现了youtube-dl这个工具，它不仅可以用来下载YouTube视频，国内的一些视频站也可以用它进行下载。 </p>
@@ -306,34 +469,6 @@
 
 
 <p>完整的代码可以在我的<a href="https://github.com/SSSSSimon/youtube-dl-GUI">Github</a>上找到。</p>
-]]></content>
-      <categories>
-        <category>Python学习笔记</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyQt5多线程编程</title>
-    <url>/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>单位的公共仪器需要预约才能够使用，但是自从预约时间改到了早上，就很不好约了，所以决定写一个程序实现自动预约。由于还要分享给实验室其它同学使用，就得写一个GUI了，这一下代码量瞬间变成了原来的10倍，不过学到了些新东西，这波不亏。</p>
-<p>在图形化编程中一个很重要的一点就是使用多线程，将UI线程独立出来。如果你的程序不存在会造成线程阻塞的操作，不使用多线程倒也没什么大问题，但是如果存在像联网、读写文件等可能需要等待的操作，使用单线程就可能会造成UI假死，这对于用户体验来说是非常不友好的。例如微软的office套件为了兼容老式CPU，IO等操作都是使用的UI的线程，打开或保存大文件时，用户界面无响应；而像photoshop这样的程序由于使用了多线程，即使有大量的IO行为，UI也可以响应用户的操作。</p>
-<p>Qt引以为豪的对象通讯机制被称为<strong>信号-槽</strong>(<strong>signal-slot</strong>)机制。当特定事件被触发时（如子线程结束）将发送一个信号，而与该信号建立的连接槽，则可以接收到该信号并做出反应(根据子线程的返回值执行操作)。</p>
-<p>在我的程序中，需要在仪器开放预约前不断查询，在开放预约的第一刻立即提交表单，而为了不拖垮服务器，需要在每次查询后让线程休眠一会。如果所有这些操作都在主线程中完成，那么线程休眠的时候UI就会无响应，在我的程序中就表现为点击开始查询后UI就一直处于无响应状态，直到预约成功后才恢复响应。</p>
-<p>因此，就需要新建一个线程，这个线程只用来发送信号调用查询函数，发送完毕后即休眠，等待下一次发送或任务完成后结束线程。</p>
-<img src="https://tva2.sinaimg.cn/large/005Vgpymly1gjv1m17p0oj316u0bgwgh.jpg" title="灵魂画手的流程图." alt="灵魂画手的流程图.">
-
-<hr>
-<p>要创建一个新线程，需要在程序中定义一个类，这个类要继承<code>QtCore.QThread</code>，然后把要执行的操作放进<code>run()</code>函数中，线程启动后，就会自动运行这个函数。结束线程时通过调用线程的<code>terminate()</code>方法来中止线程：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QueryWaitThread</span>(<span class="hljs-params">QtCore.QThread</span>):</span><br>    <span class="hljs-comment"># 定义线程需要用到的信号</span><br>    query_signal = QtCore.pyqtSignal()      <span class="hljs-comment"># 查询信号</span><br>    on_complete = QtCore.pyqtSignal(int)    <span class="hljs-comment"># 每次查询完成时发送，可以发送参数，</span><br>												此处参数int为查询次数<br>    terminate_thread = QtCore.pyqtSignal()  <span class="hljs-comment"># 结束线程信号</span><br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span><br>        super(QueryWaitThread, self).__init__()<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self</span>):</span> <span class="hljs-comment"># 只发送信号，然后休眠。</span><br>        i = <span class="hljs-number">1</span><br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            self.on_complete.emit(i)		<span class="hljs-comment"># 调用信号的emit()方法</span><br>            i += <span class="hljs-number">1</span><br>            self.query_signal.emit()<br>            sleep(<span class="hljs-number">60</span>)<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">kill_thread</span>(<span class="hljs-params">self</span>):</span><br>        self.terminate()<br></code></pre></td></tr></tbody></table></figure>
-
-<p>我的查询函数与验证函数：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_query</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-comment">#    查询操作   #</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-keyword">if</span> self.good_to_submit():<br>        self.btnstop.hide()<br>        self.btn_resel.show()<br>        main.Appoint(self)<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">good_to_submit</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-comment"># 还无法提交表单:</span><br>    	<span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    self.T.terminate_thread.emit() <span class="hljs-comment"># 验证可以提交表单后发送中止信号</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_current_count</span>(<span class="hljs-params">self, i</span>):</span><br>    self.normalOutputWritten(<span class="hljs-string">"当前为第 %i 次查询...\n"</span> % i)<br></code></pre></td></tr></tbody></table></figure>
-
-<p><code>self.normalOutputWritten()</code>是一个我自己定义的函数，用于在窗体的文本框中打印信息，你也可以定义自己的这类函数。</p>
-<p>定义好信号以后，接下来需要调用信号的<code>connect()</code>方法将信号连接到需要执行函数上。下面的<code>start()</code>和<code>stop()</code>是窗体按钮按下后执行的操作，我们在这两个函数中使用刚刚定义好的信号：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span><br>    <span class="hljs-comment">################</span><br>    <span class="hljs-comment"># do something #</span><br>    <span class="hljs-comment">################</span><br>    self.T = QueryWaitThread()<br>    self.T.query_signal.connect(self.auto_query)<br>    self.T.on_complete.connect(self.print_current_count)<br>    self.T.terminate_thread.connect(self.T.kill_thread)<br>    self.normalOutputWritten(<span class="hljs-string">"已开启自动查询，当有符合条件的时间段时将自动提交预约...\n"</span>)<br>    self.T.start()  <span class="hljs-comment"># 开始执行线程函数</span><br>    self.btnstop.show()<br>    self.btn_resel.hide()<br><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stop</span>(<span class="hljs-params">self</span>):</span><br>    self.btnstop.hide()<br>    self.btn_resel.show()<br>    self.T.terminate_thread.emit() <span class="hljs-comment"># 发送中止信号</span><br>    self.normalOutputWritten(<span class="hljs-string">"用户终止查询。\n"</span>)<br></code></pre></td></tr></tbody></table></figure>
-
-<p>当按下开始按钮后，程序会构造出一个线程<code>T</code>，执行到<code>T.start()</code>后，其中的<code>run()</code>函数便会进入<code>while</code>循环，不断发送查询信号，直到<code>good_to_submit()</code>函数返回<code>True</code>表明已经可以提交表单，或者当停止按钮按下后终止。</p>
-<p>改进后的程序只是将定时功能分离了出来，实际上联网查询功能还是使用主线程完成的，在程序等待服务器返回数据的过程中UI还是会有短暂的无响应时间，不过这是在用户点击后产生的，因此对体验影响不大。但是，严格来说联网也应该分离出一个线程，毕竟服务器有时候返回会很慢，这时候如果你的用户是一个暴躁老哥，还是会对体验有影响的。</p>
 ]]></content>
       <categories>
         <category>Python学习笔记</category>
@@ -501,6 +636,36 @@
       </categories>
   </entry>
   <entry>
+    <title>Homology Modeling——同源模建简介</title>
+    <url>/ji-suan-hua-xue/homologymodeling/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
+<h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
+<h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg" title="一种得分矩阵" width="50%" height="50%">
+
+<p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
+<h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>
+<p>在建模时我们自然希望模板链和目标链重合的越多越好，那样我们的模型就越可靠，但是事情并不总是我们期待的那样。设想一下这种情况：我们的模板链由100个氨基酸残基，通过查询，有3条蛋白链分别有一部分与未知链重合，那么最好的情况就是我们把这最好的三个部分分别作为目标链对应区域的模板。MSA可以生成一种称为“序列谱”（profile）的东西<a href="#ref-5"><sup>5</sup></a>，也被称为“位置特异性得分矩阵”，它可以在搜索时匹配到更多的模板，在建模时把最佳的模板赋给目标链，保证保守区域不会发生变化。</p>
+<p>在Discovery Studio中，同源模建时查询的数据库都是非冗余数据库。例如查找模板时查询的不是PDB数据库，而是<code>PDB_nr95</code>数据库（nr即non-redundant），多重序列对齐时查询的是<code>SWISS-Prot</code>数据库，这些数据库都经过人工审查，没有重复数据，能节省查询时间，同时它们中的数据还经过人工校对，可以使建模效果更好。</p>
+<h2 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h2><p>序列对齐好后，我们的建模工作就可以开始了。同源模建工作发展到现在已经实现了自动化，执行这一步只需要点几下鼠标，但是其内部的工作过程其实可以分成三步：<strong>生成主链（Backbone）、生成回环（Loop）、生成侧链（Side-Chain）</strong>。</p>
+<p>在主链建模时，只需要简单地把对齐好的模版链片段的坐标赋给目标链。与多重序列对齐相同，主链建模时使用一种叫“多模板建模”的思想，即将各个模版中的最优部分作为模型赋给目标链。对于蛋白上的保守区域，同源蛋白间的序列一致度很高，侧链构象也倾向于保守，因此可以把这些氨基酸残基上携带的侧链一并复制到目标链中，这种直接复制坐标的方法被称作“刚体装配法”。还有一种方法是“空间限制法”，它根据几何和约束关系进行建模，使模型满足空间限制，<code>MODELLER</code>就是使用这种方法。</p>
+<p>Loop区的建模一直是同源模建工作的难点，原因在于Loop区不保守，有着很大的变动性，准确预测其结构较为困难。目前对Loop区进行建模主要有两种方法：基于现有知识的数据库查询和基于能量的构象搜索。查询数据库虽然简单快捷，但是由于数据不完整，能不能找到好模板还是要看运气，并且随着Loop的增长，匹配难度也越发增加。因此对于Loop区的预测主要还是应用能量计算，对于5-8个氨基酸残基的Loop，已经能给出比较准确的预测，例如蒙特卡洛方法<a href="#ref-6"><sup>6</sup></a>、模拟退火<a href="#ref-7"><sup>7</sup></a>等。近年来新发展了一些构象搜索方法<a href="#ref-8"><sup>8</sup></a>，使得通过计算得到的模型越来越精准，10-12个氨基酸残基的Loop的预测准确度有了较大的改善。</p>
+<p>当主链构象固定后，保守区的侧链氨基酸残基可以直接复制到模型中，因此侧链建模准确的前提是主链构象准确。基本上所有的侧链建模都会依赖于片段搜索，因为利用实验手段测出的结构都符合能量约束，构建侧链时先从未知特异性旋转异构体库中搜索相似构象，然后使用能量约束进行优化。</p>
+<h2 id="优化与验证"><a href="#优化与验证" class="headerlink" title="优化与验证"></a>优化与验证</h2><p>对整个蛋白质进行构象扫描来优化，即使是以今天的计算机水平也是几乎不可能完成的任务，而侧链建模依赖于主链，主链又会受到侧链影响，这似乎陷入了一个死循环。为了解决模型的优化问题，一种方法是先使用已有的主链预测一次侧链，然后根据侧链的空间与能量关系对主链进行调整，如此反复，直至结果自洽。使用这种方法进行预测，能量方程越精确，模型质量自然也就越高，即使是最直接的分子动力学模拟也是有赖于力场数据。在Discovery Studio中，模型的优化与验证都是依靠自由能数据的，但是仅仅能量低并不够，在有些情况下，错误折叠的蛋白质会带来比正确结构更加稳定的能量，因此，在进行同源模建工作时，每一步都应当考虑如何能够最少地引入错误，才能使我们的模型更佳具有实用性。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><div id="ref-1">1. C. Chothial, A. M.Lesk, “The relation between the divergence of sequence and structure in proteins”. EMBO J. (1986) Vol.5: 823-836.</div>
+<div id="ref-2">2. Sander C, Schneider R, “Database of homology-derived protein structures and the structural meaning of sequence alignment”. Proteins (1991). Vol.9: 56–68.</div>
+<div id="ref-3">3. Lipman, DJ; Pearson, WR. "Rapid and sensitive protein similarity searches". Science (1985). 227 (4693): 1435–1341.</div>
+<div id="ref-4">4. Altschul SF. “Basic local alignment search tool.” J Mol Biol. (1990 Oct 5);215(3): 403-410.</div>
+<div id="ref-5">5. Taylor WR. “Identification of protein sequence homology by consensus template alignment.” J Mol Biol. (1986 Mar 20); 188(2):233-258.</div>
+<div id="ref-6">6. Hansmann UH. “ew Monte Carlo algorithms for protein folding.” Curr Opin Struct Biol. 1999 Apr;9(2):177-183.</div>
+<div id="ref-7">7. Kim T. Simons. “Assembly of Protein Tertiary Structures from Fragments with Similar Local Sequences using Simulated Annealing and Bayesian Scoring Functions” J. Mol. Biol. (1997) 268, 209-225</div>
+<div id="ref-8">8. 袁飞. “基于氨基酸位置特异性的蛋白质Loop区结构预测” Acta Phys. Sin. Vol. 65, No. 15 (2016) 158701</div>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
     <title>在Discovery Studio中进行同源模建</title>
     <url>/ji-suan-hua-xue/homologymodeling-ds/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在药物设计中，如果目标蛋白质还没有被结晶出来，我们无法对其进行分子对接，但是，同源蛋白质三级结构的保守性远高于一级结构，因此可以通过已知三级结构的同源蛋白来模拟目标蛋白的空间结构，这就是同源模建技术。</p>
@@ -547,171 +712,6 @@
 ]]></content>
       <categories>
         <category>计算化学</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Homology Modeling——同源模建简介</title>
-    <url>/ji-suan-hua-xue/homologymodeling/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
-<h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
-<h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg" title="一种得分矩阵" width="50%" height="50%">
-
-<p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
-<h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>
-<p>在建模时我们自然希望模板链和目标链重合的越多越好，那样我们的模型就越可靠，但是事情并不总是我们期待的那样。设想一下这种情况：我们的模板链由100个氨基酸残基，通过查询，有3条蛋白链分别有一部分与未知链重合，那么最好的情况就是我们把这最好的三个部分分别作为目标链对应区域的模板。MSA可以生成一种称为“序列谱”（profile）的东西<a href="#ref-5"><sup>5</sup></a>，也被称为“位置特异性得分矩阵”，它可以在搜索时匹配到更多的模板，在建模时把最佳的模板赋给目标链，保证保守区域不会发生变化。</p>
-<p>在Discovery Studio中，同源模建时查询的数据库都是非冗余数据库。例如查找模板时查询的不是PDB数据库，而是<code>PDB_nr95</code>数据库（nr即non-redundant），多重序列对齐时查询的是<code>SWISS-Prot</code>数据库，这些数据库都经过人工审查，没有重复数据，能节省查询时间，同时它们中的数据还经过人工校对，可以使建模效果更好。</p>
-<h2 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h2><p>序列对齐好后，我们的建模工作就可以开始了。同源模建工作发展到现在已经实现了自动化，执行这一步只需要点几下鼠标，但是其内部的工作过程其实可以分成三步：<strong>生成主链（Backbone）、生成回环（Loop）、生成侧链（Side-Chain）</strong>。</p>
-<p>在主链建模时，只需要简单地把对齐好的模版链片段的坐标赋给目标链。与多重序列对齐相同，主链建模时使用一种叫“多模板建模”的思想，即将各个模版中的最优部分作为模型赋给目标链。对于蛋白上的保守区域，同源蛋白间的序列一致度很高，侧链构象也倾向于保守，因此可以把这些氨基酸残基上携带的侧链一并复制到目标链中，这种直接复制坐标的方法被称作“刚体装配法”。还有一种方法是“空间限制法”，它根据几何和约束关系进行建模，使模型满足空间限制，<code>MODELLER</code>就是使用这种方法。</p>
-<p>Loop区的建模一直是同源模建工作的难点，原因在于Loop区不保守，有着很大的变动性，准确预测其结构较为困难。目前对Loop区进行建模主要有两种方法：基于现有知识的数据库查询和基于能量的构象搜索。查询数据库虽然简单快捷，但是由于数据不完整，能不能找到好模板还是要看运气，并且随着Loop的增长，匹配难度也越发增加。因此对于Loop区的预测主要还是应用能量计算，对于5-8个氨基酸残基的Loop，已经能给出比较准确的预测，例如蒙特卡洛方法<a href="#ref-6"><sup>6</sup></a>、模拟退火<a href="#ref-7"><sup>7</sup></a>等。近年来新发展了一些构象搜索方法<a href="#ref-8"><sup>8</sup></a>，使得通过计算得到的模型越来越精准，10-12个氨基酸残基的Loop的预测准确度有了较大的改善。</p>
-<p>当主链构象固定后，保守区的侧链氨基酸残基可以直接复制到模型中，因此侧链建模准确的前提是主链构象准确。基本上所有的侧链建模都会依赖于片段搜索，因为利用实验手段测出的结构都符合能量约束，构建侧链时先从未知特异性旋转异构体库中搜索相似构象，然后使用能量约束进行优化。</p>
-<h2 id="优化与验证"><a href="#优化与验证" class="headerlink" title="优化与验证"></a>优化与验证</h2><p>对整个蛋白质进行构象扫描来优化，即使是以今天的计算机水平也是几乎不可能完成的任务，而侧链建模依赖于主链，主链又会受到侧链影响，这似乎陷入了一个死循环。为了解决模型的优化问题，一种方法是先使用已有的主链预测一次侧链，然后根据侧链的空间与能量关系对主链进行调整，如此反复，直至结果自洽。使用这种方法进行预测，能量方程越精确，模型质量自然也就越高，即使是最直接的分子动力学模拟也是有赖于力场数据。在Discovery Studio中，模型的优化与验证都是依靠自由能数据的，但是仅仅能量低并不够，在有些情况下，错误折叠的蛋白质会带来比正确结构更加稳定的能量，因此，在进行同源模建工作时，每一步都应当考虑如何能够最少地引入错误，才能使我们的模型更佳具有实用性。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><div id="ref-1">1. C. Chothial, A. M.Lesk, “The relation between the divergence of sequence and structure in proteins”. EMBO J. (1986) Vol.5: 823-836.</div>
-<div id="ref-2">2. Sander C, Schneider R, “Database of homology-derived protein structures and the structural meaning of sequence alignment”. Proteins (1991). Vol.9: 56–68.</div>
-<div id="ref-3">3. Lipman, DJ; Pearson, WR. "Rapid and sensitive protein similarity searches". Science (1985). 227 (4693): 1435–1341.</div>
-<div id="ref-4">4. Altschul SF. “Basic local alignment search tool.” J Mol Biol. (1990 Oct 5);215(3): 403-410.</div>
-<div id="ref-5">5. Taylor WR. “Identification of protein sequence homology by consensus template alignment.” J Mol Biol. (1986 Mar 20); 188(2):233-258.</div>
-<div id="ref-6">6. Hansmann UH. “ew Monte Carlo algorithms for protein folding.” Curr Opin Struct Biol. 1999 Apr;9(2):177-183.</div>
-<div id="ref-7">7. Kim T. Simons. “Assembly of Protein Tertiary Structures from Fragments with Similar Local Sequences using Simulated Annealing and Bayesian Scoring Functions” J. Mol. Biol. (1997) 268, 209-225</div>
-<div id="ref-8">8. 袁飞. “基于氨基酸位置特异性的蛋白质Loop区结构预测” Acta Phys. Sin. Vol. 65, No. 15 (2016) 158701</div>
-]]></content>
-      <categories>
-        <category>计算化学</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyMOL做出非氢键相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3kwf</p>
-<p>首先加载大分子： </p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
-<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
-<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
-
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
-<p>单独显示我们的研究对象：</p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
-<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
-<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
-<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
-
-<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
-
-<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
-<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
-最后设定好视角，就可以输出了。
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyMOL的基本操作</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>利用PyMOL做出大分子-配体相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3oc0</p>
-<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
-<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
-
-<p>改变大分子和配体的显示样式：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
-<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
-
-<p>将我们需要的氨基酸残基复制到新对象中</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
-<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
-<p>改变残基显示样式</p>
-<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
-
-<p>现在你可以看到，已经有文献里图片的内味了。</p>
-<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
-
-<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
-
-<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
-
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>安装PyMOL</title>
-    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
-<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
-
-
-<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
-<ul>
-<li><strong>Windows</strong></li>
-</ul>
-<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
-<ul>
-<li><strong>Linux</strong></li>
-</ul>
-<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
-<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
-
-<p>以Ubuntu为例，在terminal中输入：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
-
-<p>安装git，然后将源代码拷贝到本地：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
-
-<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
-
-<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
-
-<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
-<ul>
-<li><strong>Mac OS X</strong></li>
-</ul>
-<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
-<p>首先安装依赖：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
-<p>安装Pmw：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
-<p>获取pymol源代码并编译安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
-
-<p>最后将路径添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
-
-<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
-]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
       </categories>
   </entry>
 </search>
