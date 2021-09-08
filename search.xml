@@ -1,141 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>PyMOL做出非氢键相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3kwf</p>
-<p>首先加载大分子： </p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
-<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
-<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
-
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
-<p>单独显示我们的研究对象：</p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
-<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
-<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
-<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
-
-<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
-
-<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
-<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
-最后设定好视角，就可以输出了。
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyMOL的基本操作</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>利用PyMOL做出大分子-配体相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3oc0</p>
-<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
-<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
-
-<p>改变大分子和配体的显示样式：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
-<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
-
-<p>将我们需要的氨基酸残基复制到新对象中</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
-<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
-<p>改变残基显示样式</p>
-<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
-
-<p>现在你可以看到，已经有文献里图片的内味了。</p>
-<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
-
-<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
-
-<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
-
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>安装PyMOL</title>
-    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
-<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
-
-
-<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
-<ul>
-<li><strong>Windows</strong></li>
-</ul>
-<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
-<ul>
-<li><strong>Linux</strong></li>
-</ul>
-<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
-<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
-
-<p>以Ubuntu为例，在terminal中输入：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
-
-<p>安装git，然后将源代码拷贝到本地：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
-
-<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
-
-<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
-
-<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
-<ul>
-<li><strong>Mac OS X</strong></li>
-</ul>
-<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
-<p>首先安装依赖：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
-<p>安装Pmw：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
-<p>获取pymol源代码并编译安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
-
-<p>最后将路径添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
-
-<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
-]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
     <title>PyQt5多线程编程</title>
     <url>/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>单位的公共仪器需要预约才能够使用，但是自从预约时间改到了早上，就很不好约了，所以决定写一个程序实现自动预约。由于还要分享给实验室其它同学使用，就得写一个GUI了，这一下代码量瞬间变成了原来的10倍，不过学到了些新东西，这波不亏。</p>
@@ -339,70 +204,272 @@
       </categories>
   </entry>
   <entry>
-    <title>使用Vina进行分子对接</title>
-    <url>/ji-suan-hua-xue/docking-vina/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>使用Vina进行分子对接，各种蛋白与配体文件均需使用pdbqt格式，scripps研究所提供了Autodock Tools可以进行可视化转换。下面是使用adt准备文件的步骤：</p>
-<ul>
-<li>安装好adt后，在终端内输入adt以启动。</li>
-</ul>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ adt<br></code></pre></td></tr></tbody></table></figure>
+    <title>PyMOL的基本操作</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>利用PyMOL做出大分子-配体相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
 
-<img src="https://tvax1.sinaimg.cn/large/005Vgpymly1gjv1llzrwjj317e0xsgpd.jpg" title="Autodock Tools" width="50%" height="50%">
+<p>本例中使用的PDB code: 3oc0</p>
+<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
+<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
 
-<hr>
-<ul>
-<li><p>处理大分子</p>
-<p>  <strong>File -&gt; Read Molecule -&gt; Open</strong></p>
-<p>  <strong>Edit -&gt; Hydrogens -&gt; Add -&gt; Polar Only -&gt; OK</strong></p>
-<p>  <strong>Grid -&gt; Macromolecule -&gt; Choose -&gt; Select molecule -&gt; Save</strong></p>
-</li>
-</ul>
-<p>将大分子保存为pdbqt文件后，大分子的处理就完成了。</p>
-<hr>
-<ul>
-<li><p>限定搜索区域</p>
-<p>  <strong>Grid -&gt; Grid Box</strong> </p>
-</li>
-</ul>
-<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjv1llr4k7j31800ww79p.jpg" title="划定搜索区域" width="50%" height="50%">
+<p>改变大分子和配体的显示样式：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
+<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
 
-<p>这里调整好后不用保存，需要把它们记录在文本文件中备用。</p>
-<p><font color="#FF0000"><strong>注意</strong></font>：与Autodock4不同，Vina中的空间单位为埃（Å），需先将<code>Spacing</code>调至1再调整xyz。</p>
-<hr>
-<ul>
-<li><p>处理小分子</p>
-<p>  <strong>Ligand -&gt; Input -&gt; Open</strong> </p>
-<p>  <strong>Ligand -&gt; Torsion Tree -&gt; Choose Torsion</strong></p>
-<p>  按住Shift再单击键以切换扭转类型，可以先在DashBoard中将大分子隐藏。</p>
-<p>  <strong>Ligand -&gt; Output -&gt; Save as PDBQT -&gt; Save</strong></p>
-</li>
-</ul>
-<p>处理完文件后即可进行分子对接</p>
-<hr>
-<ul>
-<li>Redocking</li>
-</ul>
-<p>运行Vina需要给它提供一个配置文件，写法如下，random seed是可选项：</p>
-<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">receptor</span> = ./PDBQT/<span class="hljs-number">5</span>un1.pdbqt<br><span class="hljs-attr">ligand</span> = ./PDBQT/mk-<span class="hljs-number">801</span>.pdbqt<br><br><span class="hljs-attr">center_x</span> = <span class="hljs-number">24.188</span><br><span class="hljs-attr">center_y</span> = -<span class="hljs-number">14.09</span><br><span class="hljs-attr">center_z</span> = <span class="hljs-number">108.227</span><br><br><span class="hljs-attr">size_x</span> = <span class="hljs-number">20</span><br><span class="hljs-attr">size_y</span> = <span class="hljs-number">20</span><br><span class="hljs-attr">size_z</span> = <span class="hljs-number">20</span><br><br><span class="hljs-attr">out</span> = ./DockingResult/rslt-mk801.pdbqt<br><span class="hljs-attr">log</span> = ./log/log-mk801.log<br><br><span class="hljs-attr">seed</span> = -<span class="hljs-number">1661955048</span><br><span class="hljs-attr">exhaustiveness</span> = <span class="hljs-number">30</span><br></code></pre></td></tr></tbody></table></figure>
-<p>保存为mk801-conf.txt，然后就可以运行vina了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ vina --config mk801-conf.txt<br></code></pre></td></tr></tbody></table></figure>
+<p>将我们需要的氨基酸残基复制到新对象中</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
+<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
+<p>改变残基显示样式</p>
+<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
 
+<p>现在你可以看到，已经有文献里图片的内味了。</p>
+<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
+
+<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
+
+<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>安装PyMOL</title>
+    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
+<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
+
+
+<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
 <ul>
-<li>对接目标化合物</li>
+<li><strong>Windows</strong></li>
 </ul>
-<p>对接目标化合物的过程同上。对于分子对接的结果一定要谨慎对待，因为无论给定的分子有没有活性、是否契合活性口袋，程序都能给出一个结果，一定要根据相互作用知识来进行判断。</p>
-<p>最后，需要调用<code>MGLTools</code>里的python脚本将pdbqt转换成pdb，就可以在各种可视化程序中查看了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ convertqt=mglTools/MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py<br>$ pythonsh <span class="hljs-variable">$convertqt</span> -s rslt-mk801.pdbqt<br></code></pre></td></tr></tbody></table></figure>
-<p>原始的脚本只能将对接产生的能量最低的一个结构输出出来，如果你需要把所有结构都输出的话，需要修改两个函数：</p>
-<p>找到<code>MolKit/pdbWriter.py</code>，在<code>write</code>函数后面定义一个新函数，名叫<code>write2</code>，函数定义如下：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write2</span>(<span class="hljs-params">self, filename, nodes, sort=False, sortFunc=None,</span></span><br><span class="hljs-function"><span class="hljs-params">          records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'CONECT'</span>], bondOrigin=(<span class="hljs-params"><span class="hljs-string">'File'</span>,<span class="hljs-string">'UserDefined'</span></span>),</span></span><br><span class="hljs-function"><span class="hljs-params">          ssOrigin=<span class="hljs-string">'File'</span></span>):</span><br>    <span class="hljs-string">"""</span><br><span class="hljs-string">    required argument:</span><br><span class="hljs-string">    filename  -- path to the new file, a .pdb extension will be added</span><br><span class="hljs-string">                 when missing.</span><br><span class="hljs-string">    nodes     -- TreeNode, TreeNodeSet instance to save as PDB</span><br><span class="hljs-string"></span><br><span class="hljs-string">    optional arguments:</span><br><span class="hljs-string">    sort  -- (False) Boolean flag to specify whether or not to sort the</span><br><span class="hljs-string">             given nodes</span><br><span class="hljs-string">    sortFunc  -- (None) sort function that will be used to sort the nodes</span><br><span class="hljs-string">                 when specified.This function has to return (-1, 0 or 1).</span><br><span class="hljs-string">    records -- list of PDB record to write out</span><br><span class="hljs-string">    bondOrigin -- (('File', 'UserDefined')) This will be used if the CONECT records are</span><br><span class="hljs-string">                  written out. Can be any combination of 'File',</span><br><span class="hljs-string">                  'BuiltByDistance' and 'UserDefined'.</span><br><span class="hljs-string">    ssOrigin -- 'File' This will be used if the TURN, HELIX and SHEET</span><br><span class="hljs-string">                 records are written. Can be either from the originating</span><br><span class="hljs-string">                 PDB file or from the data structure.</span><br><span class="hljs-string">    """</span><br>    self.records = records<br>    <span class="hljs-comment"># If the filename doesn't have a pdb extension add it</span><br>    fileExt = os.path.splitext(filename)[<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">if</span> fileExt==<span class="hljs-string">''</span>:<br>        filename = <span class="hljs-string">'%s.pdb'</span> %filename<br>    <span class="hljs-comment"># Nodes need to be either a TreeNode or a TreeNodeSet instance.</span><br>    <span class="hljs-keyword">assert</span> isinstance(nodes, TreeNode) <span class="hljs-keyword">or</span> isinstance(nodes, TreeNodeSet)<br>    <br>    <span class="hljs-comment"># sort the nodes</span><br>    <span class="hljs-keyword">if</span> sort <span class="hljs-keyword">and</span> hasattr(nodes, <span class="hljs-string">'sort'</span>):<br>        nodes.sort(sortFunc)<br><br>    <span class="hljs-keyword">if</span> isinstance(nodes, TreeNode): mol = nodes.top   <br>    <span class="hljs-keyword">elif</span> isinstance(nodes, TreeNodeSet): mol = nodes.top.uniq()[<span class="hljs-number">0</span>]<br>    <span class="hljs-comment"># get a handle on the molecule parser</span><br>    parser = mol.parser<br><br>    <span class="hljs-comment"># get the atoms in nodes</span><br>    atmInNode = nodes.findType(Atom)<br>    <br>    <span class="hljs-comment"># Create all the records to be written out.</span><br>    <span class="hljs-comment"># Get the from file records this is possible only if the file</span><br>    <span class="hljs-comment"># comes from a PDB parser.</span><br>    <span class="hljs-keyword">if</span> isinstance(parser, PdbParser):<br>        fileRec = filter(<span class="hljs-keyword">lambda</span> x: <span class="hljs-keyword">not</span> x <span class="hljs-keyword">in</span> self.FROMDATASTRUCT, records)<br>        <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> fileRec:<br>            self.recordsToWrite[rec] = parser.getRecords(parser.allLines,rec)<br><br>    <span class="hljs-comment"># Create the records from the data structure:</span><br>    <span class="hljs-comment"># secondary structure 'HELIX', 'SHEET', 'TURN', 'REMARK 650 HELIX',</span><br>    <span class="hljs-comment"># 'REMARK 700 SHEET', 'REMARK 750 TURN'</span><br>    ssRec = filter(<span class="hljs-keyword">lambda</span> x: x <span class="hljs-keyword">in</span> [<span class="hljs-string">'HELIX'</span>, <span class="hljs-string">'SHEET'</span>, <span class="hljs-string">'TURN'</span>], records)<br>    <span class="hljs-keyword">if</span> len(ssRec):<br>        self.defineSecondaryStructureSection(mol, origin=ssOrigin)<br><br>    <span class="hljs-comment"># Atom records (ATOM, TER and HETATM)</span><br>    atmRec = <span class="hljs-string">'ATOM'</span> <span class="hljs-keyword">in</span> records<br>    hetRec = <span class="hljs-string">'HETATM'</span> <span class="hljs-keyword">in</span> records<br>    <span class="hljs-keyword">if</span> atmRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">or</span> hetRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> : <br>        <span class="hljs-comment">#self.defineCoordsSection(nodes, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)</span><br>        self.defineCoordsSection(atmInNode, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)<br>        <br>    <span class="hljs-comment"># Hydrogen bonds (HYDBND)</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'HYDBND'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineHYDBNDRecords(atmInNode)<br><br>    <span class="hljs-comment"># CONECT records</span><br>    <span class="hljs-comment">#build excluded Bonds from recType here</span><br>    <span class="hljs-comment">#possible recTypes are:</span><br>    <span class="hljs-comment">#all, fileUser, fileDist, file, user, userDist, dist, none</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'CONECT'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineConnectSection(atmInNode, bondOrigin)<br><br>    file = open(filename, <span class="hljs-string">'a'</span>)      <br><br>    <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> self.PDBRECORDS:<br>        <span class="hljs-keyword">if</span> self.recordsToWrite.has_key(rec):<br>            recLine = self.recordsToWrite[rec]<br>            <span class="hljs-keyword">if</span> type(recLine) <span class="hljs-keyword">is</span> types.ListType:<br>                <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> recLine:<br>                    file.write(line)<br>            <span class="hljs-keyword">else</span>:<br>                file.write(line)<br>    file.close()<br>    <br>    <span class="hljs-comment">#self.recordsToWrite = {}</span><br></code></pre></td></tr></tbody></table></figure>
-<p>然后找到<code>MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py</code>，把它复制一份，命名为<code>pdbqt_to_pdb2.py</code>，将里面的<code>mols = Read(pdbqt_filename)</code>一直到最后的代码替换成如下所示：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">mols = Read(pdbqt_filename)<br>mol2 = []<br><br><span class="hljs-keyword">if</span> verbose: <span class="hljs-keyword">print</span> <span class="hljs-string">'read '</span>, pdbqt_filename    <br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> mols:<br>    mol = i<br>    mol.buildBondsByDistance()<br>    <span class="hljs-comment">#fix number for problem files with alternative positions</span><br>    mol.allAtoms.number = range(<span class="hljs-number">1</span>, len(mol.allAtoms)+<span class="hljs-number">1</span>)<br>    mol2.append(mol)<br>    <br><span class="hljs-comment">#pdb_filename = mol.name + '.pdb'</span><br>writer = PdbWriter()<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(mol2)):<br>    file = open(pdb_filename, <span class="hljs-string">'a'</span>)<br>    file.write(<span class="hljs-string">'MODEL '</span>)<br>    file.write(str(i+<span class="hljs-number">1</span>))<br>    file.write(<span class="hljs-string">'\n'</span>)<br>    file.close()<br>    writer.write2(pdb_filename, mol2[i].allAtoms, records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'HETATM'</span>])<br><br><span class="hljs-keyword">if</span> verbose:<br>    <span class="hljs-keyword">print</span> <span class="hljs-string">"wrote "</span>, ctr, <span class="hljs-string">" atoms to"</span>, pdb_filename<br></code></pre></td></tr></tbody></table></figure>
-<p>最后运行脚本的时候就用<code>pdbqt_to_pdb2.py</code>就可以了，其他的照抄，就能把对接出的所有结构都转换出来了。</p>
+<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
+<ul>
+<li><strong>Linux</strong></li>
+</ul>
+<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
+<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
+
+<p>以Ubuntu为例，在terminal中输入：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
+
+<p>安装git，然后将源代码拷贝到本地：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
+
+<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
+
+<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
+
+<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
+<ul>
+<li><strong>Mac OS X</strong></li>
+</ul>
+<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
+<p>首先安装依赖：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
+<p>安装Pmw：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
+<p>获取pymol源代码并编译安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
+
+<p>最后将路径添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
+
+<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
 ]]></content>
       <categories>
-        <category>计算化学</category>
+        <category>PyMOL系列教程</category>
       </categories>
+  </entry>
+  <entry>
+    <title>PyMOL做出非氢键相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3kwf</p>
+<p>首先加载大分子： </p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
+<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
+
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
+<p>单独显示我们的研究对象：</p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
+<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
+<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
+
+<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
+<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
+最后设定好视角，就可以输出了。
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在MacOS上编译OSRA（光学结构识别程序）</title>
+    <url>/sui-bi/compile-osra-on-mac/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>绘制结构是化学工作者的基本功，但是对于大数据相关的工作，人工绘制数十万个结构就有些不现实，所以如果能实现类似OCR的功能，将对机器学习有很大帮助。2008年，一个叫Igor V. Filippov的老哥发布了名为OSRA的程序，即Optical Structure Recognition Application(光学结构识别程序）。这是一种类似于传统的OCR式程序，能将图片中的化学结构式转换成计算机可以读取的格式如SMILES、SDF等，它后来Schrödinger公司做的那种基于神经网络的结构识别系统有本质区别。第二年，老哥把工作写成了论文，如果想详细了解，可以看这篇文章：<a href="https://pubs.acs.org/doi/abs/10.1021/ci800067r"><em>J. Chem. Inf. Model.</em> 2009, 49, 3, 740–743</a>。</p>
+<p>这个程序的编译并不怎么顺利，遇到了挺多坑的，我是好几年前知道它的存在的，但是由于一直没时间排坑，就总在用它的<a href="https://cactus.nci.nih.gov/cgi-bin/osra/index.cgi">在线版</a>，但是长久以来在线版都没办法导出SDF，而SMILES的转换又没法跟图片上一致，而且最要命的是，它的图像API居然完全无法识别MacOS下生成的图片！！所以还是得编译本地版。这段时间由于肺炎疫情一直在家呆着，终于有时间仔细研究一下了。（果然闲出屁可以作出奇怪的工作2333）</p>
+<p>本文的编译环境为MacOS 10.13.6，没有在其他系统上使过，并不推荐Windows系统，似乎挺麻烦的，作者也不推荐。首先，电脑上需要安装<a href="https://subversion.apache.org/download.cgi#recommended-release">subversion</a>和<a href="https://brew.sh/">homebrew</a>，subversion用来下载源代码，homebrew则用来安装依赖。</p>
+<p>不知道出于什么原因，作者只会把BUG修复到svn版的代码里（可能是懒癌？），所以先用svn把代码check出来：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># must use svn version code</span><br>svn checkout https:<span class="hljs-regexp">//</span>svn.code.sf.net<span class="hljs-regexp">/p/</span>osra<span class="hljs-regexp">/code/</span>tags/<span class="hljs-number">2.1</span>.<span class="hljs-number">1</span> osra-code<br></code></pre></td></tr></tbody></table></figure>
+<p>然后安装依赖，有一些是可以直接用brew安装的，有一些还是需要编译安装，先说brew安装的：</p>
+<figure class="highlight mipsasm"><table><tbody><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>libiconv, zlib, <span class="hljs-keyword">bzip2, </span>freetype, libpng, libtiff, lcms, <span class="hljs-keyword">jasper, </span>libjpeg<br></code></pre></td></tr></tbody></table></figure>
+<p>下面的一些依赖需要编译安装，用户要去对应的库的官网下载代码，然后按照如下的命令逐个安装：</p>
+<figure class="highlight gauss"><table><tbody><tr><td class="code"><pre><code class="hljs gauss"><span class="hljs-meta">#libxml2</span><br>./autogen.sh<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Compile OCRAD and TCLAP as follows:</span><br>./configure<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Potrace:</span><br>./configure --with-libpotrace --<span class="hljs-keyword">disable</span>-shared<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#GOCR:</span><br>./configure<br><span class="hljs-built_in">make</span> libs<br>sudo <span class="hljs-built_in">make</span> install<br><br></code></pre></td></tr></tbody></table></figure>
+<p>注意这里，Openbabel需要使用作者patch过的版本，可以在<a href="https://sourceforge.net/projects/osra/files/openbabel-patched/openbabel-3-0-0-patched.tgz/download">他的sourceforge</a>下载到，下载完成后按如下命令安装：</p>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">#Openbabel</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LDFLAGS</span>=/usr/local/opt/libiconv/lib/libiconv.a<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DBUILD_SHARED</span>=OFF <span class="hljs-built_in">..</span><br>sudo make install<br><br><span class="hljs-comment">#GraphicsMagick</span><br><span class="hljs-builtin-name">export</span> LDFLAGS=<br>./configure --disable-shared <span class="hljs-attribute">--with-x</span>=<span class="hljs-literal">no</span> --disable-openmp --without-threads<br>make -j4<br>sudo make install<br><span class="hljs-comment"># 要保证你的PATH里可以找到graphicsmagick++-config</span><br><span class="hljs-comment"># 把下面的路径换成你自己存储GraphicsMagick源代码的位置</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">PATH</span>=/Users/simon/Downloads/GraphicsMagick-1.3.21/Magick++/bin:$PATH<br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LD_LIBRARY_PATH</span>=/usr/local/lib<br><br><span class="hljs-comment">#Poppler</span><br>sudo chown -R $(whoami) /usr/local/share/man/man4<br>brew install pkgconfig openjpeg<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DCMAKE_BUILD_TYPE</span>=Release <span class="hljs-attribute">-DCMAKE_INSTALL_PREFIX</span>=/usr/local <span class="hljs-attribute">-DENABLE_UNSTABLE_API_ABI_HEADERS</span>=ON <span class="hljs-built_in">..</span><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
+<p>到这里依赖就全部安装好了，然后就是编译OSRA主程序了。你遇到的第一个大坑就是<code>configure</code>文件。作者原始的文件应该是没对mac优化过，所以configure就过不了，得手动把里面的某些参数改一改。用文本编辑器打开<code>configure</code>，找到所有的<code>-static-libgcc</code>，把它们全都删掉。然后搜索<code>${MACPORTLIBS}</code>，然后把这个变量替换成相应位置显示的库文件，你安装的库版本可能会和我的不一样，所以你需要确认一下你电脑上安装的真实版本，然后把路径改成你的，挨个替换。通过HomeBrew安装的库文件会在<code>/usr/local/Cellar/</code>里，而编译安装的库则在<code>/usr/local/lib/</code>里。有以下几个库需要替换：</p>
+<figure class="highlight crystal"><table><tbody><tr><td class="code"><pre><code class="hljs crystal">/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libxml2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/libiconv/<span class="hljs-number">1.16</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libiconv</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">liblcms2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libtiff</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libfreetype</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libjasper</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libpng</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/bzip2/<span class="hljs-number">1.0</span>.<span class="hljs-number">8</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libbz2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br></code></pre></td></tr></tbody></table></figure>
+<p>完成后，再运行<code>configure</code>就可以通过了，然后按照前面一样的方法make再install就可以了：</p>
+<figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><code class="hljs gradle">.<span class="hljs-regexp">/configure --enable-static-linking --with-graphicsmagick-lib=/u</span>sr<span class="hljs-regexp">/local/</span>lib --with-graphicsmagick-<span class="hljs-keyword">include</span>=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/include/G</span>raphicsMagick<br><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<center><b><font color="#FF0000">以下是我的私货时间</font></b>（笑）</center>
+
+<hr>
+<p>化学专业的学生写毕业论文综述要画上好几百个结构，手动画太令人头大了，有了OSRA后，就可以直接识别PDF里的结构了，于是乎我写了一个截图的GUI小程序，直接在结构上画个框就能把图截下来，然后自动调用OSRA把结构识别成SDF格式，PNG和SDF会被分别保存下来，SDF打开以后套一个模板就可以复制到word里去用了。</p>
+<p>程序源代码我发布在了<a href="https://github.com/SSSSSimon/OSRA-screenshot-GUI">我的github</a>上，用python写成，需要先用pip安装PyQt5，如果对你有帮助，别忘了在github上给我一个star😋下方是一个演示视频～</p>
+<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","video":{"url":"/images/osra-demo.mov","pic":"/images/osra-demo.png"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ffmpeg合并视频</title>
+    <url>/sui-bi/ffmpeg-he-bing-shi-pin/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>优酷的反下载策略更新了，youtube-dl已经下载不到里面的视频了，所以只能手动从chrome里把视频地址提取出来手动下载，这样一个2分多钟的视频就下载了16个文件，都是flv格式：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ l<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (1).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (10).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (11).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (12).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (13).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (14).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (15).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (16).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (2).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (3).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (4).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (5).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (6).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (7).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (8).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (9).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv.flv<br><br></code></pre></td></tr></tbody></table></figure>
+<p>将它们重命名一下，写一个shell循环：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> *.flv<br><span class="hljs-keyword">do</span><br>name=<span class="hljs-variable">${file%)*}</span><br>name=<span class="hljs-variable">${name#*(}</span><br>mv <span class="hljs-string">"<span class="hljs-variable">${file}</span>"</span> <span class="hljs-string">"<span class="hljs-variable">${name}</span>.flv"</span><br><span class="hljs-keyword">done</span><br>mv 0* 0.flv<br></code></pre></td></tr></tbody></table></figure>
+
+<p>这样文件就变得有序了，接下来写一个文本文件，把这些文件名都放进去，以便ffmpeg查找：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> {0..16}<br><span class="hljs-keyword">do</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">"file '<span class="hljs-variable">${file}</span>.flv'"</span> &gt;&gt; filelist.txt<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后我们就有了这样一个文件：</p>
+<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjv1m0a3w2j303b07iq2w.jpg" title="filelist.txt">
+
+<p>接下来输入合成命令：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -f concat -i filelist.txt -c copy output.mp4<br></code></pre></td></tr></tbody></table></figure>
+
+<p>搞定！</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ll<br>-rw-r--r--@  1 simon  staff         201912 10 19 23:12 0.flv<br>-rw-r--r--@  1 simon  staff         331256 10 19 23:12 1.flv<br>-rw-r--r--@  1 simon  staff         337272 10 19 23:12 10.flv<br>-rw-r--r--@  1 simon  staff         448568 10 19 23:12 11.flv<br>-rw-r--r--@  1 simon  staff         475640 10 19 23:12 12.flv<br>-rw-r--r--@  1 simon  staff         346296 10 19 23:12 13.flv<br>-rw-r--r--@  1 simon  staff         607992 10 19 23:12 14.flv<br>-rw-r--r--@  1 simon  staff         466616 10 19 23:13 15.flv<br>-rw-r--r--@  1 simon  staff         126712 10 19 23:13 16.flv<br>-rw-r--r--@  1 simon  staff         358328 10 19 23:12 2.flv<br>-rw-r--r--@  1 simon  staff         412472 10 19 23:12 3.flv<br>-rw-r--r--@  1 simon  staff         403448 10 19 23:12 4.flv<br>-rw-r--r--@  1 simon  staff         376376 10 19 23:12 5.flv<br>-rw-r--r--@  1 simon  staff         370360 10 19 23:12 6.flv<br>-rw-r--r--@  1 simon  staff         361336 10 19 23:12 7.flv<br>-rw-r--r--@  1 simon  staff         400440 10 19 23:12 8.flv<br>-rw-r--r--@  1 simon  staff         427512 10 19 23:12 9.flv<br>-rw-r--r--@  1 simon  staff        6073530 10 19 23:47 output.mp4<br></code></pre></td></tr></tbody></table></figure>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用ffmpeg为视频嵌入字幕</title>
+    <url>/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>作为一个轻度电影收藏爱好者，看过的电影都会丢到硬盘里放着，但是网络上有些电影资源并没有内嵌字幕，还需要外挂一个字幕，但是这样在保存的时候就需要保存两个文件，就令我很不爽，好在可以使用ffmpeg将字幕嵌入到视频文件中。</p>
+<p>现在的大多电影都使用mkv格式，也有部分使用mp4，mkv格式本身支持字幕轨道，而mp4则需要调用mov_text编码器，在ffmpeg中可以很方便的将字幕和视频进行整合：</p>
+<p>在我的硬盘内有一个名为<code>movie.mkv</code>的电影文件和一个名为<code>sub.srt</code>的字幕文件，在终端输入如下命令：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub.srt -c:s copy -c:v copy -c:a copy output.mkv<br></code></pre></td></tr></tbody></table></figure>
+
+<p>等待程序运行完成后，得到了一个名为<code>output.mkv</code>的视频文件，打开播放后，并没有出现字幕，但是在播放器里可以看到一个字幕流，于是我使用ffprobe检查了这两个视频文件：</p>
+<p>movie.mkv:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ffprobe moive.mkv<br>Input <span class="hljs-comment">#0, matroska,webm, from 'movie.mkv':</span><br>...<br>...<br>    Stream <span class="hljs-comment">#0:0(eng): Video: h264 (High), yuv420p(progressive), 1920x1040, SAR 1:1 DAR 24:13, 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default)</span><br>    Stream <span class="hljs-comment">#0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)</span><br>    Metadata:<br>      title           : DTS 5.1<br>    Stream <span class="hljs-comment">#0:2(fre): Subtitle: subrip (default) (forced)</span><br>    Metadata:<br>      title           : Forced<br></code></pre></td></tr></tbody></table></figure>
+
+<p>output.mkv:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ffprobe output.mkv<br>Input <span class="hljs-comment">#0, matroska,webm, from 'output.mkv':</span><br>...<br>...<br>    Stream <span class="hljs-comment">#0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)</span><br>    Metadata:<br>      title           : DTS 5.1<br>      DURATION        : 01:33:20.681000000<br>    Stream <span class="hljs-comment">#0:2(fre): Subtitle: subrip (default) (forced)</span><br>    Metadata:<br>      title           : Forced<br>      DURATION        : 00:10:53.068000000<br></code></pre></td></tr></tbody></table></figure>
+
+<p>原来是原来的视频有一个诡异的字幕流，只有10分钟，显然我在让ffmpeg自动选择时，程序自动选择了原视频中的字幕流，而我的字幕文件根本没有被加载。找到了问题，那就手动指定要抽取的字幕流好了，这时就需要用到<code>-map</code>参数：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv <br></code></pre></td></tr></tbody></table></figure>
+
+<p>其中<code>movie.mkv</code>的编号为<code>#0</code>，<code>sub.srt</code>的是<code>#1</code>，<code>v</code>代表视频流，<code>a</code>代表音频流，<code>s</code>则代表字幕流，程序会从<code>#0</code>中抽取视频流和音频流、从<code>#1</code>中抽取字幕流，复制到<code>output.mkv</code>中。<br>另外，最后的<code>copy</code>参数一定要加上，否则ffmpeg会对音视频流进行重新编码，将极大增加处理时间。</p>
+<p>但是这时问题又出现了，在运行上述命令后，程序出现报错：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sub.srt: Invalid data found when processing input<br></code></pre></td></tr></tbody></table></figure>
+
+<p>使用less命令查看srt文件，原来是缺了一行，好在ffmpeg可以对字幕进行修复，执行命令：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -fix_sub_duration -i sub.srt sub2.srt<br></code></pre></td></tr></tbody></table></figure>
+
+<p>所有文件准备妥当，再重新进行合并，得到的output文件成功嵌入了字幕文件！</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub2.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv <br></code></pre></td></tr></tbody></table></figure>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ffmpeg视频压制</title>
+    <url>/sui-bi/ffmpeg-shi-pin-ya-zhi/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4<br></code></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>记《白鹿原》之白灵</title>
+    <url>/sui-bi/ji-bai-lu-yuan-zhi-bai-ling/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p><em>白灵的眼晴有一缕傲气，却不像父也不像兄那样外露，而是作为聪意灵秀的底气支撑主宰着那双眸子，于是就和单纯的美女或一切俗气的女人显示出差异来。</em><br><em>这种眼睛首先给人一种厉害的感觉，有某种天然的凛凛傲气；这种傲气对于统帅，对于武将，乃至对于一家之主的家长来说是宝贵的难得的，而对于任何阶层的女人来说，就未必是吉祥了。</em></p>
+</blockquote>
+<p>——<strong>白灵的命运似乎自朱先生琢磨起她的眼睛起就已经注定。</strong></p>
+<p>这段时间得空在家，终于能把几年前买下放在书架上吃灰的《白鹿原》读完。书中人物鲜明的个性给我留下了深刻的印象，我最喜欢的角色当属白嘉轩的第四个孩子——白灵。《白鹿原》故事时空里死了的人不少，却只有白灵、兆海和兆谦的死让我难以接受，及至后来读到白灵具体的死因时，更是难过地不忍卒读。</p>
+<p>白灵是吴氏仙草生下的第八胎，哥哥孝义之前的三男一女悉数夭折，已经有了三个儿子的白嘉轩和妻子白吴氏正想要个女儿，于是对这个有幸活下来的孩子倍加宠爱。灵灵实在太招人喜爱，细嫩的皮肤，聪明稚气的两只忽闪水灵的大眼，胖乎乎的手腕，即便是族长白嘉轩那顽固的封建脑袋，也不免在面对灵灵时违背封建宗法，不仅亲自拆掉了灵灵的缠脚布，更是在灵灵的撒娇下答应让她去上学。彼时的中国虽然已经经历了辛亥革命，但在白鹿原上主导着社会运行的依然是封建的那一套东西，对于女子而言，上学实在是对”女子无才便是德“的极大不敬，白嘉轩虽犯了难，但还是无法对灵灵冷下脸来。</p>
+<p>说来灵灵能够上学也不完全是凭她惹人疼爱的脸蛋儿。灵灵过百日时正是西安城“反正”的日子，白嘉轩为女儿灵灵满月所举行的庆贺仪式相当隆重，热烈欢悦的喜庆气氛与头生儿子的满月不相上下，亲戚朋友和乡党纷纷送来礼品与祝福，唯独少了被困在城里的冷先生。回来后，冷先生向白嘉轩讲述了城里发生的事情；加上后来听了圣人朱先生孤身一人劝退二十万清军的事迹和看到二姐的两个女儿都在城里上新式学校，白嘉轩对封建礼教的执念有所放松，虽然还穿着长袍，却把自己的头发剪掉了。女子上学在白鹿村的村民看来还是一件稀罕事，白嘉轩拉着灵灵走进白鹿村私塾的时候，村民在街巷中站成两排围观，而这种情景对于白灵来说，既新奇又十分得意的事。</p>
+<p>白灵过人的聪敏和智慧此时方才慢慢显现出来，与天生就是庄稼汉的三哥孝义形成鲜明的对比。仅是写字这一件事，就让老师徐先生大为惊叹，白灵只照着徐先生起下的影格描摹半年，便可以临帖练字；两年之后，白灵的字已经在徐先生之上，徐先生发现这是个人才，赶忙让白嘉轩送她到朱先生的白鹿书院去学习。这年新年前夕，白灵写的对联被白嘉轩贴在街门的门框上，白嘉轩细细品味着，感叹根本不像一个女子的字迹。这就是白灵，字如其人，刚硬中透露出柔韧，一股豪放不羁的潇洒气度由内而外散发出来。</p>
+<p>年过完后，白灵向父亲提出要去城里念书，而这一次，白嘉轩没有再一次惯着她，他冷下脸来，对白灵说出了那些封建社会女子操守，让白灵跟着母亲学做针线活。性情耿直的白灵一听父亲改变了送她去念书的主意，哇地一声哭了出来，白嘉轩不仅没有安慰，反而更加铁青着脸对白灵说：“要哭你就扯开哭”。白灵的反叛精神从此显露出来，她赌气似的收了声，坐在纺车下摇起手柄来。十天后，白灵自己跑到城里去找了二姑，没问过父亲便在城里开始上学了。白嘉轩找到二姐家时，白灵拿着一把剪刀以死相威胁。白嘉轩没有说话，回到了原上，心里百般不是滋味，白灵似乎已经成了与他有着生死之仇的敌人。</p>
+<p>后来白灵抗婚逃婚的行为让我对这个女人的好感更上一层，她不仅是在与自己的命运抗衡，更是在挑战封建社会运行了千年的伦理纲常。这种不屈不挠的反抗精神对于一个革命者、一个共产党员、一个当时的女性而言是十分可贵的。越是读着对白灵的描写，我就越喜爱这个角色，她俊俏、活泼、勇敢又不失聪慧，敢爱敢恨、有理想又有抱负，及至后来得知建国后，共产党的干部带着“革命烈士”的牌子走进白嘉轩的宅院，我的心情一度十分沉重，再后来了解到白灵经历的被软禁、被关押又被活埋的过程时，更是难过地不忍卒读。一个革命者没有死在革命的道路上，没有死在敌人的利刃下，却死在了自己同志的手里，这让我无论如何也无法释怀。兆海和兆谦的死也一度让我心绪烦乱，却远无法与白灵相比较。</p>
+<p>同样是与命运抗争的女子，黑娃媳妇小娥就显得无力多了，芒儿师傅的大女儿小翠则更是难以望其项背。田小娥的表面上看起来是一个不守妇道的和人乱搞的女子，但我看到的却是封建制度对女性的戕害。小娥的父亲是秀才，在当时的社会，穷苦人家中有个科举考试及第者，家庭的命运便可以彻底改变，小娥在书香门第中成长，自然是不会像一般穷人家的孩子一样，她举止优雅、穿着得体还知礼数，黑娃引着她会到家中时，鹿三一眼就看出这不是穷苦人家的女子，当即断定这不是儿子能伺候得起的人；后来孝文在小娥的窑洞里与她快活的时候也将小娥与自己的媳妇暗暗比较起来，不由地对家里那个女人产生了唾弃。按照门当户对的传统，小娥本可以拥有一段不错的后半生的，可是却被嫁到了郭举人家中当小妾，只是因为郭举人想要吃“泡枣儿”。小娥从没体验过正经的夫妻生活，有的只是郭举人每月三次在她房里例行公事般的逍遥。小娥甘愿过这样的日子吗，当然不，可是没有像白灵一样接受过新式教育的她除了能把枣儿泡在尿里之外还能做什么呢？写到这里，我倒开始同情冷先生的大女儿了……</p>
+<p>白灵与兆海是在城里搬运尸体时偶然碰见的，两人对视了好久才认出是白鹿原上的乡党。那时两人是一起工作的革命同志，兆海还设法让白灵转到了他所在的学校，逐渐地，在密切的来往中，他们的关系逐渐变得不一般了起来，一种无法言说的心绪在他们心头萦绕着。终于有一天，兆海捅破了窗户纸，朝白灵吻了下去，两人私定了终身。彼时的国共合作还正有条不紊地进行着，白灵和兆海商量决定一人加入一个党，即使哪一天两党不再交好，他们也一定会继续合作，就像国与共合作一样，这誓言成了他们爱情的象征。兆海率先加入了共产党，而按照约定，白灵则要加入国民党，不过，白灵倒没有立刻入党，这也给后来他们两人婚恋的裂变埋下了伏笔。</p>
+<p>后来，立志做一名真正的军人推进国民革命的兆海去了保定陆军学校学习军事，之后不久蒋介石发动了反革命政变，国共合作全面破裂，兆海退出了共产党加入了国民党。白灵那时也还没有加入任何一个党，兆海决定加入国民党的原因究竟是不是害怕再也无法和白灵像往常一样见面呢？白灵那时正在教会女子学校上课，她看见国民党的警察冲进教室将加入共产党的女学生绑走时第一个想到的就是兆海，“他能挣脱五花大绑的麻绳吗”？白灵或许就是从看到学生被填了枯井时起开始改变主意的，她急切地想找到兆鹏打听消息，见到兆鹏后，她向兆鹏述说了自己想要加入共产党的意愿。</p>
+<blockquote>
+<p><em>“兆海哥！人想你都想死了……”</em><br><em>“我等着你的好消息啊兆海哥……”</em><br><em>“兆海哥……我还是等着你回来……”</em></p>
+</blockquote>
+<p>兆海从陆军学校学习回来后，立刻找到了白灵，白灵也难以掩饰再次见到兆海的喜悦。两人漫步在承载着他们记忆的小巷里，白灵激动地告诉兆海她也像他一样加入共产党了，然而她等到的不是与她同样激动地兆海，而是兆海已经加入国民党的消息。两个怀揣着解放中华民族的理想的苦恋的人陷入了争执，接着又失语，低头看着脚下的土地……她和他在热切的期待中突然发觉对方已不是记忆中的那个人，双方都窝了兴致，都陷入痛苦。兆海出征的前天，来到了皮匠铺子，这一次依然谁都没有说服谁，可白灵怎么甘愿就这样放弃面前这个小伙子呢？她噙着泪，“兆海哥……我还是等着你回来……”</p>
+<p>一段时间后，兆海的十七师撤回来了，白灵在豆腐巷小学校接待了鹿兆海。她瞅见他一身下级军官服装就觉得他们的关系将要完结了。鹿兆海在她心目中急遽地暗淡下去。兆海的理想和抱负曾经唤起她的毫无保留的赞同，可是，当初那种国民革命变得不再是驱逐封建军阀而是屠杀人民的时候，鹿兆海的抱负和志向就令她不仅是惋惜了。</p>
+<p>此后直到牺牲的那一刻，白灵都一直以一个共产党员的角色投身国民革命。当日本侵略者的铁骑踏到中华大地上那会，她省立师范学校的学生自治会主席，正在筹备建立一个大中学校抗日救国统一指挥机构。白灵怀上了鹿兆鹏的孩子，她与他自然地交融在一起，他隐藏在心底的那一缕歉意的畏缩已以灼干散尽。在一次对民国教育部陶部长的示威中，白灵失手将砖头丢在了陶部长的脸上，她的身份随之暴露，被迫开始转移。在几百里外的龙湾村，她生下了这个叫鹿鸣的孩子。</p>
+<p>白嘉轩的噩梦不幸被朱先生绝妙而诡秘的掐算言中，白灵在南梁根据地走向了她生命的尽头。</p>
+<p>白灵辗转在地下党的护送下，被转运到了南梁根据地，随后就被安排做文化教员。在根据地，她出色的工作和活泼开朗的性格使她得到上至廖军长下至小队长的表彰，也得到游击队员们的拥戴。她给游击队员教字学文化，也帮他们缝补撕裂磨损的衣裤鞋袜，听队员们给她唱山歌，她把那些悠扬哀婉的山歌改换唱词变成革命歌曲，朗朗上口的歌词很快在队伍中流传开来。越是看着白灵那活泼的样子，就越是让我难受，这么好的一个女子没有等来革命胜利的那一天，没有看到自己的努力汇进人民战争的洪流入海，就永远倒下了。廖军长气急骂了毕政委，也被毕政委关起来了，白灵的保护伞就此消失，她被关押的时候，那百灵鸟一般的嗓子连着嗥了三天三夜，她的嗓子依然宏亮，精神依旧亢奋，双眼仍然如炬。终于等来了毕政委，她把所有的激情都释放出来，像一头拼死的母狮咆哮起来，她把生命中最后一丝顽强全部展现出来，砖头一样的话拍击着毕政委——就像她扔向陶部长的那块砖头一样。</p>
+<p>然而在白灵被活埋完毕后，我的心情却没有之前那么低落了，这个革命者完成了她的最后一次挣扎，虽然没有被填枯井，但就像成千上万为革命牺牲的人民一样，他们的精魄铸就了中华民族之魂。她的死亡细节已经不再重要——正如鹿鸣所说——重要的是对发生这一幕历史悲剧的根源的反省。</p>
+<p>兆海也在中条山牺牲了，他曾对白灵说非她终身不娶，可后来在金关城买下一栋民房，与当地一位女子成婚了。兆海违背了他的誓言吗？这个神似灵灵的女子不过是他对她日夜思念的寄托罢了……</p>
+<p>苦命的恋人啊……</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/sui-bi/pv-dd-xie-ru-ying-pan-jing-xiang/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><code class="hljs gradle">sudo pv -cN <span class="hljs-keyword">source</span> &lt; <span class="hljs-keyword">file</span>.iso | sudo dd of=<span class="hljs-regexp">/dev/</span>rdisk2 bs=<span class="hljs-number">4</span>m<br></code></pre></td></tr></tbody></table></figure>]]></content>
   </entry>
   <entry>
     <title>从零开始学习ECD计算</title>
@@ -579,131 +646,69 @@
       </categories>
   </entry>
   <entry>
-    <title>在MacOS上编译OSRA（光学结构识别程序）</title>
-    <url>/sui-bi/compile-osra-on-mac/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>绘制结构是化学工作者的基本功，但是对于大数据相关的工作，人工绘制数十万个结构就有些不现实，所以如果能实现类似OCR的功能，将对机器学习有很大帮助。2008年，一个叫Igor V. Filippov的老哥发布了名为OSRA的程序，即Optical Structure Recognition Application(光学结构识别程序）。这是一种类似于传统的OCR式程序，能将图片中的化学结构式转换成计算机可以读取的格式如SMILES、SDF等，它后来Schrödinger公司做的那种基于神经网络的结构识别系统有本质区别。第二年，老哥把工作写成了论文，如果想详细了解，可以看这篇文章：<a href="https://pubs.acs.org/doi/abs/10.1021/ci800067r"><em>J. Chem. Inf. Model.</em> 2009, 49, 3, 740–743</a>。</p>
-<p>这个程序的编译并不怎么顺利，遇到了挺多坑的，我是好几年前知道它的存在的，但是由于一直没时间排坑，就总在用它的<a href="https://cactus.nci.nih.gov/cgi-bin/osra/index.cgi">在线版</a>，但是长久以来在线版都没办法导出SDF，而SMILES的转换又没法跟图片上一致，而且最要命的是，它的图像API居然完全无法识别MacOS下生成的图片！！所以还是得编译本地版。这段时间由于肺炎疫情一直在家呆着，终于有时间仔细研究一下了。（果然闲出屁可以作出奇怪的工作2333）</p>
-<p>本文的编译环境为MacOS 10.13.6，没有在其他系统上使过，并不推荐Windows系统，似乎挺麻烦的，作者也不推荐。首先，电脑上需要安装<a href="https://subversion.apache.org/download.cgi#recommended-release">subversion</a>和<a href="https://brew.sh/">homebrew</a>，subversion用来下载源代码，homebrew则用来安装依赖。</p>
-<p>不知道出于什么原因，作者只会把BUG修复到svn版的代码里（可能是懒癌？），所以先用svn把代码check出来：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># must use svn version code</span><br>svn checkout https:<span class="hljs-regexp">//</span>svn.code.sf.net<span class="hljs-regexp">/p/</span>osra<span class="hljs-regexp">/code/</span>tags/<span class="hljs-number">2.1</span>.<span class="hljs-number">1</span> osra-code<br></code></pre></td></tr></tbody></table></figure>
-<p>然后安装依赖，有一些是可以直接用brew安装的，有一些还是需要编译安装，先说brew安装的：</p>
-<figure class="highlight mipsasm"><table><tbody><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>libiconv, zlib, <span class="hljs-keyword">bzip2, </span>freetype, libpng, libtiff, lcms, <span class="hljs-keyword">jasper, </span>libjpeg<br></code></pre></td></tr></tbody></table></figure>
-<p>下面的一些依赖需要编译安装，用户要去对应的库的官网下载代码，然后按照如下的命令逐个安装：</p>
-<figure class="highlight gauss"><table><tbody><tr><td class="code"><pre><code class="hljs gauss"><span class="hljs-meta">#libxml2</span><br>./autogen.sh<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Compile OCRAD and TCLAP as follows:</span><br>./configure<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#Potrace:</span><br>./configure --with-libpotrace --<span class="hljs-keyword">disable</span>-shared<br><span class="hljs-built_in">make</span> -j4<br>sudo <span class="hljs-built_in">make</span> install<br><br><span class="hljs-meta">#GOCR:</span><br>./configure<br><span class="hljs-built_in">make</span> libs<br>sudo <span class="hljs-built_in">make</span> install<br><br></code></pre></td></tr></tbody></table></figure>
-<p>注意这里，Openbabel需要使用作者patch过的版本，可以在<a href="https://sourceforge.net/projects/osra/files/openbabel-patched/openbabel-3-0-0-patched.tgz/download">他的sourceforge</a>下载到，下载完成后按如下命令安装：</p>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">#Openbabel</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LDFLAGS</span>=/usr/local/opt/libiconv/lib/libiconv.a<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DBUILD_SHARED</span>=OFF <span class="hljs-built_in">..</span><br>sudo make install<br><br><span class="hljs-comment">#GraphicsMagick</span><br><span class="hljs-builtin-name">export</span> LDFLAGS=<br>./configure --disable-shared <span class="hljs-attribute">--with-x</span>=<span class="hljs-literal">no</span> --disable-openmp --without-threads<br>make -j4<br>sudo make install<br><span class="hljs-comment"># 要保证你的PATH里可以找到graphicsmagick++-config</span><br><span class="hljs-comment"># 把下面的路径换成你自己存储GraphicsMagick源代码的位置</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">PATH</span>=/Users/simon/Downloads/GraphicsMagick-1.3.21/Magick++/bin:$PATH<br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">LD_LIBRARY_PATH</span>=/usr/local/lib<br><br><span class="hljs-comment">#Poppler</span><br>sudo chown -R $(whoami) /usr/local/share/man/man4<br>brew install pkgconfig openjpeg<br>mkdir build<br>cd build<br>cmake <span class="hljs-attribute">-DCMAKE_BUILD_TYPE</span>=Release <span class="hljs-attribute">-DCMAKE_INSTALL_PREFIX</span>=/usr/local <span class="hljs-attribute">-DENABLE_UNSTABLE_API_ABI_HEADERS</span>=ON <span class="hljs-built_in">..</span><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
-<p>到这里依赖就全部安装好了，然后就是编译OSRA主程序了。你遇到的第一个大坑就是<code>configure</code>文件。作者原始的文件应该是没对mac优化过，所以configure就过不了，得手动把里面的某些参数改一改。用文本编辑器打开<code>configure</code>，找到所有的<code>-static-libgcc</code>，把它们全都删掉。然后搜索<code>${MACPORTLIBS}</code>，然后把这个变量替换成相应位置显示的库文件，你安装的库版本可能会和我的不一样，所以你需要确认一下你电脑上安装的真实版本，然后把路径改成你的，挨个替换。通过HomeBrew安装的库文件会在<code>/usr/local/Cellar/</code>里，而编译安装的库则在<code>/usr/local/lib/</code>里。有以下几个库需要替换：</p>
-<figure class="highlight crystal"><table><tbody><tr><td class="code"><pre><code class="hljs crystal">/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libxml2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/libiconv/<span class="hljs-number">1.16</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libiconv</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">liblcms2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libtiff</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libfreetype</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libjasper</span>.<span class="hljs-title">a</span> </span><br>/usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libpng</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/bzip2/<span class="hljs-number">1.0</span>.<span class="hljs-number">8</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libbz2</span>.<span class="hljs-title">a</span> </span><br>/usr/local/Cellar/zlib/<span class="hljs-number">1.2</span>.<span class="hljs-number">11</span>/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">libz</span>.<span class="hljs-title">a</span></span><br></code></pre></td></tr></tbody></table></figure>
-<p>完成后，再运行<code>configure</code>就可以通过了，然后按照前面一样的方法make再install就可以了：</p>
-<figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><code class="hljs gradle">.<span class="hljs-regexp">/configure --enable-static-linking --with-graphicsmagick-lib=/u</span>sr<span class="hljs-regexp">/local/</span>lib --with-graphicsmagick-<span class="hljs-keyword">include</span>=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/include/G</span>raphicsMagick<br><br>make -j4<br>sudo make install<br></code></pre></td></tr></tbody></table></figure>
+    <title>使用Vina进行分子对接</title>
+    <url>/ji-suan-hua-xue/docking-vina/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>使用Vina进行分子对接，各种蛋白与配体文件均需使用pdbqt格式，scripps研究所提供了Autodock Tools可以进行可视化转换。下面是使用adt准备文件的步骤：</p>
+<ul>
+<li>安装好adt后，在终端内输入adt以启动。</li>
+</ul>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ adt<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="https://tvax1.sinaimg.cn/large/005Vgpymly1gjv1llzrwjj317e0xsgpd.jpg" title="Autodock Tools" width="50%" height="50%">
 
 <hr>
-<center><b><font color="#FF0000">以下是我的私货时间</font></b>（笑）</center>
-
+<ul>
+<li><p>处理大分子</p>
+<p>  <strong>File -&gt; Read Molecule -&gt; Open</strong></p>
+<p>  <strong>Edit -&gt; Hydrogens -&gt; Add -&gt; Polar Only -&gt; OK</strong></p>
+<p>  <strong>Grid -&gt; Macromolecule -&gt; Choose -&gt; Select molecule -&gt; Save</strong></p>
+</li>
+</ul>
+<p>将大分子保存为pdbqt文件后，大分子的处理就完成了。</p>
 <hr>
-<p>化学专业的学生写毕业论文综述要画上好几百个结构，手动画太令人头大了，有了OSRA后，就可以直接识别PDF里的结构了，于是乎我写了一个截图的GUI小程序，直接在结构上画个框就能把图截下来，然后自动调用OSRA把结构识别成SDF格式，PNG和SDF会被分别保存下来，SDF打开以后套一个模板就可以复制到word里去用了。</p>
-<p>程序源代码我发布在了<a href="https://github.com/SSSSSimon/OSRA-screenshot-GUI">我的github</a>上，用python写成，需要先用pip安装PyQt5，如果对你有帮助，别忘了在github上给我一个star😋下方是一个演示视频～</p>
-<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","video":{"url":"/images/osra-demo.mov","pic":"/images/osra-demo.png"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+<ul>
+<li><p>限定搜索区域</p>
+<p>  <strong>Grid -&gt; Grid Box</strong> </p>
+</li>
+</ul>
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjv1llr4k7j31800ww79p.jpg" title="划定搜索区域" width="50%" height="50%">
+
+<p>这里调整好后不用保存，需要把它们记录在文本文件中备用。</p>
+<p><font color="#FF0000"><strong>注意</strong></font>：与Autodock4不同，Vina中的空间单位为埃（Å），需先将<code>Spacing</code>调至1再调整xyz。</p>
+<hr>
+<ul>
+<li><p>处理小分子</p>
+<p>  <strong>Ligand -&gt; Input -&gt; Open</strong> </p>
+<p>  <strong>Ligand -&gt; Torsion Tree -&gt; Choose Torsion</strong></p>
+<p>  按住Shift再单击键以切换扭转类型，可以先在DashBoard中将大分子隐藏。</p>
+<p>  <strong>Ligand -&gt; Output -&gt; Save as PDBQT -&gt; Save</strong></p>
+</li>
+</ul>
+<p>处理完文件后即可进行分子对接</p>
+<hr>
+<ul>
+<li>Redocking</li>
+</ul>
+<p>运行Vina需要给它提供一个配置文件，写法如下，random seed是可选项：</p>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">receptor</span> = ./PDBQT/<span class="hljs-number">5</span>un1.pdbqt<br><span class="hljs-attr">ligand</span> = ./PDBQT/mk-<span class="hljs-number">801</span>.pdbqt<br><br><span class="hljs-attr">center_x</span> = <span class="hljs-number">24.188</span><br><span class="hljs-attr">center_y</span> = -<span class="hljs-number">14.09</span><br><span class="hljs-attr">center_z</span> = <span class="hljs-number">108.227</span><br><br><span class="hljs-attr">size_x</span> = <span class="hljs-number">20</span><br><span class="hljs-attr">size_y</span> = <span class="hljs-number">20</span><br><span class="hljs-attr">size_z</span> = <span class="hljs-number">20</span><br><br><span class="hljs-attr">out</span> = ./DockingResult/rslt-mk801.pdbqt<br><span class="hljs-attr">log</span> = ./log/log-mk801.log<br><br><span class="hljs-attr">seed</span> = -<span class="hljs-number">1661955048</span><br><span class="hljs-attr">exhaustiveness</span> = <span class="hljs-number">30</span><br></code></pre></td></tr></tbody></table></figure>
+<p>保存为mk801-conf.txt，然后就可以运行vina了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ vina --config mk801-conf.txt<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>对接目标化合物</li>
+</ul>
+<p>对接目标化合物的过程同上。对于分子对接的结果一定要谨慎对待，因为无论给定的分子有没有活性、是否契合活性口袋，程序都能给出一个结果，一定要根据相互作用知识来进行判断。</p>
+<p>最后，需要调用<code>MGLTools</code>里的python脚本将pdbqt转换成pdb，就可以在各种可视化程序中查看了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ convertqt=mglTools/MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py<br>$ pythonsh <span class="hljs-variable">$convertqt</span> -s rslt-mk801.pdbqt<br></code></pre></td></tr></tbody></table></figure>
+<p>原始的脚本只能将对接产生的能量最低的一个结构输出出来，如果你需要把所有结构都输出的话，需要修改两个函数：</p>
+<p>找到<code>MolKit/pdbWriter.py</code>，在<code>write</code>函数后面定义一个新函数，名叫<code>write2</code>，函数定义如下：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write2</span>(<span class="hljs-params">self, filename, nodes, sort=False, sortFunc=None,</span></span><br><span class="hljs-function"><span class="hljs-params">          records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'CONECT'</span>], bondOrigin=(<span class="hljs-params"><span class="hljs-string">'File'</span>,<span class="hljs-string">'UserDefined'</span></span>),</span></span><br><span class="hljs-function"><span class="hljs-params">          ssOrigin=<span class="hljs-string">'File'</span></span>):</span><br>    <span class="hljs-string">"""</span><br><span class="hljs-string">    required argument:</span><br><span class="hljs-string">    filename  -- path to the new file, a .pdb extension will be added</span><br><span class="hljs-string">                 when missing.</span><br><span class="hljs-string">    nodes     -- TreeNode, TreeNodeSet instance to save as PDB</span><br><span class="hljs-string"></span><br><span class="hljs-string">    optional arguments:</span><br><span class="hljs-string">    sort  -- (False) Boolean flag to specify whether or not to sort the</span><br><span class="hljs-string">             given nodes</span><br><span class="hljs-string">    sortFunc  -- (None) sort function that will be used to sort the nodes</span><br><span class="hljs-string">                 when specified.This function has to return (-1, 0 or 1).</span><br><span class="hljs-string">    records -- list of PDB record to write out</span><br><span class="hljs-string">    bondOrigin -- (('File', 'UserDefined')) This will be used if the CONECT records are</span><br><span class="hljs-string">                  written out. Can be any combination of 'File',</span><br><span class="hljs-string">                  'BuiltByDistance' and 'UserDefined'.</span><br><span class="hljs-string">    ssOrigin -- 'File' This will be used if the TURN, HELIX and SHEET</span><br><span class="hljs-string">                 records are written. Can be either from the originating</span><br><span class="hljs-string">                 PDB file or from the data structure.</span><br><span class="hljs-string">    """</span><br>    self.records = records<br>    <span class="hljs-comment"># If the filename doesn't have a pdb extension add it</span><br>    fileExt = os.path.splitext(filename)[<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">if</span> fileExt==<span class="hljs-string">''</span>:<br>        filename = <span class="hljs-string">'%s.pdb'</span> %filename<br>    <span class="hljs-comment"># Nodes need to be either a TreeNode or a TreeNodeSet instance.</span><br>    <span class="hljs-keyword">assert</span> isinstance(nodes, TreeNode) <span class="hljs-keyword">or</span> isinstance(nodes, TreeNodeSet)<br>    <br>    <span class="hljs-comment"># sort the nodes</span><br>    <span class="hljs-keyword">if</span> sort <span class="hljs-keyword">and</span> hasattr(nodes, <span class="hljs-string">'sort'</span>):<br>        nodes.sort(sortFunc)<br><br>    <span class="hljs-keyword">if</span> isinstance(nodes, TreeNode): mol = nodes.top   <br>    <span class="hljs-keyword">elif</span> isinstance(nodes, TreeNodeSet): mol = nodes.top.uniq()[<span class="hljs-number">0</span>]<br>    <span class="hljs-comment"># get a handle on the molecule parser</span><br>    parser = mol.parser<br><br>    <span class="hljs-comment"># get the atoms in nodes</span><br>    atmInNode = nodes.findType(Atom)<br>    <br>    <span class="hljs-comment"># Create all the records to be written out.</span><br>    <span class="hljs-comment"># Get the from file records this is possible only if the file</span><br>    <span class="hljs-comment"># comes from a PDB parser.</span><br>    <span class="hljs-keyword">if</span> isinstance(parser, PdbParser):<br>        fileRec = filter(<span class="hljs-keyword">lambda</span> x: <span class="hljs-keyword">not</span> x <span class="hljs-keyword">in</span> self.FROMDATASTRUCT, records)<br>        <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> fileRec:<br>            self.recordsToWrite[rec] = parser.getRecords(parser.allLines,rec)<br><br>    <span class="hljs-comment"># Create the records from the data structure:</span><br>    <span class="hljs-comment"># secondary structure 'HELIX', 'SHEET', 'TURN', 'REMARK 650 HELIX',</span><br>    <span class="hljs-comment"># 'REMARK 700 SHEET', 'REMARK 750 TURN'</span><br>    ssRec = filter(<span class="hljs-keyword">lambda</span> x: x <span class="hljs-keyword">in</span> [<span class="hljs-string">'HELIX'</span>, <span class="hljs-string">'SHEET'</span>, <span class="hljs-string">'TURN'</span>], records)<br>    <span class="hljs-keyword">if</span> len(ssRec):<br>        self.defineSecondaryStructureSection(mol, origin=ssOrigin)<br><br>    <span class="hljs-comment"># Atom records (ATOM, TER and HETATM)</span><br>    atmRec = <span class="hljs-string">'ATOM'</span> <span class="hljs-keyword">in</span> records<br>    hetRec = <span class="hljs-string">'HETATM'</span> <span class="hljs-keyword">in</span> records<br>    <span class="hljs-keyword">if</span> atmRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">or</span> hetRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> : <br>        <span class="hljs-comment">#self.defineCoordsSection(nodes, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)</span><br>        self.defineCoordsSection(atmInNode, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)<br>        <br>    <span class="hljs-comment"># Hydrogen bonds (HYDBND)</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'HYDBND'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineHYDBNDRecords(atmInNode)<br><br>    <span class="hljs-comment"># CONECT records</span><br>    <span class="hljs-comment">#build excluded Bonds from recType here</span><br>    <span class="hljs-comment">#possible recTypes are:</span><br>    <span class="hljs-comment">#all, fileUser, fileDist, file, user, userDist, dist, none</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'CONECT'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineConnectSection(atmInNode, bondOrigin)<br><br>    file = open(filename, <span class="hljs-string">'a'</span>)      <br><br>    <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> self.PDBRECORDS:<br>        <span class="hljs-keyword">if</span> self.recordsToWrite.has_key(rec):<br>            recLine = self.recordsToWrite[rec]<br>            <span class="hljs-keyword">if</span> type(recLine) <span class="hljs-keyword">is</span> types.ListType:<br>                <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> recLine:<br>                    file.write(line)<br>            <span class="hljs-keyword">else</span>:<br>                file.write(line)<br>    file.close()<br>    <br>    <span class="hljs-comment">#self.recordsToWrite = {}</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后找到<code>MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py</code>，把它复制一份，命名为<code>pdbqt_to_pdb2.py</code>，将里面的<code>mols = Read(pdbqt_filename)</code>一直到最后的代码替换成如下所示：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">mols = Read(pdbqt_filename)<br>mol2 = []<br><br><span class="hljs-keyword">if</span> verbose: <span class="hljs-keyword">print</span> <span class="hljs-string">'read '</span>, pdbqt_filename    <br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> mols:<br>    mol = i<br>    mol.buildBondsByDistance()<br>    <span class="hljs-comment">#fix number for problem files with alternative positions</span><br>    mol.allAtoms.number = range(<span class="hljs-number">1</span>, len(mol.allAtoms)+<span class="hljs-number">1</span>)<br>    mol2.append(mol)<br>    <br><span class="hljs-comment">#pdb_filename = mol.name + '.pdb'</span><br>writer = PdbWriter()<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(mol2)):<br>    file = open(pdb_filename, <span class="hljs-string">'a'</span>)<br>    file.write(<span class="hljs-string">'MODEL '</span>)<br>    file.write(str(i+<span class="hljs-number">1</span>))<br>    file.write(<span class="hljs-string">'\n'</span>)<br>    file.close()<br>    writer.write2(pdb_filename, mol2[i].allAtoms, records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'HETATM'</span>])<br><br><span class="hljs-keyword">if</span> verbose:<br>    <span class="hljs-keyword">print</span> <span class="hljs-string">"wrote "</span>, ctr, <span class="hljs-string">" atoms to"</span>, pdb_filename<br></code></pre></td></tr></tbody></table></figure>
+<p>最后运行脚本的时候就用<code>pdbqt_to_pdb2.py</code>就可以了，其他的照抄，就能把对接出的所有结构都转换出来了。</p>
 ]]></content>
       <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ffmpeg合并视频</title>
-    <url>/sui-bi/ffmpeg-he-bing-shi-pin/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>优酷的反下载策略更新了，youtube-dl已经下载不到里面的视频了，所以只能手动从chrome里把视频地址提取出来手动下载，这样一个2分多钟的视频就下载了16个文件，都是flv格式：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ l<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (1).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (10).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (11).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (12).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (13).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (14).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (15).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (16).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (2).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (3).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (4).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (5).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (6).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (7).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (8).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv (9).flv<br>0300020100548835AD4062058613CA43CA43F2-212A-79CF-E8FC-7AFA17047A31.flv.flv<br><br></code></pre></td></tr></tbody></table></figure>
-<p>将它们重命名一下，写一个shell循环：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> *.flv<br><span class="hljs-keyword">do</span><br>name=<span class="hljs-variable">${file%)*}</span><br>name=<span class="hljs-variable">${name#*(}</span><br>mv <span class="hljs-string">"<span class="hljs-variable">${file}</span>"</span> <span class="hljs-string">"<span class="hljs-variable">${name}</span>.flv"</span><br><span class="hljs-keyword">done</span><br>mv 0* 0.flv<br></code></pre></td></tr></tbody></table></figure>
-
-<p>这样文件就变得有序了，接下来写一个文本文件，把这些文件名都放进去，以便ffmpeg查找：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> {0..16}<br><span class="hljs-keyword">do</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">"file '<span class="hljs-variable">${file}</span>.flv'"</span> &gt;&gt; filelist.txt<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></tbody></table></figure>
-
-<p>然后我们就有了这样一个文件：</p>
-<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjv1m0a3w2j303b07iq2w.jpg" title="filelist.txt">
-
-<p>接下来输入合成命令：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -f concat -i filelist.txt -c copy output.mp4<br></code></pre></td></tr></tbody></table></figure>
-
-<p>搞定！</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ll<br>-rw-r--r--@  1 simon  staff         201912 10 19 23:12 0.flv<br>-rw-r--r--@  1 simon  staff         331256 10 19 23:12 1.flv<br>-rw-r--r--@  1 simon  staff         337272 10 19 23:12 10.flv<br>-rw-r--r--@  1 simon  staff         448568 10 19 23:12 11.flv<br>-rw-r--r--@  1 simon  staff         475640 10 19 23:12 12.flv<br>-rw-r--r--@  1 simon  staff         346296 10 19 23:12 13.flv<br>-rw-r--r--@  1 simon  staff         607992 10 19 23:12 14.flv<br>-rw-r--r--@  1 simon  staff         466616 10 19 23:13 15.flv<br>-rw-r--r--@  1 simon  staff         126712 10 19 23:13 16.flv<br>-rw-r--r--@  1 simon  staff         358328 10 19 23:12 2.flv<br>-rw-r--r--@  1 simon  staff         412472 10 19 23:12 3.flv<br>-rw-r--r--@  1 simon  staff         403448 10 19 23:12 4.flv<br>-rw-r--r--@  1 simon  staff         376376 10 19 23:12 5.flv<br>-rw-r--r--@  1 simon  staff         370360 10 19 23:12 6.flv<br>-rw-r--r--@  1 simon  staff         361336 10 19 23:12 7.flv<br>-rw-r--r--@  1 simon  staff         400440 10 19 23:12 8.flv<br>-rw-r--r--@  1 simon  staff         427512 10 19 23:12 9.flv<br>-rw-r--r--@  1 simon  staff        6073530 10 19 23:47 output.mp4<br></code></pre></td></tr></tbody></table></figure>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ffmpeg视频压制</title>
-    <url>/sui-bi/ffmpeg-shi-pin-ya-zhi/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4<br></code></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用ffmpeg为视频嵌入字幕</title>
-    <url>/sui-bi/shi-yong-ffmpeg-wei-shi-pin-qian-ru-zi-mu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>作为一个轻度电影收藏爱好者，看过的电影都会丢到硬盘里放着，但是网络上有些电影资源并没有内嵌字幕，还需要外挂一个字幕，但是这样在保存的时候就需要保存两个文件，就令我很不爽，好在可以使用ffmpeg将字幕嵌入到视频文件中。</p>
-<p>现在的大多电影都使用mkv格式，也有部分使用mp4，mkv格式本身支持字幕轨道，而mp4则需要调用mov_text编码器，在ffmpeg中可以很方便的将字幕和视频进行整合：</p>
-<p>在我的硬盘内有一个名为<code>movie.mkv</code>的电影文件和一个名为<code>sub.srt</code>的字幕文件，在终端输入如下命令：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub.srt -c:s copy -c:v copy -c:a copy output.mkv<br></code></pre></td></tr></tbody></table></figure>
-
-<p>等待程序运行完成后，得到了一个名为<code>output.mkv</code>的视频文件，打开播放后，并没有出现字幕，但是在播放器里可以看到一个字幕流，于是我使用ffprobe检查了这两个视频文件：</p>
-<p>movie.mkv:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ffprobe moive.mkv<br>Input <span class="hljs-comment">#0, matroska,webm, from 'movie.mkv':</span><br>...<br>...<br>    Stream <span class="hljs-comment">#0:0(eng): Video: h264 (High), yuv420p(progressive), 1920x1040, SAR 1:1 DAR 24:13, 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default)</span><br>    Stream <span class="hljs-comment">#0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)</span><br>    Metadata:<br>      title           : DTS 5.1<br>    Stream <span class="hljs-comment">#0:2(fre): Subtitle: subrip (default) (forced)</span><br>    Metadata:<br>      title           : Forced<br></code></pre></td></tr></tbody></table></figure>
-
-<p>output.mkv:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ffprobe output.mkv<br>Input <span class="hljs-comment">#0, matroska,webm, from 'output.mkv':</span><br>...<br>...<br>    Stream <span class="hljs-comment">#0:1(fre): Audio: dts (DTS), 48000 Hz, 5.1(side), fltp, 1536 kb/s (default)</span><br>    Metadata:<br>      title           : DTS 5.1<br>      DURATION        : 01:33:20.681000000<br>    Stream <span class="hljs-comment">#0:2(fre): Subtitle: subrip (default) (forced)</span><br>    Metadata:<br>      title           : Forced<br>      DURATION        : 00:10:53.068000000<br></code></pre></td></tr></tbody></table></figure>
-
-<p>原来是原来的视频有一个诡异的字幕流，只有10分钟，显然我在让ffmpeg自动选择时，程序自动选择了原视频中的字幕流，而我的字幕文件根本没有被加载。找到了问题，那就手动指定要抽取的字幕流好了，这时就需要用到<code>-map</code>参数：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv <br></code></pre></td></tr></tbody></table></figure>
-
-<p>其中<code>movie.mkv</code>的编号为<code>#0</code>，<code>sub.srt</code>的是<code>#1</code>，<code>v</code>代表视频流，<code>a</code>代表音频流，<code>s</code>则代表字幕流，程序会从<code>#0</code>中抽取视频流和音频流、从<code>#1</code>中抽取字幕流，复制到<code>output.mkv</code>中。<br>另外，最后的<code>copy</code>参数一定要加上，否则ffmpeg会对音视频流进行重新编码，将极大增加处理时间。</p>
-<p>但是这时问题又出现了，在运行上述命令后，程序出现报错：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sub.srt: Invalid data found when processing input<br></code></pre></td></tr></tbody></table></figure>
-
-<p>使用less命令查看srt文件，原来是缺了一行，好在ffmpeg可以对字幕进行修复，执行命令：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -fix_sub_duration -i sub.srt sub2.srt<br></code></pre></td></tr></tbody></table></figure>
-
-<p>所有文件准备妥当，再重新进行合并，得到的output文件成功嵌入了字幕文件！</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i movie.mkv -i sub2.srt -map 0:v -map 0:a -map 1:s -c copy output.mkv <br></code></pre></td></tr></tbody></table></figure>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>记《白鹿原》之白灵</title>
-    <url>/sui-bi/ji-bai-lu-yuan-zhi-bai-ling/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
-<p><em>白灵的眼晴有一缕傲气，却不像父也不像兄那样外露，而是作为聪意灵秀的底气支撑主宰着那双眸子，于是就和单纯的美女或一切俗气的女人显示出差异来。</em><br><em>这种眼睛首先给人一种厉害的感觉，有某种天然的凛凛傲气；这种傲气对于统帅，对于武将，乃至对于一家之主的家长来说是宝贵的难得的，而对于任何阶层的女人来说，就未必是吉祥了。</em></p>
-</blockquote>
-<p>——<strong>白灵的命运似乎自朱先生琢磨起她的眼睛起就已经注定。</strong></p>
-<p>这段时间得空在家，终于能把几年前买下放在书架上吃灰的《白鹿原》读完。书中人物鲜明的个性给我留下了深刻的印象，我最喜欢的角色当属白嘉轩的第四个孩子——白灵。《白鹿原》故事时空里死了的人不少，却只有白灵、兆海和兆谦的死让我难以接受，及至后来读到白灵具体的死因时，更是难过地不忍卒读。</p>
-<p>白灵是吴氏仙草生下的第八胎，哥哥孝义之前的三男一女悉数夭折，已经有了三个儿子的白嘉轩和妻子白吴氏正想要个女儿，于是对这个有幸活下来的孩子倍加宠爱。灵灵实在太招人喜爱，细嫩的皮肤，聪明稚气的两只忽闪水灵的大眼，胖乎乎的手腕，即便是族长白嘉轩那顽固的封建脑袋，也不免在面对灵灵时违背封建宗法，不仅亲自拆掉了灵灵的缠脚布，更是在灵灵的撒娇下答应让她去上学。彼时的中国虽然已经经历了辛亥革命，但在白鹿原上主导着社会运行的依然是封建的那一套东西，对于女子而言，上学实在是对”女子无才便是德“的极大不敬，白嘉轩虽犯了难，但还是无法对灵灵冷下脸来。</p>
-<p>说来灵灵能够上学也不完全是凭她惹人疼爱的脸蛋儿。灵灵过百日时正是西安城“反正”的日子，白嘉轩为女儿灵灵满月所举行的庆贺仪式相当隆重，热烈欢悦的喜庆气氛与头生儿子的满月不相上下，亲戚朋友和乡党纷纷送来礼品与祝福，唯独少了被困在城里的冷先生。回来后，冷先生向白嘉轩讲述了城里发生的事情；加上后来听了圣人朱先生孤身一人劝退二十万清军的事迹和看到二姐的两个女儿都在城里上新式学校，白嘉轩对封建礼教的执念有所放松，虽然还穿着长袍，却把自己的头发剪掉了。女子上学在白鹿村的村民看来还是一件稀罕事，白嘉轩拉着灵灵走进白鹿村私塾的时候，村民在街巷中站成两排围观，而这种情景对于白灵来说，既新奇又十分得意的事。</p>
-<p>白灵过人的聪敏和智慧此时方才慢慢显现出来，与天生就是庄稼汉的三哥孝义形成鲜明的对比。仅是写字这一件事，就让老师徐先生大为惊叹，白灵只照着徐先生起下的影格描摹半年，便可以临帖练字；两年之后，白灵的字已经在徐先生之上，徐先生发现这是个人才，赶忙让白嘉轩送她到朱先生的白鹿书院去学习。这年新年前夕，白灵写的对联被白嘉轩贴在街门的门框上，白嘉轩细细品味着，感叹根本不像一个女子的字迹。这就是白灵，字如其人，刚硬中透露出柔韧，一股豪放不羁的潇洒气度由内而外散发出来。</p>
-<p>年过完后，白灵向父亲提出要去城里念书，而这一次，白嘉轩没有再一次惯着她，他冷下脸来，对白灵说出了那些封建社会女子操守，让白灵跟着母亲学做针线活。性情耿直的白灵一听父亲改变了送她去念书的主意，哇地一声哭了出来，白嘉轩不仅没有安慰，反而更加铁青着脸对白灵说：“要哭你就扯开哭”。白灵的反叛精神从此显露出来，她赌气似的收了声，坐在纺车下摇起手柄来。十天后，白灵自己跑到城里去找了二姑，没问过父亲便在城里开始上学了。白嘉轩找到二姐家时，白灵拿着一把剪刀以死相威胁。白嘉轩没有说话，回到了原上，心里百般不是滋味，白灵似乎已经成了与他有着生死之仇的敌人。</p>
-<p>后来白灵抗婚逃婚的行为让我对这个女人的好感更上一层，她不仅是在与自己的命运抗衡，更是在挑战封建社会运行了千年的伦理纲常。这种不屈不挠的反抗精神对于一个革命者、一个共产党员、一个当时的女性而言是十分可贵的。越是读着对白灵的描写，我就越喜爱这个角色，她俊俏、活泼、勇敢又不失聪慧，敢爱敢恨、有理想又有抱负，及至后来得知建国后，共产党的干部带着“革命烈士”的牌子走进白嘉轩的宅院，我的心情一度十分沉重，再后来了解到白灵经历的被软禁、被关押又被活埋的过程时，更是难过地不忍卒读。一个革命者没有死在革命的道路上，没有死在敌人的利刃下，却死在了自己同志的手里，这让我无论如何也无法释怀。兆海和兆谦的死也一度让我心绪烦乱，却远无法与白灵相比较。</p>
-<p>同样是与命运抗争的女子，黑娃媳妇小娥就显得无力多了，芒儿师傅的大女儿小翠则更是难以望其项背。田小娥的表面上看起来是一个不守妇道的和人乱搞的女子，但我看到的却是封建制度对女性的戕害。小娥的父亲是秀才，在当时的社会，穷苦人家中有个科举考试及第者，家庭的命运便可以彻底改变，小娥在书香门第中成长，自然是不会像一般穷人家的孩子一样，她举止优雅、穿着得体还知礼数，黑娃引着她会到家中时，鹿三一眼就看出这不是穷苦人家的女子，当即断定这不是儿子能伺候得起的人；后来孝文在小娥的窑洞里与她快活的时候也将小娥与自己的媳妇暗暗比较起来，不由地对家里那个女人产生了唾弃。按照门当户对的传统，小娥本可以拥有一段不错的后半生的，可是却被嫁到了郭举人家中当小妾，只是因为郭举人想要吃“泡枣儿”。小娥从没体验过正经的夫妻生活，有的只是郭举人每月三次在她房里例行公事般的逍遥。小娥甘愿过这样的日子吗，当然不，可是没有像白灵一样接受过新式教育的她除了能把枣儿泡在尿里之外还能做什么呢？写到这里，我倒开始同情冷先生的大女儿了……</p>
-<p>白灵与兆海是在城里搬运尸体时偶然碰见的，两人对视了好久才认出是白鹿原上的乡党。那时两人是一起工作的革命同志，兆海还设法让白灵转到了他所在的学校，逐渐地，在密切的来往中，他们的关系逐渐变得不一般了起来，一种无法言说的心绪在他们心头萦绕着。终于有一天，兆海捅破了窗户纸，朝白灵吻了下去，两人私定了终身。彼时的国共合作还正有条不紊地进行着，白灵和兆海商量决定一人加入一个党，即使哪一天两党不再交好，他们也一定会继续合作，就像国与共合作一样，这誓言成了他们爱情的象征。兆海率先加入了共产党，而按照约定，白灵则要加入国民党，不过，白灵倒没有立刻入党，这也给后来他们两人婚恋的裂变埋下了伏笔。</p>
-<p>后来，立志做一名真正的军人推进国民革命的兆海去了保定陆军学校学习军事，之后不久蒋介石发动了反革命政变，国共合作全面破裂，兆海退出了共产党加入了国民党。白灵那时也还没有加入任何一个党，兆海决定加入国民党的原因究竟是不是害怕再也无法和白灵像往常一样见面呢？白灵那时正在教会女子学校上课，她看见国民党的警察冲进教室将加入共产党的女学生绑走时第一个想到的就是兆海，“他能挣脱五花大绑的麻绳吗”？白灵或许就是从看到学生被填了枯井时起开始改变主意的，她急切地想找到兆鹏打听消息，见到兆鹏后，她向兆鹏述说了自己想要加入共产党的意愿。</p>
-<blockquote>
-<p><em>“兆海哥！人想你都想死了……”</em><br><em>“我等着你的好消息啊兆海哥……”</em><br><em>“兆海哥……我还是等着你回来……”</em></p>
-</blockquote>
-<p>兆海从陆军学校学习回来后，立刻找到了白灵，白灵也难以掩饰再次见到兆海的喜悦。两人漫步在承载着他们记忆的小巷里，白灵激动地告诉兆海她也像他一样加入共产党了，然而她等到的不是与她同样激动地兆海，而是兆海已经加入国民党的消息。两个怀揣着解放中华民族的理想的苦恋的人陷入了争执，接着又失语，低头看着脚下的土地……她和他在热切的期待中突然发觉对方已不是记忆中的那个人，双方都窝了兴致，都陷入痛苦。兆海出征的前天，来到了皮匠铺子，这一次依然谁都没有说服谁，可白灵怎么甘愿就这样放弃面前这个小伙子呢？她噙着泪，“兆海哥……我还是等着你回来……”</p>
-<p>一段时间后，兆海的十七师撤回来了，白灵在豆腐巷小学校接待了鹿兆海。她瞅见他一身下级军官服装就觉得他们的关系将要完结了。鹿兆海在她心目中急遽地暗淡下去。兆海的理想和抱负曾经唤起她的毫无保留的赞同，可是，当初那种国民革命变得不再是驱逐封建军阀而是屠杀人民的时候，鹿兆海的抱负和志向就令她不仅是惋惜了。</p>
-<p>此后直到牺牲的那一刻，白灵都一直以一个共产党员的角色投身国民革命。当日本侵略者的铁骑踏到中华大地上那会，她省立师范学校的学生自治会主席，正在筹备建立一个大中学校抗日救国统一指挥机构。白灵怀上了鹿兆鹏的孩子，她与他自然地交融在一起，他隐藏在心底的那一缕歉意的畏缩已以灼干散尽。在一次对民国教育部陶部长的示威中，白灵失手将砖头丢在了陶部长的脸上，她的身份随之暴露，被迫开始转移。在几百里外的龙湾村，她生下了这个叫鹿鸣的孩子。</p>
-<p>白嘉轩的噩梦不幸被朱先生绝妙而诡秘的掐算言中，白灵在南梁根据地走向了她生命的尽头。</p>
-<p>白灵辗转在地下党的护送下，被转运到了南梁根据地，随后就被安排做文化教员。在根据地，她出色的工作和活泼开朗的性格使她得到上至廖军长下至小队长的表彰，也得到游击队员们的拥戴。她给游击队员教字学文化，也帮他们缝补撕裂磨损的衣裤鞋袜，听队员们给她唱山歌，她把那些悠扬哀婉的山歌改换唱词变成革命歌曲，朗朗上口的歌词很快在队伍中流传开来。越是看着白灵那活泼的样子，就越是让我难受，这么好的一个女子没有等来革命胜利的那一天，没有看到自己的努力汇进人民战争的洪流入海，就永远倒下了。廖军长气急骂了毕政委，也被毕政委关起来了，白灵的保护伞就此消失，她被关押的时候，那百灵鸟一般的嗓子连着嗥了三天三夜，她的嗓子依然宏亮，精神依旧亢奋，双眼仍然如炬。终于等来了毕政委，她把所有的激情都释放出来，像一头拼死的母狮咆哮起来，她把生命中最后一丝顽强全部展现出来，砖头一样的话拍击着毕政委——就像她扔向陶部长的那块砖头一样。</p>
-<p>然而在白灵被活埋完毕后，我的心情却没有之前那么低落了，这个革命者完成了她的最后一次挣扎，虽然没有被填枯井，但就像成千上万为革命牺牲的人民一样，他们的精魄铸就了中华民族之魂。她的死亡细节已经不再重要——正如鹿鸣所说——重要的是对发生这一幕历史悲剧的根源的反省。</p>
-<p>兆海也在中条山牺牲了，他曾对白灵说非她终身不娶，可后来在金关城买下一栋民房，与当地一位女子成婚了。兆海违背了他的誓言吗？这个神似灵灵的女子不过是他对她日夜思念的寄托罢了……</p>
-<p>苦命的恋人啊……</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
+        <category>计算化学</category>
       </categories>
   </entry>
 </search>
