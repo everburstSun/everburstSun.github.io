@@ -174,6 +174,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="泠霖">
+      <meta itemprop="description" content="爱摄影、爱音乐、会点py的药学🐶">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泠霖的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/" class="post-title-link" itemprop="url">PyMOL做出非氢键相互作用图</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-05-28 12:31:52" itemprop="dateCreated datePublished" datetime="2017-05-28T12:31:52+08:00">2017-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-13 22:45:24" itemprop="dateModified" datetime="2020-10-13T22:45:24+08:00">2020-10-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PyMOL%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">PyMOL系列教程</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>941</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a target="_blank" rel="noopener" href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3kwf</p>
+<p>首先加载大分子： </p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
+<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
+
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
+<p>单独显示我们的研究对象：</p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
+<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
+<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
+
+<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
+<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
+最后设定好视角，就可以输出了。
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -353,7 +457,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -411,14 +515,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">42k</span>
+    <span title="站点总字数">47k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共19.8k字</span>
+  <span class="post-count">博客全站共21.4k字</span>
 </div>
         
 <div class="busuanzi-count">
