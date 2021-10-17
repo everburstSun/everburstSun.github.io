@@ -76,48 +76,6 @@
       </categories>
   </entry>
   <entry>
-    <title>利用PyMOL做出大分子-配体相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3oc0</p>
-<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
-<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
-
-<p>改变大分子和配体的显示样式：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
-<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
-
-<p>将我们需要的氨基酸残基复制到新对象中</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
-<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
-<p>改变残基显示样式</p>
-<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
-
-<p>现在你可以看到，已经有文献里图片的内味了。</p>
-<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
-
-<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
-
-<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
-
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
     <title>安装PyMOL</title>
     <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
@@ -166,6 +124,48 @@
 
 <p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
 ]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>利用PyMOL做出大分子-配体相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3oc0</p>
+<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
+<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
+
+<p>改变大分子和配体的显示样式：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
+<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
+
+<p>将我们需要的氨基酸残基复制到新对象中</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
+<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
+<p>改变残基显示样式</p>
+<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
+
+<p>现在你可以看到，已经有文献里图片的内味了。</p>
+<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
+
+<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
+
+<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
       <categories>
         <category>PyMOL系列教程</category>
       </categories>
