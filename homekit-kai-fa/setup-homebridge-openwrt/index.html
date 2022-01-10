@@ -21,27 +21,19 @@
     var CONFIG = {"hostname":"blog.simonsun.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为J. Med. Chem. 2016, 59, 4087−4102，本文将尝试绘制Figure 2b，原图如下所示：   本例中使用的PDB code: 3kwf 首先加载大分子：  fetch 3kwfbg white 接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。">
+  <meta name="description" content="本文记录了如何在x86的Openwrt软路由上安装Homebridge，以及配置Homebridge-UI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PyMOL做出非氢键相互作用图">
-<meta property="og:url" content="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/index.html">
+<meta property="og:title" content="在基于x86的Openwrt软路由上安装Homebridge">
+<meta property="og:url" content="https://blog.simonsun.top/homekit-kai-fa/setup-homebridge-openwrt/index.html">
 <meta property="og:site_name" content="泠霖的博客">
-<meta property="og:description" content="在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为J. Med. Chem. 2016, 59, 4087−4102，本文将尝试绘制Figure 2b，原图如下所示：   本例中使用的PDB code: 3kwf 首先加载大分子：  fetch 3kwfbg white 接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。">
+<meta property="og:description" content="本文记录了如何在x86的Openwrt软路由上安装Homebridge，以及配置Homebridge-UI">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg">
-<meta property="og:image" content="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg">
-<meta property="og:image" content="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg">
-<meta property="og:image" content="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg">
-<meta property="og:image" content="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg">
-<meta property="article:published_time" content="2017-05-28T04:31:52.000Z">
-<meta property="article:modified_time" content="2020-10-13T14:45:24.696Z">
+<meta property="article:published_time" content="2021-11-01T13:51:28.000Z">
+<meta property="article:modified_time" content="2021-11-06T15:17:32.454Z">
 <meta property="article:author" content="泠霖">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg">
 
-<link rel="canonical" href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/">
+<link rel="canonical" href="https://blog.simonsun.top/homekit-kai-fa/setup-homebridge-openwrt/">
 
 
 <script id="page-configurations">
@@ -54,7 +46,7 @@
   };
 </script>
 
-  <title>PyMOL做出非氢键相互作用图 | 泠霖的博客</title>
+  <title>在基于x86的Openwrt软路由上安装Homebridge | 泠霖的博客</title>
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-174153013-1"></script>
   <script>
@@ -185,7 +177,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/">
+    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/homekit-kai-fa/setup-homebridge-openwrt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -198,7 +190,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          PyMOL做出非氢键相互作用图
+          在基于x86的Openwrt软路由上安装Homebridge
         </h1>
 
         <div class="post-meta">
@@ -208,14 +200,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2017-05-28 12:31:52" itemprop="dateCreated datePublished" datetime="2017-05-28T12:31:52+08:00">2017-05-28</time>
+              <time title="创建时间：2021-11-01 21:51:28" itemprop="dateCreated datePublished" datetime="2021-11-01T21:51:28+08:00">2021-11-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-13 22:45:24" itemprop="dateModified" datetime="2020-10-13T22:45:24+08:00">2020-10-13</time>
+                <time title="修改时间：2021-11-06 23:17:32" itemprop="dateModified" datetime="2021-11-06T23:17:32+08:00">2021-11-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,7 +215,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PyMOL%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">PyMOL系列教程</span></a>
+                  <a href="/categories/HomeKit%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">HomeKit开发</span></a>
                 </span>
             </span>
 
@@ -240,8 +232,9 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>941</span>
+              <span>1.2k</span>
             </span>
+            <div class="post-description">本文记录了如何在x86的Openwrt软路由上安装Homebridge，以及配置Homebridge-UI</div>
 
         </div>
       </header>
@@ -252,31 +245,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a target="_blank" rel="noopener" href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+        <h2 id="1-安装node-js"><a href="#1-安装node-js" class="headerlink" title="1. 安装node.js"></a>1. 安装node.js</h2><p>首先需要在Openwrt中安装<code>node.js</code>，opkg源中自带了node的ipk文件，但是我的固件中安装上以后会报错，所以还是建议自己编译一个node安装包，配置位置在<code>Languages</code>→<code>node</code>→<code>node.js</code>，勾选上<code>node</code>和<code>npm</code>以及<code>node-homebridge</code>，不能使用<code>npm install</code>来安装homebridge，其代码无法适配openwrt。</p>
+<p>编译完成后，将固件上传到路由器安装即可。</p>
+<h2 id="2-安装Homebridge-UI"><a href="#2-安装Homebridge-UI" class="headerlink" title="2. 安装Homebridge UI"></a>2. 安装Homebridge UI</h2><p><code>npm install -g --unsafe-perm homebridge-config-ui-x</code></p>
+<p>安装完成后，编辑<code>/root/.homebridge/config.json</code>文件对UI进行配置。在主流操作系统中，<code>Homebridge UI</code>提供了一个名为<code>hb-service</code>的便捷配置工具，但是Openwrt不在其支持列表中，需要手动进行配置。</p>
+<h2 id="3-配置JSON文件"><a href="#3-配置JSON文件" class="headerlink" title="3. 配置JSON文件"></a>3. 配置JSON文件</h2><p>使用<code>vi</code>编辑<code>/root/.homebridge/config.json</code>，其实更建议使用<code>VS Code</code>编辑，然后上传到路由器上，毕竟有语法检查，不容易出错。在json文件中加入下列内容：</p>
+<figure class="highlight json"><table><tbody><tr><td class="code"><pre><code class="hljs json">{<br>    <span class="hljs-attr">"bridge"</span>: {<br>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"HomeBridge"</span>,<br>        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"00:00:00:00:00:02"</span>,<br>        <span class="hljs-attr">"port"</span>: <span class="hljs-number">58888</span>,<br>        <span class="hljs-attr">"pin"</span>: <span class="hljs-string">"199-70-213"</span><br>    },<br>    <span class="hljs-attr">"platforms"</span>: [<br>        {<br>            <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"config"</span>,<br>            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Config"</span>,<br>            <span class="hljs-attr">"port"</span>: <span class="hljs-number">8080</span>,<br>            <span class="hljs-attr">"sudo"</span>: <span class="hljs-literal">false</span>,<br>            <span class="hljs-attr">"log"</span>: {<br>                <span class="hljs-attr">"method"</span>: <span class="hljs-string">"file"</span>,<br>                <span class="hljs-attr">"path"</span>: <span class="hljs-string">"/var/log/homebridge.log"</span><br>            },<br>            <span class="hljs-attr">"ssl"</span>: {<br>                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"/root/.ssh/id_rsa.pem"</span>,<br>                <span class="hljs-attr">"cert"</span>: <span class="hljs-string">"/root/.ssh/cert.pem"</span><br>            }<br>        }<br>    ]<br>}<br></code></pre></td></tr></tbody></table></figure>
 
-<p>本例中使用的PDB code: 3kwf</p>
-<p>首先加载大分子： </p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
-<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
-<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
+<p>这样就可以通过路由器的<code>8080</code>端口来访问<code>Homebridge UI</code>了，默认的用户名和密码都是<code>admin</code>。详细的config设置选项可以参考<a target="_blank" rel="noopener" href="https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options">开发者的文档</a>。</p>
+<p>如果你有公网IP，强烈建议开启<code>ssl</code>，以便能够使用<code>https</code>访问管理界面，如果不需要ssl，把那一项从json里删掉就好。</p>
 
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
-<p>单独显示我们的研究对象：</p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
-<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
-<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
-<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
-
-<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
-
-<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
-<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
-最后设定好视角，就可以输出了。
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">
     </div>
 
     
@@ -291,7 +269,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/" title="PyMOL做出非氢键相互作用图">https://blog.simonsun.top/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</a>
+    <a href="https://blog.simonsun.top/homekit-kai-fa/setup-homebridge-openwrt/" title="在基于x86的Openwrt软路由上安装Homebridge">https://blog.simonsun.top/homekit-kai-fa/setup-homebridge-openwrt/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
@@ -308,12 +286,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/" rel="prev" title="利用PyMOL做出大分子-配体相互作用图">
-      <i class="fa fa-chevron-left"></i> 利用PyMOL做出大分子-配体相互作用图
+    <a href="/homekit-kai-fa/esp8266-env/" rel="prev" title="HomeKit开发环境搭建-ESP8266">
+      <i class="fa fa-chevron-left"></i> HomeKit开发环境搭建-ESP8266
     </a></div>
       <div class="post-nav-item">
-    <a href="/ji-suan-hua-xue/homologymodeling-ds/" rel="next" title="在Discovery Studio中进行同源模建">
-      在Discovery Studio中进行同源模建 <i class="fa fa-chevron-right"></i>
+    <a href="/homekit-kai-fa/config/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -373,6 +351,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85node-js"><span class="nav-number">1.</span> <span class="nav-text">1. 安装node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85Homebridge-UI"><span class="nav-number">2.</span> <span class="nav-text">2. 安装Homebridge UI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AEJSON%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">3. 配置JSON文件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
