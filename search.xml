@@ -36,6 +36,11 @@
       </categories>
   </entry>
   <entry>
+    <title></title>
+    <url>/homekit-kai-fa/config/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>{"bridge":{"name":"HomeBridge","username":"A0:BB:FE:3D:85:02","manufacturer":"homebridge.io","model":"homebridge","port":45233,"pin":"199-70-213"},"platforms":[{"platform":"config","name":"Config","port":8888,"sudo":false,"log":{"method":"file","path":"/var/log/homebridge.log"},"ssl":{"key":"/root/.ssh/id_rsa.pem","cert":"/root/.ssh/cert.pem"}}],"accessories":[]}]]></content>
+  </entry>
+  <entry>
     <title>在基于x86的Openwrt软路由上安装Homebridge</title>
     <url>/homekit-kai-fa/setup-homebridge-openwrt/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="1-安装node-js"><a href="#1-安装node-js" class="headerlink" title="1. 安装node.js"></a>1. 安装node.js</h2><p>首先需要在Openwrt中安装<code>node.js</code>，opkg源中自带了node的ipk文件，但是我的固件中安装上以后会报错，所以还是建议自己编译一个node安装包，配置位置在<code>Languages</code>→<code>node</code>→<code>node.js</code>，勾选上<code>node</code>和<code>npm</code>以及<code>node-homebridge</code>，不能使用<code>npm install</code>来安装homebridge，其代码无法适配openwrt。</p>
@@ -53,9 +58,139 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
-    <url>/homekit-kai-fa/config/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>{"bridge":{"name":"HomeBridge","username":"A0:BB:FE:3D:85:02","manufacturer":"homebridge.io","model":"homebridge","port":45233,"pin":"199-70-213"},"platforms":[{"platform":"config","name":"Config","port":8888,"sudo":false,"log":{"method":"file","path":"/var/log/homebridge.log"},"ssl":{"key":"/root/.ssh/id_rsa.pem","cert":"/root/.ssh/cert.pem"}}],"accessories":[]}]]></content>
+    <title>PyMOL做出非氢键相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3kwf</p>
+<p>首先加载大分子： </p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
+<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
+
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
+<p>单独显示我们的研究对象：</p>
+<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
+<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
+<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
+
+<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
+<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
+最后设定好视角，就可以输出了。
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
+<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PyMOL的基本操作</title>
+    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>利用PyMOL做出大分子-配体相互作用图</title>
+    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
+
+<p>本例中使用的PDB code: 3oc0</p>
+<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
+<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
+
+<p>改变大分子和配体的显示样式：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
+<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
+<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
+
+<p>将我们需要的氨基酸残基复制到新对象中</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
+<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
+<p>改变残基显示样式</p>
+<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
+
+<p>现在你可以看到，已经有文献里图片的内味了。</p>
+<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
+<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
+
+<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
+
+<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
+<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>安装PyMOL</title>
+    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
+<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
+
+
+<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
+<ul>
+<li><strong>Windows</strong></li>
+</ul>
+<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
+<ul>
+<li><strong>Linux</strong></li>
+</ul>
+<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
+<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
+
+<p>以Ubuntu为例，在terminal中输入：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
+
+<p>安装git，然后将源代码拷贝到本地：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
+
+<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
+
+<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
+
+<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
+<ul>
+<li><strong>Mac OS X</strong></li>
+</ul>
+<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
+<p>首先安装依赖：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
+<p>安装Pmw：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
+<p>获取pymol源代码并编译安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
+
+<p>最后将路径添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
+
+<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
+]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
+      </categories>
   </entry>
   <entry>
     <title>PyQt5多线程编程</title>
@@ -229,7 +364,7 @@
 <figure class="highlight reasonml"><table><tbody><tr><td class="code"><pre><code class="hljs reasonml">g++ -O3 -Wall -shared -std=c++<span class="hljs-number">11</span> -fPIC <span class="hljs-constructor">$(<span class="hljs-params">python3</span> -<span class="hljs-params">m</span> <span class="hljs-params">pybind11</span> --<span class="hljs-params">includes</span>)</span> hello.cpp -o hello<span class="hljs-constructor">$(<span class="hljs-params">python3</span>-<span class="hljs-params">config</span> --<span class="hljs-params">extension</span>-<span class="hljs-params">suffix</span>)</span> -undefined dynamic_lookup<br></code></pre></td></tr></tbody></table></figure>
 
 <p>在我的系统中，会生成一个名为<code>hello.cpython-38-darwin.so</code>的文件，这就是编译产生的共享库文件。现在，在当前目录进入python解释器，即可导入包并运行函数：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">$ python<br>Python <span class="hljs-number">3.8</span><span class="hljs-number">.12</span> (default, Oct <span class="hljs-number">12</span> <span class="hljs-number">2021</span>, <span class="hljs-number">06</span>:<span class="hljs-number">23</span>:<span class="hljs-number">56</span>) <br>[Clang <span class="hljs-number">10.0</span><span class="hljs-number">.0</span> ] :: Anaconda, Inc. on darwin<br>Type <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">$ python<br>Python <span class="hljs-number">3.8</span><span class="hljs-number">.12</span> (default, Oct <span class="hljs-number">12</span> <span class="hljs-number">2021</span>, <span class="hljs-number">06</span>:<span class="hljs-number">23</span>:<span class="hljs-number">56</span>) <br>[Clang <span class="hljs-number">10.0</span><span class="hljs-number">.0</span> ] :: Anaconda, Inc. on darwin<br>Type <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br></code></pre></td></tr></tbody></table></figure>
 
 <p>除了手动编译外，还可以使用<code>cmake</code>工具进行跨平台编译配置，在当前目录下新建一个<code>CMakeLists.txt</code>文件，然后写入下面的命令：</p>
 <figure class="highlight cmake"><table><tbody><tr><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.4</span>...<span class="hljs-number">3.18</span>)<br><span class="hljs-keyword">project</span>(hello)<br><span class="hljs-keyword">find_package</span>(Python COMPONENTS Interpreter Development REQUIRED)<br><span class="hljs-keyword">find_package</span>(pybind11 REQUIRED)<br>pybind11_add_module(hello hello.cpp)<br></code></pre></td></tr></tbody></table></figure>
@@ -238,13 +373,13 @@
 <p>保存退出后，执行<code>cmake . &amp;&amp; make</code>命令，即可看到编译产生的共享库文件。</p>
 <hr>
 <p>使用<code>py::arg</code>参数可以将变量名也暴露给python，同时，若有需要，还可以设置参数默认值：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">PYBIND11_MODULE(hello, m)<br>{<br>    m.def(<span class="hljs-string">"hello"</span>, &amp;hello, <span class="hljs-string">"Print hello to the name."</span>, py::arg(<span class="hljs-string">"name"</span>)=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp">PYBIND11_MODULE(hello, m)<br>{<br>    m.def(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>, py::arg(<span class="hljs-string">"name"</span>)=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
 
 <p>Python运行效果：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.hello()<br>Hello, Jack! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.hello(<span class="hljs-string">"Nic"</span>)<br>Hello, Nic! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.hello(name=<span class="hljs-string">"George"</span>)<br>Hello, George! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>help(hello.say_hello)<br>Help on built-<span class="hljs-keyword">in</span> function say_hello <span class="hljs-keyword">in</span> module hello:<br><br>say_hello(...) method of builtins.PyCapsule instance<br>    say_hello(name: str = 'Jack') -&gt; None<br>    <br>    Print hello to the name.<br>(END)<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello()<br>Hello, Jack! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Nic"</span>)<br>Hello, Nic! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(name=<span class="hljs-string">"George"</span>)<br>Hello, George! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>help(hello.say_hello)<br>Help on built-<span class="hljs-keyword">in</span> function say_hello <span class="hljs-keyword">in</span> module hello:<br><br>say_hello(...) method of builtins.PyCapsule instance<br>    say_hello(name: str = 'Jack') -&gt; None<br>    <br>    Print hello to the name.<br>(END)<br></code></pre></td></tr></tbody></table></figure>
 
 <p><code>py::arg</code>参数还有一种简化写法，通过引入名称空间<code>pybind11::literals</code>，可以使用<code>_a</code>后缀来替代<code>py::arg</code>，例如，上面的一条<code>m.def</code>函数可以写成：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br>PYBIND11_MODULE(hello, m)<br>{<br>    m.def(<span class="hljs-string">"hello"</span>, &amp;hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br>PYBIND11_MODULE(hello, m)<br>{<br>    m.def(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
 <hr>
 <p>除了包装函数外，通过使用<code>module_::attr</code>函数可以将C++中的变量暴露给Python，例如下面的C++程序：</p>
 <figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* where = <span class="hljs-string">"This is a message from C++ library!"</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* cst = <span class="hljs-string">"This is an auto cast string by pybind11."</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"!"</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>}<br><br>PYBIND11_MODULE(hello, m)<br>{<br>    m.def(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>    m.attr(<span class="hljs-string">"where"</span>) = where;<br>    m.attr(<span class="hljs-string">"cast"</span>) = py::cast(cst);<br>}<br></code></pre></td></tr></tbody></table></figure>
@@ -579,23 +714,6 @@
       </categories>
   </entry>
   <entry>
-    <title>ffmpeg视频压制</title>
-    <url>/sui-bi/ffmpeg-shi-pin-ya-zhi/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4<br></code></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>pv+dd写入硬盘镜像</title>
-    <url>/sui-bi/pv-dd-xie-ru-ying-pan-jing-xiang/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><code class="hljs gradle">sudo pv -cN <span class="hljs-keyword">source</span> &lt; <span class="hljs-keyword">file</span>.iso | sudo dd of=<span class="hljs-regexp">/dev/</span>rdisk2 bs=<span class="hljs-number">4</span>m<br></code></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
     <title>ffmpeg合并视频</title>
     <url>/sui-bi/ffmpeg-he-bing-shi-pin/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>优酷的反下载策略更新了，youtube-dl已经下载不到里面的视频了，所以只能手动从chrome里把视频地址提取出来手动下载，这样一个2分多钟的视频就下载了16个文件，都是flv格式：</p>
@@ -615,6 +733,23 @@
 <p>搞定！</p>
 <figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">MycBook:Downloads simon$ ll<br>-rw-r--r--@  1 simon  staff         201912 10 19 23:12 0.flv<br>-rw-r--r--@  1 simon  staff         331256 10 19 23:12 1.flv<br>-rw-r--r--@  1 simon  staff         337272 10 19 23:12 10.flv<br>-rw-r--r--@  1 simon  staff         448568 10 19 23:12 11.flv<br>-rw-r--r--@  1 simon  staff         475640 10 19 23:12 12.flv<br>-rw-r--r--@  1 simon  staff         346296 10 19 23:12 13.flv<br>-rw-r--r--@  1 simon  staff         607992 10 19 23:12 14.flv<br>-rw-r--r--@  1 simon  staff         466616 10 19 23:13 15.flv<br>-rw-r--r--@  1 simon  staff         126712 10 19 23:13 16.flv<br>-rw-r--r--@  1 simon  staff         358328 10 19 23:12 2.flv<br>-rw-r--r--@  1 simon  staff         412472 10 19 23:12 3.flv<br>-rw-r--r--@  1 simon  staff         403448 10 19 23:12 4.flv<br>-rw-r--r--@  1 simon  staff         376376 10 19 23:12 5.flv<br>-rw-r--r--@  1 simon  staff         370360 10 19 23:12 6.flv<br>-rw-r--r--@  1 simon  staff         361336 10 19 23:12 7.flv<br>-rw-r--r--@  1 simon  staff         400440 10 19 23:12 8.flv<br>-rw-r--r--@  1 simon  staff         427512 10 19 23:12 9.flv<br>-rw-r--r--@  1 simon  staff        6073530 10 19 23:47 output.mp4<br></code></pre></td></tr></tbody></table></figure>
 ]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ffmpeg视频压制</title>
+    <url>/sui-bi/ffmpeg-shi-pin-ya-zhi/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分辨率可以自己定义，把对于的参数改成自己需要的就好了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 1 -an -f mp4 -y NUL &amp;&amp; ffmpeg -i video.mov -vcodec libx264 -preset veryslow -profile:v high -level:v 5.2 -x264-params keyint=270:min-keyint=29.97 -pix_fmt yuv420p -b:v 2000k -s 1920x1080 -r 29.97 -pass 2 -c:a copy video.mp4<br></code></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>pv+dd写入硬盘镜像</title>
+    <url>/sui-bi/pv-dd-xie-ru-ying-pan-jing-xiang/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><code class="hljs gradle">sudo pv -cN <span class="hljs-keyword">source</span> &lt; <span class="hljs-keyword">file</span>.iso | sudo dd of=<span class="hljs-regexp">/dev/</span>rdisk2 bs=<span class="hljs-number">4</span>m<br></code></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>随笔</category>
       </categories>
@@ -723,141 +858,6 @@
 ]]></content>
       <categories>
         <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyMOL的基本操作</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-de-ji-ben-cao-zuo/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>PyMOL做出非氢键相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3kwf</p>
-<p>首先加载大分子： </p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
-<p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
-<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
-
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
-<p>单独显示我们的研究对象：</p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
-<p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
-<p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
-<img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
-
-<p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
-
-<p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
-<p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
-最后设定好视角，就可以输出了。
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
-<img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>利用PyMOL做出大分子-配体相互作用图</title>
-    <url>/pymol-xi-lie-jiao-cheng/li-yong-pymol-zuo-chu-da-fen-zi-pei-ti-xiang-hu-zuo-yong-tu/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在本文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，原图如下所示：</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo1t4vxk5j30zy0cmti4.jpg" title="Figure 2" width="75%" height="75%">
-
-<p>本例中使用的PDB code: 3oc0</p>
-<p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
-<p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
-
-<p>改变大分子和配体的显示样式：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
-<p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
-<img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
-
-<p>将我们需要的氨基酸残基复制到新对象中</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
-<p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
-<p>改变残基显示样式</p>
-<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
-
-<p>现在你可以看到，已经有文献里图片的内味了。</p>
-<p>文献中的残基要比默认值更细，接下来修改粗细：</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
-<p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
-
-<p>修改氢键样式：在上方菜单栏选择<strong>Setting -&gt; Edit All</strong>，输入<code>dash</code>，将<code>dash_color</code>修改为<code>red</code>，按回车键确认修改。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
-
-<p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
-
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>安装PyMOL</title>
-    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
-<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
-
-
-<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
-<ul>
-<li><strong>Windows</strong></li>
-</ul>
-<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
-<ul>
-<li><strong>Linux</strong></li>
-</ul>
-<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
-<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
-
-<p>以Ubuntu为例，在terminal中输入：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
-
-<p>安装git，然后将源代码拷贝到本地：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
-
-<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
-
-<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
-
-<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
-<ul>
-<li><strong>Mac OS X</strong></li>
-</ul>
-<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
-<p>首先安装依赖：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
-<p>安装Pmw：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
-<p>获取pymol源代码并编译安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
-
-<p>最后将路径添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
-
-<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
-]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
       </categories>
   </entry>
 </search>
