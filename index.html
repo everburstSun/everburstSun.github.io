@@ -174,6 +174,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/sui-bi/find-hbonds/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="泠霖">
+      <meta itemprop="description" content="爱摄影、爱音乐、会点py的药学🐶">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泠霖的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/sui-bi/find-hbonds/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-03 16:58:27" itemprop="dateCreated datePublished" datetime="2022-03-03T16:58:27+08:00">2022-03-03</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.3k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一个简单的氢键查找算法"><a href="#一个简单的氢键查找算法" class="headerlink" title="一个简单的氢键查找算法"></a>一个简单的氢键查找算法</h1><p>当连有氢的强电负性原子与另一个强电负性原子间满足一定参数时，这二者之间就会形成氢键。连氢的原子称为氢键供体（D），不连氢的原子称为氢键受体（A）。氢键也是蛋白质和配体间的各种相互作用中较为强的相互作用。一般而言，D-A间的距离应小于3.2埃，而D-H与H-A间的夹角应小于20度。</p>
+<p>但是，考虑到sigma键是可以自由旋转的，如果仅通过比较D-H与H-A间的夹角来判断是否能有氢键生成，可能会遗漏掉大量的氢键，因为计算机读取到的结构都是静态的。因此，我们不妨转换一下思路，sigma键旋转的过程中，D-A键所扫过的区域构成了一个圆锥面，这时，D-H-A夹角正负20度以内两个圆锥面围成的区域就是所有可能形成氢键的夹角范围，再加上距离的约束，当A落在此区域时，就判定其能与D形成氢键。这样，问题就转变成了A与X-D间的夹角问题，其中X为与D相连的配体骨架上的原子。</p>
+<p>在本文中，我们将通过<code>RDKit</code>和<code>MDAnalysis</code>这两个python库来实现氢键查找。</p>
+<p>通过RDKit进行smarts匹配，将配体中的氢键受体和氢键配体全部提取出来，将其原子名称存入列表：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">import</span> MDAnalysis<br><span class="hljs-keyword">from</span> rdkit <span class="hljs-keyword">import</span> Chem<br><br>u = MDAnalysis.Universe(<span class="hljs-string">"4xp1.pdb"</span>)<br>u.ligand = u.select_atoms(<span class="hljs-string">"resname LDP"</span>)<br>u.ligand_noH = u.ligand.select_atoms(<span class="hljs-string">"not name H*"</span>)<br>u.protein = u.select_atoms(<span class="hljs-string">"protein"</span>)<br>u.mol = u.ligand.convert_to(<span class="hljs-string">'RDKIT'</span>)<br><br>HDonorSmarts = Chem.MolFromSmarts(<span class="hljs-string">'[$([N;!H0;v3]),$([N;!H0;+1;v4]),$([O,S;H1;+0]),$([n;H1;+0])]'</span>)<br>HAcceptorSmarts = Chem.MolFromSmarts(<span class="hljs-string">"[$([O,S;H1;v2]-[!$(*=[O,N,P,S])]),$([O,S;H0;v2]),$([O,S;-]),$([N;v3;!$(N-*=!@[O,N,P,S])]),$([nH0,o,s;+0])]"</span>)<br>atom_names=[x.name <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> u.ligand]<br>donors, acceptors = [], []<br><span class="hljs-keyword">for</span> atom <span class="hljs-keyword">in</span> u.mol.GetSubstructMatches(HDonorSmarts, uniquify=<span class="hljs-number">1</span>):<br>    donors.append(atom_names[atom[<span class="hljs-number">0</span>]])<br><span class="hljs-keyword">for</span> atom <span class="hljs-keyword">in</span> u.mol.GetSubstructMatches(HAcceptorSmarts, uniquify=<span class="hljs-number">1</span>):<br>    acceptors.append(atom_names[atom[<span class="hljs-number">0</span>]])<br></code></pre></td></tr></tbody></table></figure>
+
+<p>得到受体及供体原子后，就可以根据先前推导出的结论来进行搜索。这里我们使用MDAnalysis中提供的<code>AtomNeighborSearch</code>类来做这件事。用<code>u.protein</code>来构建一个类实例后，调用类中的<code>search()</code>方法，就能获取到选定范围内属于<code>u.protein</code>的所有原子。</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> MDAnalysis.core.topologyobjects <span class="hljs-keyword">import</span> Angle<br><span class="hljs-keyword">from</span> MDAnalysis.lib.NeighborSearch <span class="hljs-keyword">import</span> AtomNeighborSearch<br><span class="hljs-keyword">from</span> MDAnalysis.lib <span class="hljs-keyword">import</span> distances<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-comment"># D--H...A from ligand to protein</span><br>n = AtomNeighborSearch(u.protein)<br>hbonds = []<br><span class="hljs-keyword">for</span> donor <span class="hljs-keyword">in</span> donors:<br>    potential_acceptors_in_protein = n.search(u.ligand_noH.select_atoms(<span class="hljs-string">"name "</span> + donor) , <span class="hljs-number">3.2</span>, <span class="hljs-string">"A"</span>) <span class="hljs-comment"># “A“ for atomic level selection</span><br>    donar_bonds = u.ligand_noH.select_atoms(<span class="hljs-string">"name "</span> + donor).get_connections(<span class="hljs-string">"bonds"</span>).to_indices()<br>    donar_index = u.ligand_noH.select_atoms(<span class="hljs-string">"name "</span> + donor)[<span class="hljs-number">0</span>].index<br>    <span class="hljs-keyword">for</span> bond <span class="hljs-keyword">in</span> donar_bonds:<br>        <span class="hljs-keyword">for</span> atom_idx <span class="hljs-keyword">in</span> bond:<br>            <span class="hljs-keyword">if</span> atom_idx == donar_index:<br>                <span class="hljs-keyword">continue</span><br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-keyword">if</span> u.atoms[atom_idx].type == <span class="hljs-string">'H'</span>:<br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">else</span>:<br>                    atom_nextto_donar = atom_idx<br>    <span class="hljs-keyword">if</span> len(potential_acceptors_in_protein) &gt; <span class="hljs-number">0</span>:<br>        <span class="hljs-keyword">for</span> acceptor <span class="hljs-keyword">in</span> potential_acceptors_in_protein:<br>            <span class="hljs-keyword">if</span> acceptor.type <span class="hljs-keyword">in</span> [<span class="hljs-string">'O'</span>, <span class="hljs-string">'N'</span>, <span class="hljs-string">'S'</span>, <span class="hljs-string">'P'</span>]:<br>                <span class="hljs-keyword">if</span> <span class="hljs-number">80.5</span> &lt; Angle(np.array([acceptor.index, donar_index, atom_nextto_donar]), u).angle() &lt; <span class="hljs-number">129.5</span>:<br>                    hbonds.append([acceptor.index, donor])<br></code></pre></td></tr></tbody></table></figure>
+
+<p>上面的代码将会把找到的所有氢键以<code>[acceptor index, donar name]</code>的形式存入列表<code>hbonds</code>中，acceptor index即蛋白质中的氨基酸残基编号，donor name则为配体中的原子名称</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span>hbonds<br>[[<span class="hljs-number">764</span>, <span class="hljs-string">'O1'</span>], [<span class="hljs-number">726</span>, <span class="hljs-string">'O2'</span>], [<span class="hljs-number">764</span>, <span class="hljs-string">'O2'</span>], [<span class="hljs-number">174</span>, <span class="hljs-string">'N1'</span>]]<br></code></pre></td></tr></tbody></table></figure>
+
+<p>由于氢键具有饱和性，需要剔除多余的氢键，这里我们只简单地保留键长最短的氢键。方法就是通过遍历每个<code>donor</code>原子，如果发现其与多个氨基酸残基形成氢键，就使用MDAnalysis中的<code>distances</code>类获取原子距离，排序后把最短的保留：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">for</span> donor <span class="hljs-keyword">in</span> donors:<br>    donor_count = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> hbond <span class="hljs-keyword">in</span> hbonds:<br>        <span class="hljs-keyword">if</span> hbond[<span class="hljs-number">1</span>] == donor:<br>            donor_count += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">if</span> donor_count &gt; <span class="hljs-number">1</span>:<br>        many_hbonds = []<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(hbonds)):<br>            <span class="hljs-keyword">if</span> hbonds[i][<span class="hljs-number">1</span>] == donor:<br>                many_hbonds.append([distances.distance_array(u.atoms[hbonds[i][<span class="hljs-number">0</span>]].position,<br>                    u.ligand_noH.select_atoms(<span class="hljs-string">"name "</span> + hbonds[i][<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>].position)[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], i])<br>        many_hbonds = sorted(many_hbonds, key=<span class="hljs-keyword">lambda</span> s: s[<span class="hljs-number">0</span>])<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> many_hbonds[<span class="hljs-number">1</span>:]:<br>            hbonds.pop(i[<span class="hljs-number">1</span>])<br></code></pre></td></tr></tbody></table></figure>
+
+<p>现在就得到了配体中原子作为氢键供体、蛋白质中原子作为氢键受体的氢键：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span>hbonds<br>[[<span class="hljs-number">764</span>, <span class="hljs-string">'O1'</span>], [<span class="hljs-number">726</span>, <span class="hljs-string">'O2'</span>], [<span class="hljs-number">174</span>, <span class="hljs-string">'N1'</span>]]<br></code></pre></td></tr></tbody></table></figure>
+
+<p>对于相反的情况，读者可仿照上述方法自行尝试。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/python-xue-xi-bi-ji/introduce-pybind11/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -238,77 +321,6 @@
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.simonsun.top/homekit-kai-fa/config/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="泠霖">
-      <meta itemprop="description" content="爱摄影、爱音乐、会点py的药学🐶">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="泠霖的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/homekit-kai-fa/config/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-11-02 20:54:33" itemprop="dateCreated datePublished" datetime="2021-11-02T20:54:33+08:00">2021-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-03 22:54:49" itemprop="dateModified" datetime="2021-11-03T22:54:49+08:00">2021-11-03</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>365</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          {"bridge":{"name":"HomeBridge","username":"A0:BB:FE:3D:85:02","manufacturer":"homebridge.io","model":"homebridge","port":45233,"pin":"199-70-213"},"platforms":[{"platform":"config","name":"Config","port":8888,"sudo":false,"log":{"method":"file","path":"/var/log/homebridge.log"},"ssl":{"key":"/root/.ssh/id_rsa.pem","cert":"/root/.ssh/cert.pem"}}],"accessories":[]}
       
     </div>
 
@@ -611,7 +623,7 @@
 <div class="copyright">
   
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -620,14 +632,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">54k</span>
+    <span title="站点总字数">57k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.4k字</span>
+  <span class="post-count">博客全站共24.4k字</span>
 </div>
         
 <div class="busuanzi-count">
