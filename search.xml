@@ -742,9 +742,9 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
+    <title>一个简单的氢键查找算法</title>
     <url>/sui-bi/find-hbonds/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="一个简单的氢键查找算法"><a href="#一个简单的氢键查找算法" class="headerlink" title="一个简单的氢键查找算法"></a>一个简单的氢键查找算法</h1><p>当连有氢的强电负性原子与另一个强电负性原子间满足一定参数时，这二者之间就会形成氢键。连氢的原子称为氢键供体（D），不连氢的原子称为氢键受体（A）。氢键也是蛋白质和配体间的各种相互作用中较为强的相互作用。一般而言，D-A间的距离应小于3.2埃，而D-H与H-A间的夹角应小于20度。</p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>当连有氢的强电负性原子与另一个强电负性原子间满足一定参数时，这二者之间就会形成氢键。连氢的原子称为氢键供体（D），不连氢的原子称为氢键受体（A）。氢键也是蛋白质和配体间的各种相互作用中较为强的相互作用。一般而言，D-A间的距离应小于3.2埃，而D-H与H-A间的夹角应小于20度。</p>
 <p>但是，考虑到sigma键是可以自由旋转的，如果仅通过比较D-H与H-A间的夹角来判断是否能有氢键生成，可能会遗漏掉大量的氢键，因为计算机读取到的结构都是静态的。因此，我们不妨转换一下思路，sigma键旋转的过程中，D-A键所扫过的区域构成了一个圆锥面，这时，D-H-A夹角正负20度以内两个圆锥面围成的区域就是所有可能形成氢键的夹角范围，再加上距离的约束，当A落在此区域时，就判定其能与D形成氢键。这样，问题就转变成了A与X-D间的夹角问题，其中X为与D相连的配体骨架上的原子。</p>
 <p>在本文中，我们将通过<code>RDKit</code>和<code>MDAnalysis</code>这两个python库来实现氢键查找。</p>
 <p>通过RDKit进行smarts匹配，将配体中的氢键受体和氢键配体全部提取出来，将其原子名称存入列表：</p>
@@ -764,6 +764,9 @@
 
 <p>对于相反的情况，读者可仿照上述方法自行尝试。</p>
 ]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
   <entry>
     <title>pv+dd写入硬盘镜像</title>
