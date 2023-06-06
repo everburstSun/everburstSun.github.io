@@ -223,7 +223,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>941</span>
+              <span>961</span>
             </span>
 
         </div>
@@ -240,25 +240,25 @@
 
 <p>本例中使用的PDB code: 3kwf</p>
 <p>首先加载大分子： </p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">fetch</span> <span class="hljs-string">3kwf</span><br><span class="hljs-attr">bg</span> <span class="hljs-string">white</span><br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">fetch 3kwf<br>bg white<br></code></pre></td></tr></tbody></table></figure>
 <p>接着创建新对象，在视图窗口右下角点击S按钮，顶部将显示蛋白质的序列，箭头所指位置为A链中的配体，其代号为B1Q。</p>
 <img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjo1t50d1wj31i018owum.jpg" title="" width="65%" height="65%">
 
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">create lig, /<span class="hljs-number">3</span>kwf/E/A/<span class="hljs-number">1</span><br>create residues, (<span class="hljs-number">3</span>kwf <span class="hljs-keyword">and</span> (chain A <span class="hljs-keyword">in</span> resi <span class="hljs-number">630</span>+<span class="hljs-number">631</span>+<span class="hljs-number">659</span>+<span class="hljs-number">666</span>))<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">create lig, /3kwf/E/A/1<br>create residues, (3kwf and (chain A in resi 630+631+659+666))<br></code></pre></td></tr></tbody></table></figure>
 <p>单独显示我们的研究对象：</p>
-<figure class="highlight properties"><table><tbody><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">hide</span> <span class="hljs-string">everything</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, lig</span><br><span class="hljs-attr">show</span> <span class="hljs-string">sticks, residues</span><br><span class="hljs-attr">set_bond</span> <span class="hljs-string">stick_radius, 0.14, residues</span><br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">hide everything<br>show sticks, lig<br>show sticks, residues<br>set_bond stick_radius, 0.14, residues<br></code></pre></td></tr></tbody></table></figure>
 <p>然后修改配体颜色，使其按元素显示。<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5fs01j31i018ogxz.jpg" title="" width="65%" height="65%"></p>
 <p>按住control键，并用鼠标中键选择两个原子，然后松开control，使用鼠标左键选择氨基酸残基。完成后如图所示，残基被保存在<code>(sele)</code>中，原子被保存在<code>(pkset)</code>中。</p>
 <img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t5shd4j31i018o167.jpg" title="" width="65%" height="65%">
 
 <p>接着测量pkset与sele的距离，将距离小于4埃的显示出来：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">distance nonbonded, pkset, sele, <span class="hljs-number">4</span>, <span class="hljs-number">0</span><br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">distance nonbonded, pkset, sele, 4, 0<br>color magenta, nonbonded<br></code></pre></td></tr></tbody></table></figure>
 
 <p>然后在下图区域任意位置单击鼠标左键，将鼠标模式更改为Editing模式：<br><img src="https://tva3.sinaimg.cn/large/005Vgpymly1gjo1t65akwj30ca070jrj.jpg" title="" width="35%" height="35%"></p>
 <p>按住control键，用鼠标左键将虚线上的距离移开。在上方菜单栏中点击<strong>Setting -&gt; Edit All</strong>，在<code>dash_radius</code>中输入0.07，按回车键确认。</p>
 <img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t69keaj31i018o4ce.jpg" title="" width="65%" height="65%">
 最后设定好视角，就可以输出了。
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.507353544</span>,    <span class="hljs-number">0.469124675</span>,    <span class="hljs-number">0.722847939</span>,\<br>     <span class="hljs-number">0.366444945</span>,   <span class="hljs-number">-0.876655817</span>,    <span class="hljs-number">0.311746955</span>,\<br>     <span class="hljs-number">0.779944181</span>,    <span class="hljs-number">0.106718525</span>,   <span class="hljs-number">-0.616688907</span>,\<br>     <span class="hljs-number">0.000415023</span>,    <span class="hljs-number">0.000164665</span>,  <span class="hljs-number">-94.643707275</span>,\<br>    <span class="hljs-number">20.837306976</span>,   <span class="hljs-number">37.008846283</span>,   <span class="hljs-number">57.467098236</span>,\<br>  <span class="hljs-number">-251.000549316</span>,  <span class="hljs-number">106.750518799</span>,  <span class="hljs-number">-20.000000000</span> )<br><br>draw <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">set_view (\<br>     0.507353544,    0.469124675,    0.722847939,\<br>     0.366444945,   -0.876655817,    0.311746955,\<br>     0.779944181,    0.106718525,   -0.616688907,\<br>     0.000415023,    0.000164665,  -94.643707275,\<br>    20.837306976,   37.008846283,   57.467098236,\<br>  -251.000549316,  106.750518799,  -20.000000000 )<br><br>draw 1200,800<br>png Figure2.png<br></code></pre></td></tr></tbody></table></figure>
 <img src="https://tva1.sinaimg.cn/large/005Vgpymly1gjo1t6h13ij30xc0m8tcp.jpg" title="效果图" width="65%" height="65%">
       
     </div>
@@ -327,7 +327,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1.2k</span>
             </span>
 
         </div>
@@ -344,26 +344,26 @@
 
 <p>本例中使用的PDB code: 3oc0</p>
 <p>首先加载大分子，使用<code>fetch</code>命令可直接从PDB数据库下载。为了方便操作，我们先把大分子和小分子分成两个对象保存： </p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fetch</span> <span class="hljs-number">3</span>oc<span class="hljs-number">0</span><br><span class="hljs-attribute">create</span> lig, /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br><span class="hljs-attribute">remove</span> /<span class="hljs-number">3</span>oc<span class="hljs-number">0</span>/G/A/<span class="hljs-number">900</span><br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">fetch 3oc0<br>create lig, /3oc0/G/A/900<br>remove /3oc0/G/A/900<br></code></pre></td></tr></tbody></table></figure>
 <p>现在就可以看到两个对象，一个是除去配体的大分子，另一个是小分子：</p>
 <img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsef0jj31i018o4qp.jpg" title="" width="65%" height="65%">
 
 <p>改变大分子和配体的显示样式：</p>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><code class="hljs awk">bg white			<span class="hljs-regexp">//</span>背景改为白色<br>as surface, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>显示大分子表面<br>color white, <span class="hljs-number">3</span>oc0		<span class="hljs-regexp">//</span>将颜色改为白色<br>set transparency, <span class="hljs-number">0.5</span>		<span class="hljs-regexp">//</span>设置透明度为<span class="hljs-number">50</span>%<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">bg white			//背景改为白色<br>as surface, 3oc0		//显示大分子表面<br>color white, 3oc0		//将颜色改为白色<br>set transparency, 0.5		//设置透明度为50%<br></code></pre></td></tr></tbody></table></figure>
 <p>点击右侧控制台的<code>lig</code>对象的<code>C</code>项，选择<code>by element</code>，碳原子为cyan。</p>
 <img src="https://tva4.sinaimg.cn/large/005Vgpymly1gjo3bsrp27j31i018ox39.jpg" title="" width="65%" height="65%">
 
 <p>将我们需要的氨基酸残基复制到新对象中</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">create</span> residues, (<span class="hljs-number">3</span>oc<span class="hljs-number">0</span> in resi <span class="hljs-number">205</span>+<span class="hljs-number">206</span>+<span class="hljs-number">631</span>+<span class="hljs-number">656</span>+<span class="hljs-number">659</span>+<span class="hljs-number">662</span>+<span class="hljs-number">666</span>)<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">create residues, (3oc0 in resi 205+206+631+656+659+662+666)<br></code></pre></td></tr></tbody></table></figure>
 <p>此处<code>resi</code>意为<code>residue identifier</code>，即残基的编号。</p>
 <p>改变残基显示样式</p>
-<figure class="highlight actionscript"><table><tbody><tr><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">as</span> sticks, residues<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">as sticks, residues<br></code></pre></td></tr></tbody></table></figure>
 <p>与lig相同，颜色选择by element，不过这次的碳原子选green。</p>
 <img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bt22qhj31i018okg9.jpg" title="" width="65%" height="65%">
 
 <p>现在你可以看到，已经有文献里图片的内味了。</p>
 <p>文献中的残基要比默认值更细，接下来修改粗细：</p>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">set_bond</span> stick_radius, <span class="hljs-number">0</span>.<span class="hljs-number">1</span>, residues<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">set_bond stick_radius, 0.1, residues<br></code></pre></td></tr></tbody></table></figure>
 <p>显示氢键：可以看到，文献中的图片只有一个氨基的氢键显示了出来，因此我们需要按住<code>control</code>键，再用鼠标中键单机该氮原子，现在右侧可以看到<code>(pk1)</code>对象，在其A项中选择<strong>find -&gt; polar contacts -&gt; to any atoms</strong></p>
 <img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3bth17uj31i018oay2.jpg" title="" width="65%" height="65%">
 
@@ -371,7 +371,7 @@
 <img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjo3btsc40j31g213mtxa.jpg" title="" width="65%" height="65%">
 
 <p>最后将视图调整到合适的位置，就可以渲染输出了：</p>
-<figure class="highlight angelscript"><table><tbody><tr><td class="code"><pre><code class="hljs angelscript">set_view (\<br>     <span class="hljs-number">0.596928358</span>,    <span class="hljs-number">0.462212354</span>,    <span class="hljs-number">0.655772686</span>,\<br>     <span class="hljs-number">0.506054461</span>,   <span class="hljs-number">-0.851173997</span>,    <span class="hljs-number">0.139291167</span>,\<br>     <span class="hljs-number">0.622557700</span>,    <span class="hljs-number">0.248710677</span>,   <span class="hljs-number">-0.742000937</span>,\<br>    <span class="hljs-number">-0.000598469</span>,    <span class="hljs-number">0.000388961</span>,  <span class="hljs-number">-60.677524567</span>,\<br>    <span class="hljs-number">54.435737610</span>,   <span class="hljs-number">52.480457306</span>,   <span class="hljs-number">29.589189529</span>,\<br>    <span class="hljs-number">57.677524567</span>,  <span class="hljs-number">549.791076660</span>,   <span class="hljs-number">20.000000000</span> )<br><br>ray <span class="hljs-number">1200</span>,<span class="hljs-number">800</span><br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">set_view (\<br>     0.596928358,    0.462212354,    0.655772686,\<br>     0.506054461,   -0.851173997,    0.139291167,\<br>     0.622557700,    0.248710677,   -0.742000937,\<br>    -0.000598469,    0.000388961,  -60.677524567,\<br>    54.435737610,   52.480457306,   29.589189529,\<br>    57.677524567,  549.791076660,   20.000000000 )<br><br>ray 1200,800<br><br>png Figure1.png<br></code></pre></td></tr></tbody></table></figure>
 
 <img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjo3btzy5wj30xc0m8akn.jpg" title="最终效果" width="50%" height="50%">
       
@@ -515,7 +515,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">57k</span>
+    <span title="站点总字数">58k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

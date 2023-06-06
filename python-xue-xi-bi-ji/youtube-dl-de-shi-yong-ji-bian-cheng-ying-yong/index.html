@@ -276,14 +276,14 @@
 
 <p>把video打印出来查看，是一个巨大的字典，里面包含了视频的所有信息，我们需要的视频分辨率信息，都在该字典的formats键值中，而formats又是一个字典列表，该视频中的每个文件都是一个字典。</p>
 <p>继续处理formats，得到需要的信息：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># sort information</span><br>formats = video.get(<span class="hljs-string">'formats'</span>)<br>file_count = len(formats)<br><span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> formats:<br>    format_code.append(f.get(<span class="hljs-string">'format_id'</span>))<br>    extension.append(f.get(<span class="hljs-string">'ext'</span>))<br>    resolution.append(ydl.format_resolution(f))<br>    format_note.append(f.get(<span class="hljs-string">'format_note'</span>))<br>    file_size.append(f.get(<span class="hljs-string">'filesize'</span>))<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># sort information</span><br>formats = video.get(<span class="hljs-string">'formats'</span>)<br>file_count = <span class="hljs-built_in">len</span>(formats)<br><span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> formats:<br>    format_code.append(f.get(<span class="hljs-string">'format_id'</span>))<br>    extension.append(f.get(<span class="hljs-string">'ext'</span>))<br>    resolution.append(ydl.format_resolution(f))<br>    format_note.append(f.get(<span class="hljs-string">'format_note'</span>))<br>    file_size.append(f.get(<span class="hljs-string">'filesize'</span>))<br></code></pre></td></tr></tbody></table></figure>
 
 <p>使用get方法获得字典键值的好处就是，如果字典中不存在该键值，就会返回None，如果使用索引直接访问不存在的键值，则会抛出异常。</p>
 <p>现在我们已经拿到了所需的全部数据，接下来就是要在窗体中显示了。在PyQt5中，<code>QTableWidget</code>可以做这件事：</p>
 <figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">self.tableWidget = QtWidgets.QTableWidget(Form)<br>self.tableWidget.setRowCount(main.file_count)<br>self.tableWidget.setColumnCount(<span class="hljs-number">5</span>)<br></code></pre></td></tr></tbody></table></figure>
 
 <p>然后使用循环将数据填入表格：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">FillInfo</span>(<span class="hljs-params">w</span>):</span>            <span class="hljs-comment"># fill information into table</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, file_count):<br>        w.tableWidget.setItem(i, <span class="hljs-number">0</span>, QTableWidgetItem(format_code[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">1</span>, QTableWidgetItem(extension[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">2</span>, QTableWidgetItem(resolution[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">3</span>, QTableWidgetItem(format_note[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">4</span>, QTableWidgetItem(str(file_size[i])))<br></code></pre></td></tr></tbody></table></figure>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">FillInfo</span>(<span class="hljs-params">w</span>):</span>            <span class="hljs-comment"># fill information into table</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, file_count):<br>        w.tableWidget.setItem(i, <span class="hljs-number">0</span>, QTableWidgetItem(format_code[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">1</span>, QTableWidgetItem(extension[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">2</span>, QTableWidgetItem(resolution[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">3</span>, QTableWidgetItem(format_note[i]))<br>        w.tableWidget.setItem(i, <span class="hljs-number">4</span>, QTableWidgetItem(<span class="hljs-built_in">str</span>(file_size[i])))<br></code></pre></td></tr></tbody></table></figure>
 
 <p>youtube-dl的作者并没有给这个项目单独写一个文档，所有的信息都需要去源代码中看，经过阅读源代码，我终于找到了一个名为<code>process_video_result</code>的函数，可以指定下载哪个文件。它接受<code>extract_info</code>返回的字典对象，根据用户输入的命令行参数选择文件进行下载，所以我们只需要把需要下载的视频的format_id填入参数列表，再把视频信息字典传给函数，就可以实现指定下载的功能了。</p>
 <p>创建一个编辑框，然后取得该编辑框的输入：</p>
@@ -462,7 +462,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">57k</span>
+    <span title="站点总字数">58k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.simonsun.top/sui-bi/compile-osra-on-mac/</loc>
+    
+    <lastmod>2023-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.simonsun.top/homekit-kai-fa/setup-homebridge-openwrt/</loc>
+    
+    <lastmod>2023-06-06</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.simonsun.top/homekit-kai-fa/esp8266-env/</loc>
+    
+    <lastmod>2023-06-06</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.simonsun.top/sui-bi/find-hbonds/</loc>
     
     <lastmod>2023-06-06</lastmod>
@@ -12,20 +33,6 @@
     <loc>https://blog.simonsun.top/python-xue-xi-bi-ji/introduce-pybind11/</loc>
     
     <lastmod>2022-01-10</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.simonsun.top/homekit-kai-fa/setup-homebridge-openwrt/</loc>
-    
-    <lastmod>2021-11-06</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.simonsun.top/homekit-kai-fa/esp8266-env/</loc>
-    
-    <lastmod>2021-10-17</lastmod>
     
   </url>
   
@@ -82,13 +89,6 @@
     <loc>https://blog.simonsun.top/ji-suan-hua-xue/docking-vina/</loc>
     
     <lastmod>2020-10-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.simonsun.top/sui-bi/compile-osra-on-mac/</loc>
-    
-    <lastmod>2020-10-15</lastmod>
     
   </url>
   
@@ -216,14 +216,14 @@
   </url>
   
   <url>
-    <loc>https://blog.simonsun.top/categories/%E8%AE%A1%E7%AE%97%E5%8C%96%E5%AD%A6/</loc>
+    <loc>https://blog.simonsun.top/categories/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2023-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.simonsun.top/categories/%E9%9A%8F%E7%AC%94/</loc>
+    <loc>https://blog.simonsun.top/categories/%E8%AE%A1%E7%AE%97%E5%8C%96%E5%AD%A6/</loc>
     <lastmod>2023-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
