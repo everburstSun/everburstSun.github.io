@@ -1,58 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>HomeKit开发环境搭建-ESP8266</title>
-    <url>/homekit-kai-fa/esp8266-env/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文使用的ESP8266芯片的开发商乐鑫科技在github上发布过自己的HomeKit SDK，支持ESP32、ESP32-S2和ESP8266 SoC，我们在这里将搭建ESP8266的环境。</p>
-<h2 id="1-下载HomeKit-SDK"><a href="#1-下载HomeKit-SDK" class="headerlink" title="1. 下载HomeKit SDK"></a>1. 下载HomeKit SDK</h2><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> --recursive https://github.com/espressif/esp-homekit-sdk.git HomeKitDev<br><span class="hljs-built_in">cd</span> HomeKitDev<br><span class="hljs-built_in">export</span> HOMEKIT_PATH=<span class="hljs-variable">$PWD</span><br></code></pre></td></tr></tbody></table></figure>
-
-<h2 id="2-下载编译工具链"><a href="#2-下载编译工具链" class="headerlink" title="2. 下载编译工具链"></a>2. 下载编译工具链</h2><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">curl -O https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz<br>tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz<br>rm xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz<br><span class="hljs-built_in">cd</span> xtensa-lx106-elf<br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PWD</span>/bin:<span class="hljs-variable">$PATH</span><br></code></pre></td></tr></tbody></table></figure>
-
-<p><a href="https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/windows-setup.html">Windows</a>版本和<a href="https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/linux-setup.html">Linux</a>版本的工具链可点击相应链接查看安装方法。</p>
-<h2 id="3-下载RTOS-SDK"><a href="#3-下载RTOS-SDK" class="headerlink" title="3. 下载RTOS SDK"></a>3. 下载RTOS SDK</h2><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git<br><span class="hljs-built_in">cd</span> ESP8266_RTOS_SDK<br><span class="hljs-built_in">export</span> IDF_PATH=<span class="hljs-variable">$PWD</span><br>python -m pip install -r <span class="hljs-variable">$IDF_PATH</span>/requirements.txt<br></code></pre></td></tr></tbody></table></figure>
-
-<p>这里需要注意，如果要用python3，需要在Anaconda这种虚拟环境里操作，否则只能使用python2。</p>
-<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4. 测试"></a>4. 测试</h2><p>如果以上配置均没有错误，执行以下命令应当可以看见配置页面：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> examples/get-started/hello_world/<br>make menuconfig<br></code></pre></td></tr></tbody></table></figure>
-<img src="https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/_images/project-configuration.png" title="配置页面">
-
-<p>在<code>Serial flasher config</code>中选择<code>Default serial port</code>，设置好串口，保存退出即可。在windows系统中，串口号以<code>COM</code>开头，而MacOS和Linux系统中则以<code>/dev/cu.</code>或<code>/dev/tty.</code>开头。例如在我的系统中串口为<code>/dev/cu.usbserial-14330</code>。</p>
-<p>此外，还可以通过环境变量设置默认串口，以我的系统为例：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> ESPPORT=/dev/cu.usbserial-14330<br><span class="hljs-built_in">export</span> ESPBAUD=115200<br><span class="hljs-built_in">export</span> MONITORBAUD=115200<br></code></pre></td></tr></tbody></table></figure>
-
-<p>编译固件并下载到Soc，只需要输入一行命令：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">make flash<br></code></pre></td></tr></tbody></table></figure>
-
-<p>打开串口监视器，可以输入：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">make monitor<br></code></pre></td></tr></tbody></table></figure>
-
-<p>此外，还可以将上面两个命令合并为一行：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">make flash monitor<br></code></pre></td></tr></tbody></table></figure>
-
-<p>至此，开发环境搭建完成。</p>
-]]></content>
-      <categories>
-        <category>HomeKit开发</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>在基于x86的Openwrt软路由上安装Homebridge</title>
-    <url>/homekit-kai-fa/setup-homebridge-openwrt/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="1-安装node-js"><a href="#1-安装node-js" class="headerlink" title="1. 安装node.js"></a>1. 安装node.js</h2><p>首先需要在Openwrt中安装<code>node.js</code>，opkg源中自带了node的ipk文件，但是我的固件中安装上以后会报错，所以还是建议自己编译一个node安装包，配置位置在<code>Languages</code>→<code>node</code>→<code>node.js</code>，勾选上<code>node</code>和<code>npm</code>以及<code>node-homebridge</code>，不能使用<code>npm install</code>来安装homebridge，其代码无法适配openwrt。</p>
-<p>编译完成后，将固件上传到路由器安装即可。</p>
-<h2 id="2-安装Homebridge-UI"><a href="#2-安装Homebridge-UI" class="headerlink" title="2. 安装Homebridge UI"></a>2. 安装Homebridge UI</h2><p><code>npm install -g --unsafe-perm homebridge-config-ui-x</code></p>
-<p>安装完成后，编辑<code>/root/.homebridge/config.json</code>文件对UI进行配置。在主流操作系统中，<code>Homebridge UI</code>提供了一个名为<code>hb-service</code>的便捷配置工具，但是Openwrt不在其支持列表中，需要手动进行配置。</p>
-<h2 id="3-配置JSON文件"><a href="#3-配置JSON文件" class="headerlink" title="3. 配置JSON文件"></a>3. 配置JSON文件</h2><p>使用<code>vi</code>编辑<code>/root/.homebridge/config.json</code>，其实更建议使用<code>VS Code</code>编辑，然后上传到路由器上，毕竟有语法检查，不容易出错。在json文件中加入下列内容：</p>
-<figure class="highlight json"><table><tbody><tr><td class="code"><pre><code class="hljs json">{<br>    <span class="hljs-attr">"bridge"</span>: {<br>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"HomeBridge"</span>,<br>        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"00:00:00:00:00:02"</span>,<br>        <span class="hljs-attr">"port"</span>: <span class="hljs-number">58888</span>,<br>        <span class="hljs-attr">"pin"</span>: <span class="hljs-string">"199-70-213"</span><br>    },<br>    <span class="hljs-attr">"platforms"</span>: [<br>        {<br>            <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"config"</span>,<br>            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Config"</span>,<br>            <span class="hljs-attr">"port"</span>: <span class="hljs-number">8080</span>,<br>            <span class="hljs-attr">"sudo"</span>: <span class="hljs-literal">false</span>,<br>            <span class="hljs-attr">"log"</span>: {<br>                <span class="hljs-attr">"method"</span>: <span class="hljs-string">"file"</span>,<br>                <span class="hljs-attr">"path"</span>: <span class="hljs-string">"/var/log/homebridge.log"</span><br>            },<br>            <span class="hljs-attr">"ssl"</span>: {<br>                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"/root/.ssh/id_rsa.pem"</span>,<br>                <span class="hljs-attr">"cert"</span>: <span class="hljs-string">"/root/.ssh/cert.pem"</span><br>            }<br>        }<br>    ]<br>}<br></code></pre></td></tr></tbody></table></figure>
-
-<p>这样就可以通过路由器的<code>8080</code>端口来访问<code>Homebridge UI</code>了，默认的用户名和密码都是<code>admin</code>。详细的config设置选项可以参考<a href="https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options">开发者的文档</a>。</p>
-<p>如果你有公网IP，强烈建议开启<code>ssl</code>，以便能够使用<code>https</code>访问管理界面，如果不需要ssl，把那一项从json里删掉就好。</p>
-]]></content>
-      <categories>
-        <category>HomeKit开发</category>
-      </categories>
-  </entry>
-  <entry>
     <title>PyMOL做出非氢键相互作用图</title>
     <url>/pymol-xi-lie-jiao-cheng/pymol-zuo-chu-fei-qing-jian-xiang-hu-zuo-yong-tu/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在上文中，我们尝试模仿绘制文献中的Figure 2a，所选文献为<a href="https://pubs.acs.org/doi/10.1021/acs.jmedchem.5b01875"><em>J. Med. Chem.</em> 2016, 59, 4087−4102</a>，本文将尝试绘制Figure 2b，原图如下所示：</p>
@@ -216,53 +164,6 @@
       </categories>
   </entry>
   <entry>
-    <title>使用Pybind11进行C++与python的混合编程</title>
-    <url>/python-xue-xi-bi-ji/introduce-pybind11/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><center>本文使用Anaconda环境进行演示，python版本为3.8，若读者不使用Anaconda，需自行配置环境。</center>
-
-<p><code>Pybind11</code>是一个纯头文件库，用于将C++函数封装出Python接口。该库可以很方便地使用<code>conda</code>进行安装，执行命令<code>conda install pybind11 pytest</code>。完成安装后，我们开始编写第一个程序，命名为<code>hello.cpp</code>。</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"! This is a message from C++ library!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
-<p>上面的cpp文件中，<code>say_hello</code>为程序函数，<code>PYBIND11_MODULE</code>为包装函数，此二者在实际应用中一般会分别存放在不同的文件中，但在本例中为演示需要，我将他们放在了同一个文件中。</p>
-<p><code>PYBIND11_MODULE</code>是一个宏定义，其功能是创建一个函数，这个函数会在Python执行<code>import</code>语句时被调用，其接受两个参数，第一个参数为模块名称，这里我们直接将<code>hello</code>填入，稍候可以在Python中使用<code>import hello</code>导入该模块；第二个参数<code>m</code>是创建Python关联代码的主接口，其类型为<code>py::module_</code>。<code>module_::def()</code>用于生成能够将<code>say_hello</code>函数暴露给Python的代码，其第一个参数为<strong>字符串</strong>，将会成为Python中调用的函数名；第二个参数是<strong>C++函数</strong>的引用；第三个参数是<strong>说明字符串</strong>，在Python中可以使用<code>help(say_hello)</code>查看。</p>
-<p>现在，我们可以着手编译这个库了，这里我使用<code>g++</code>进行编译，通过<code>-shared</code>参数将其编译为共享库，在Linux和MacOS上的编译命令稍有不同：</p>
-<ul>
-<li>Linux</li>
-</ul>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix)<br></code></pre></td></tr></tbody></table></figure>
-
-<ul>
-<li>MacOS</li>
-</ul>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix) -undefined dynamic_lookup<br></code></pre></td></tr></tbody></table></figure>
-
-<p>在我的系统中，会生成一个名为<code>hello.cpython-38-darwin.so</code>的文件，这就是编译产生的共享库文件。现在，在当前目录进入python解释器，即可导入包并运行函数：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">$ python<br>Python <span class="hljs-number">3.8</span><span class="hljs-number">.12</span> (default, Oct <span class="hljs-number">12</span> <span class="hljs-number">2021</span>, 06:<span class="hljs-number">23</span>:<span class="hljs-number">56</span>) <br>[Clang <span class="hljs-number">10.0</span><span class="hljs-number">.0</span> ] :: Anaconda, Inc. on darwin<br><span class="hljs-type">Type</span> <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br></code></pre></td></tr></tbody></table></figure>
-
-<p>除了手动编译外，还可以使用<code>cmake</code>工具进行跨平台编译配置，在当前目录下新建一个<code>CMakeLists.txt</code>文件，然后写入下面的命令：</p>
-<figure class="highlight cmake"><table><tbody><tr><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.4</span>...<span class="hljs-number">3.18</span>)<br><span class="hljs-keyword">project</span>(hello)<br><span class="hljs-keyword">find_package</span>(Python COMPONENTS Interpreter Development REQUIRED)<br><span class="hljs-keyword">find_package</span>(pybind11 REQUIRED)<br>pybind11_add_module(hello hello.cpp)<br></code></pre></td></tr></tbody></table></figure>
-
-<p>其中，<code>find_package</code>函数会自动找到正确的依赖包，<code>pybind11_add_module</code>函数添加了一个名为<code>hello</code>的模块。</p>
-<p>保存退出后，执行<code>cmake . &amp;&amp; make</code>命令，即可看到编译产生的共享库文件。</p>
-<hr>
-<p>使用<code>py::arg</code>参数可以将变量名也暴露给python，同时，若有需要，还可以设置参数默认值：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>, py::<span class="hljs-built_in">arg</span>(<span class="hljs-string">"name"</span>)=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
-
-<p>Python运行效果：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello()<br>Hello, Jack! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Nic"</span>)<br>Hello, Nic! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(name=<span class="hljs-string">"George"</span>)<br>Hello, George! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">help</span>(hello.say_hello)<br>Help on built-<span class="hljs-keyword">in</span> function say_hello <span class="hljs-keyword">in</span> module hello:<br><br>say_hello(...) method of builtins.PyCapsule instance<br>    say_hello(name: str = 'Jack') -&gt; None<br>    <br>    Print hello to the name.<br>(END)<br></code></pre></td></tr></tbody></table></figure>
-
-<p><code>py::arg</code>参数还有一种简化写法，通过引入名称空间<code>pybind11::literals</code>，可以使用<code>_a</code>后缀来替代<code>py::arg</code>，例如，上面的一条<code>m.def</code>函数可以写成：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
-<hr>
-<p>除了包装函数外，通过使用<code>module_::attr</code>函数可以将C++中的变量暴露给Python，例如下面的C++程序：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* where = <span class="hljs-string">"This is a message from C++ library!"</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* cst = <span class="hljs-string">"This is an auto cast string by pybind11."</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"where"</span>) = where;<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"cast"</span>) = py::<span class="hljs-built_in">cast</span>(cst);<br>}<br></code></pre></td></tr></tbody></table></figure>
-
-<p>Python中运行效果：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.where)<br>This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.cast)<br>This <span class="hljs-keyword">is</span> an auto cast string by pybind11.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(hello.cast)<br>&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> '<span class="hljs-title">str</span>'&gt;</span><br></code></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>Python学习笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Python中使用百分号格式化字符串</title>
     <url>/python-xue-xi-bi-ji/python-zhong-shi-yong-bai-fen-hao-ge-shi-hua-zi-fu-chuan/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>我最早学习的是C++语言，对于C风格的这种字符串格式化方式不熟悉，转到Python之后觉得这种方式可以很方便地在字符串中插入变量，于是去搜索了python的官方文档，找到了一个关于<a href="https://docs.python.org/2.4/lib/typesseq-strings.html">字符串格式化</a>的页面。</p>
@@ -381,6 +282,53 @@
 </tr>
 </tbody></table>
 ]]></content>
+      <categories>
+        <category>Python学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用Pybind11进行C++与python的混合编程</title>
+    <url>/python-xue-xi-bi-ji/introduce-pybind11/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><center>本文使用Anaconda环境进行演示，python版本为3.8，若读者不使用Anaconda，需自行配置环境。</center>
+
+<p><code>Pybind11</code>是一个纯头文件库，用于将C++函数封装出Python接口。该库可以很方便地使用<code>conda</code>进行安装，执行命令<code>conda install pybind11 pytest</code>。完成安装后，我们开始编写第一个程序，命名为<code>hello.cpp</code>。</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"! This is a message from C++ library!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>上面的cpp文件中，<code>say_hello</code>为程序函数，<code>PYBIND11_MODULE</code>为包装函数，此二者在实际应用中一般会分别存放在不同的文件中，但在本例中为演示需要，我将他们放在了同一个文件中。</p>
+<p><code>PYBIND11_MODULE</code>是一个宏定义，其功能是创建一个函数，这个函数会在Python执行<code>import</code>语句时被调用，其接受两个参数，第一个参数为模块名称，这里我们直接将<code>hello</code>填入，稍候可以在Python中使用<code>import hello</code>导入该模块；第二个参数<code>m</code>是创建Python关联代码的主接口，其类型为<code>py::module_</code>。<code>module_::def()</code>用于生成能够将<code>say_hello</code>函数暴露给Python的代码，其第一个参数为<strong>字符串</strong>，将会成为Python中调用的函数名；第二个参数是<strong>C++函数</strong>的引用；第三个参数是<strong>说明字符串</strong>，在Python中可以使用<code>help(say_hello)</code>查看。</p>
+<p>现在，我们可以着手编译这个库了，这里我使用<code>g++</code>进行编译，通过<code>-shared</code>参数将其编译为共享库，在Linux和MacOS上的编译命令稍有不同：</p>
+<ul>
+<li>Linux</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix)<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>MacOS</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix) -undefined dynamic_lookup<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在我的系统中，会生成一个名为<code>hello.cpython-38-darwin.so</code>的文件，这就是编译产生的共享库文件。现在，在当前目录进入python解释器，即可导入包并运行函数：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">$ python<br>Python <span class="hljs-number">3.8</span><span class="hljs-number">.12</span> (default, Oct <span class="hljs-number">12</span> <span class="hljs-number">2021</span>, 06:<span class="hljs-number">23</span>:<span class="hljs-number">56</span>) <br>[Clang <span class="hljs-number">10.0</span><span class="hljs-number">.0</span> ] :: Anaconda, Inc. on darwin<br><span class="hljs-type">Type</span> <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br></code></pre></td></tr></tbody></table></figure>
+
+<p>除了手动编译外，还可以使用<code>cmake</code>工具进行跨平台编译配置，在当前目录下新建一个<code>CMakeLists.txt</code>文件，然后写入下面的命令：</p>
+<figure class="highlight cmake"><table><tbody><tr><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.4</span>...<span class="hljs-number">3.18</span>)<br><span class="hljs-keyword">project</span>(hello)<br><span class="hljs-keyword">find_package</span>(Python COMPONENTS Interpreter Development REQUIRED)<br><span class="hljs-keyword">find_package</span>(pybind11 REQUIRED)<br>pybind11_add_module(hello hello.cpp)<br></code></pre></td></tr></tbody></table></figure>
+
+<p>其中，<code>find_package</code>函数会自动找到正确的依赖包，<code>pybind11_add_module</code>函数添加了一个名为<code>hello</code>的模块。</p>
+<p>保存退出后，执行<code>cmake . &amp;&amp; make</code>命令，即可看到编译产生的共享库文件。</p>
+<hr>
+<p>使用<code>py::arg</code>参数可以将变量名也暴露给python，同时，若有需要，还可以设置参数默认值：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>, py::<span class="hljs-built_in">arg</span>(<span class="hljs-string">"name"</span>)=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>Python运行效果：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello()<br>Hello, Jack! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Nic"</span>)<br>Hello, Nic! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(name=<span class="hljs-string">"George"</span>)<br>Hello, George! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">help</span>(hello.say_hello)<br>Help on built-<span class="hljs-keyword">in</span> function say_hello <span class="hljs-keyword">in</span> module hello:<br><br>say_hello(...) method of builtins.PyCapsule instance<br>    say_hello(name: str = 'Jack') -&gt; None<br>    <br>    Print hello to the name.<br>(END)<br></code></pre></td></tr></tbody></table></figure>
+
+<p><code>py::arg</code>参数还有一种简化写法，通过引入名称空间<code>pybind11::literals</code>，可以使用<code>_a</code>后缀来替代<code>py::arg</code>，例如，上面的一条<code>m.def</code>函数可以写成：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+<hr>
+<p>除了包装函数外，通过使用<code>module_::attr</code>函数可以将C++中的变量暴露给Python，例如下面的C++程序：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* where = <span class="hljs-string">"This is a message from C++ library!"</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* cst = <span class="hljs-string">"This is an auto cast string by pybind11."</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"where"</span>) = where;<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"cast"</span>) = py::<span class="hljs-built_in">cast</span>(cst);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>Python中运行效果：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.where)<br>This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.cast)<br>This <span class="hljs-keyword">is</span> an auto cast string by pybind11.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(hello.cast)<br>&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> '<span class="hljs-title">str</span>'&gt;</span><br></code></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>Python学习笔记</category>
       </categories>
@@ -880,6 +828,58 @@
 ]]></content>
       <categories>
         <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>HomeKit开发环境搭建-ESP8266</title>
+    <url>/homekit-kai-fa/esp8266-env/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本文使用的ESP8266芯片的开发商乐鑫科技在github上发布过自己的HomeKit SDK，支持ESP32、ESP32-S2和ESP8266 SoC，我们在这里将搭建ESP8266的环境。</p>
+<h2 id="1-下载HomeKit-SDK"><a href="#1-下载HomeKit-SDK" class="headerlink" title="1. 下载HomeKit SDK"></a>1. 下载HomeKit SDK</h2><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> --recursive https://github.com/espressif/esp-homekit-sdk.git HomeKitDev<br><span class="hljs-built_in">cd</span> HomeKitDev<br><span class="hljs-built_in">export</span> HOMEKIT_PATH=<span class="hljs-variable">$PWD</span><br></code></pre></td></tr></tbody></table></figure>
+
+<h2 id="2-下载编译工具链"><a href="#2-下载编译工具链" class="headerlink" title="2. 下载编译工具链"></a>2. 下载编译工具链</h2><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">curl -O https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz<br>tar -xzf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz<br>rm xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz<br><span class="hljs-built_in">cd</span> xtensa-lx106-elf<br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PWD</span>/bin:<span class="hljs-variable">$PATH</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p><a href="https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/windows-setup.html">Windows</a>版本和<a href="https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/linux-setup.html">Linux</a>版本的工具链可点击相应链接查看安装方法。</p>
+<h2 id="3-下载RTOS-SDK"><a href="#3-下载RTOS-SDK" class="headerlink" title="3. 下载RTOS SDK"></a>3. 下载RTOS SDK</h2><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> --recursive https://github.com/espressif/ESP8266_RTOS_SDK.git<br><span class="hljs-built_in">cd</span> ESP8266_RTOS_SDK<br><span class="hljs-built_in">export</span> IDF_PATH=<span class="hljs-variable">$PWD</span><br>python -m pip install -r <span class="hljs-variable">$IDF_PATH</span>/requirements.txt<br></code></pre></td></tr></tbody></table></figure>
+
+<p>这里需要注意，如果要用python3，需要在Anaconda这种虚拟环境里操作，否则只能使用python2。</p>
+<h2 id="4-测试"><a href="#4-测试" class="headerlink" title="4. 测试"></a>4. 测试</h2><p>如果以上配置均没有错误，执行以下命令应当可以看见配置页面：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> examples/get-started/hello_world/<br>make menuconfig<br></code></pre></td></tr></tbody></table></figure>
+<img src="https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/_images/project-configuration.png" title="配置页面">
+
+<p>在<code>Serial flasher config</code>中选择<code>Default serial port</code>，设置好串口，保存退出即可。在windows系统中，串口号以<code>COM</code>开头，而MacOS和Linux系统中则以<code>/dev/cu.</code>或<code>/dev/tty.</code>开头。例如在我的系统中串口为<code>/dev/cu.usbserial-14330</code>。</p>
+<p>此外，还可以通过环境变量设置默认串口，以我的系统为例：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> ESPPORT=/dev/cu.usbserial-14330<br><span class="hljs-built_in">export</span> ESPBAUD=115200<br><span class="hljs-built_in">export</span> MONITORBAUD=115200<br></code></pre></td></tr></tbody></table></figure>
+
+<p>编译固件并下载到Soc，只需要输入一行命令：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">make flash<br></code></pre></td></tr></tbody></table></figure>
+
+<p>打开串口监视器，可以输入：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">make monitor<br></code></pre></td></tr></tbody></table></figure>
+
+<p>此外，还可以将上面两个命令合并为一行：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">make flash monitor<br></code></pre></td></tr></tbody></table></figure>
+
+<p>至此，开发环境搭建完成。</p>
+]]></content>
+      <categories>
+        <category>HomeKit开发</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在基于x86的Openwrt软路由上安装Homebridge</title>
+    <url>/homekit-kai-fa/setup-homebridge-openwrt/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="1-安装node-js"><a href="#1-安装node-js" class="headerlink" title="1. 安装node.js"></a>1. 安装node.js</h2><p>首先需要在Openwrt中安装<code>node.js</code>，opkg源中自带了node的ipk文件，但是我的固件中安装上以后会报错，所以还是建议自己编译一个node安装包，配置位置在<code>Languages</code>→<code>node</code>→<code>node.js</code>，勾选上<code>node</code>和<code>npm</code>以及<code>node-homebridge</code>，不能使用<code>npm install</code>来安装homebridge，其代码无法适配openwrt。</p>
+<p>编译完成后，将固件上传到路由器安装即可。</p>
+<h2 id="2-安装Homebridge-UI"><a href="#2-安装Homebridge-UI" class="headerlink" title="2. 安装Homebridge UI"></a>2. 安装Homebridge UI</h2><p><code>npm install -g --unsafe-perm homebridge-config-ui-x</code></p>
+<p>安装完成后，编辑<code>/root/.homebridge/config.json</code>文件对UI进行配置。在主流操作系统中，<code>Homebridge UI</code>提供了一个名为<code>hb-service</code>的便捷配置工具，但是Openwrt不在其支持列表中，需要手动进行配置。</p>
+<h2 id="3-配置JSON文件"><a href="#3-配置JSON文件" class="headerlink" title="3. 配置JSON文件"></a>3. 配置JSON文件</h2><p>使用<code>vi</code>编辑<code>/root/.homebridge/config.json</code>，其实更建议使用<code>VS Code</code>编辑，然后上传到路由器上，毕竟有语法检查，不容易出错。在json文件中加入下列内容：</p>
+<figure class="highlight json"><table><tbody><tr><td class="code"><pre><code class="hljs json">{<br>    <span class="hljs-attr">"bridge"</span>: {<br>        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"HomeBridge"</span>,<br>        <span class="hljs-attr">"username"</span>: <span class="hljs-string">"00:00:00:00:00:02"</span>,<br>        <span class="hljs-attr">"port"</span>: <span class="hljs-number">58888</span>,<br>        <span class="hljs-attr">"pin"</span>: <span class="hljs-string">"199-70-213"</span><br>    },<br>    <span class="hljs-attr">"platforms"</span>: [<br>        {<br>            <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"config"</span>,<br>            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Config"</span>,<br>            <span class="hljs-attr">"port"</span>: <span class="hljs-number">8080</span>,<br>            <span class="hljs-attr">"sudo"</span>: <span class="hljs-literal">false</span>,<br>            <span class="hljs-attr">"log"</span>: {<br>                <span class="hljs-attr">"method"</span>: <span class="hljs-string">"file"</span>,<br>                <span class="hljs-attr">"path"</span>: <span class="hljs-string">"/var/log/homebridge.log"</span><br>            },<br>            <span class="hljs-attr">"ssl"</span>: {<br>                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"/root/.ssh/id_rsa.pem"</span>,<br>                <span class="hljs-attr">"cert"</span>: <span class="hljs-string">"/root/.ssh/cert.pem"</span><br>            }<br>        }<br>    ]<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>这样就可以通过路由器的<code>8080</code>端口来访问<code>Homebridge UI</code>了，默认的用户名和密码都是<code>admin</code>。详细的config设置选项可以参考<a href="https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options">开发者的文档</a>。</p>
+<p>如果你有公网IP，强烈建议开启<code>ssl</code>，以便能够使用<code>https</code>访问管理界面，如果不需要ssl，把那一项从json里删掉就好。</p>
+]]></content>
+      <categories>
+        <category>HomeKit开发</category>
       </categories>
   </entry>
 </search>
