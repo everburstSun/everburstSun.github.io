@@ -83,59 +83,6 @@
       </categories>
   </entry>
   <entry>
-    <title>安装PyMOL</title>
-    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
-<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
-<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
-
-
-<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
-<ul>
-<li><strong>Windows</strong></li>
-</ul>
-<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
-<ul>
-<li><strong>Linux</strong></li>
-</ul>
-<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
-<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
-
-<p>以Ubuntu为例，在terminal中输入：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
-
-<p>安装git，然后将源代码拷贝到本地：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
-
-<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
-
-<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
-
-<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
-<ul>
-<li><strong>Mac OS X</strong></li>
-</ul>
-<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
-<p>首先安装依赖：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
-<p>安装Pmw：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
-<p>获取pymol源代码并编译安装：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
-
-<p>最后将路径添加到<code>PATH</code>:</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
-
-<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
-]]></content>
-      <categories>
-        <category>PyMOL系列教程</category>
-      </categories>
-  </entry>
-  <entry>
     <title>PyQt5多线程编程</title>
     <url>/python-xue-xi-bi-ji/pyqt5-duo-xian-cheng-bian-cheng/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>单位的公共仪器需要预约才能够使用，但是自从预约时间改到了早上，就很不好约了，所以决定写一个程序实现自动预约。由于还要分享给实验室其它同学使用，就得写一个GUI了，这一下代码量瞬间变成了原来的10倍，不过学到了些新东西，这波不亏。</p>
@@ -159,6 +106,53 @@
 <p>当按下开始按钮后，程序会构造出一个线程<code>T</code>，执行到<code>T.start()</code>后，其中的<code>run()</code>函数便会进入<code>while</code>循环，不断发送查询信号，直到<code>good_to_submit()</code>函数返回<code>True</code>表明已经可以提交表单，或者当停止按钮按下后终止。</p>
 <p>改进后的程序只是将定时功能分离了出来，实际上联网查询功能还是使用主线程完成的，在程序等待服务器返回数据的过程中UI还是会有短暂的无响应时间，不过这是在用户点击后产生的，因此对体验影响不大。但是，严格来说联网也应该分离出一个线程，毕竟服务器有时候返回会很慢，这时候如果你的用户是一个暴躁老哥，还是会对体验有影响的。</p>
 ]]></content>
+      <categories>
+        <category>Python学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用Pybind11进行C++与python的混合编程</title>
+    <url>/python-xue-xi-bi-ji/introduce-pybind11/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><center>本文使用Anaconda环境进行演示，python版本为3.8，若读者不使用Anaconda，需自行配置环境。</center>
+
+<p><code>Pybind11</code>是一个纯头文件库，用于将C++函数封装出Python接口。该库可以很方便地使用<code>conda</code>进行安装，执行命令<code>conda install pybind11 pytest</code>。完成安装后，我们开始编写第一个程序，命名为<code>hello.cpp</code>。</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"! This is a message from C++ library!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+<p>上面的cpp文件中，<code>say_hello</code>为程序函数，<code>PYBIND11_MODULE</code>为包装函数，此二者在实际应用中一般会分别存放在不同的文件中，但在本例中为演示需要，我将他们放在了同一个文件中。</p>
+<p><code>PYBIND11_MODULE</code>是一个宏定义，其功能是创建一个函数，这个函数会在Python执行<code>import</code>语句时被调用，其接受两个参数，第一个参数为模块名称，这里我们直接将<code>hello</code>填入，稍候可以在Python中使用<code>import hello</code>导入该模块；第二个参数<code>m</code>是创建Python关联代码的主接口，其类型为<code>py::module_</code>。<code>module_::def()</code>用于生成能够将<code>say_hello</code>函数暴露给Python的代码，其第一个参数为<strong>字符串</strong>，将会成为Python中调用的函数名；第二个参数是<strong>C++函数</strong>的引用；第三个参数是<strong>说明字符串</strong>，在Python中可以使用<code>help(say_hello)</code>查看。</p>
+<p>现在，我们可以着手编译这个库了，这里我使用<code>g++</code>进行编译，通过<code>-shared</code>参数将其编译为共享库，在Linux和MacOS上的编译命令稍有不同：</p>
+<ul>
+<li>Linux</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix)<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>MacOS</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix) -undefined dynamic_lookup<br></code></pre></td></tr></tbody></table></figure>
+
+<p>在我的系统中，会生成一个名为<code>hello.cpython-38-darwin.so</code>的文件，这就是编译产生的共享库文件。现在，在当前目录进入python解释器，即可导入包并运行函数：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">$ python<br>Python <span class="hljs-number">3.8</span><span class="hljs-number">.12</span> (default, Oct <span class="hljs-number">12</span> <span class="hljs-number">2021</span>, 06:<span class="hljs-number">23</span>:<span class="hljs-number">56</span>) <br>[Clang <span class="hljs-number">10.0</span><span class="hljs-number">.0</span> ] :: Anaconda, Inc. on darwin<br><span class="hljs-type">Type</span> <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br></code></pre></td></tr></tbody></table></figure>
+
+<p>除了手动编译外，还可以使用<code>cmake</code>工具进行跨平台编译配置，在当前目录下新建一个<code>CMakeLists.txt</code>文件，然后写入下面的命令：</p>
+<figure class="highlight cmake"><table><tbody><tr><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.4</span>...<span class="hljs-number">3.18</span>)<br><span class="hljs-keyword">project</span>(hello)<br><span class="hljs-keyword">find_package</span>(Python COMPONENTS Interpreter Development REQUIRED)<br><span class="hljs-keyword">find_package</span>(pybind11 REQUIRED)<br>pybind11_add_module(hello hello.cpp)<br></code></pre></td></tr></tbody></table></figure>
+
+<p>其中，<code>find_package</code>函数会自动找到正确的依赖包，<code>pybind11_add_module</code>函数添加了一个名为<code>hello</code>的模块。</p>
+<p>保存退出后，执行<code>cmake . &amp;&amp; make</code>命令，即可看到编译产生的共享库文件。</p>
+<hr>
+<p>使用<code>py::arg</code>参数可以将变量名也暴露给python，同时，若有需要，还可以设置参数默认值：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>, py::<span class="hljs-built_in">arg</span>(<span class="hljs-string">"name"</span>)=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>Python运行效果：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello()<br>Hello, Jack! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Nic"</span>)<br>Hello, Nic! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(name=<span class="hljs-string">"George"</span>)<br>Hello, George! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">help</span>(hello.say_hello)<br>Help on built-<span class="hljs-keyword">in</span> function say_hello <span class="hljs-keyword">in</span> module hello:<br><br>say_hello(...) method of builtins.PyCapsule instance<br>    say_hello(name: str = 'Jack') -&gt; None<br>    <br>    Print hello to the name.<br>(END)<br></code></pre></td></tr></tbody></table></figure>
+
+<p><code>py::arg</code>参数还有一种简化写法，通过引入名称空间<code>pybind11::literals</code>，可以使用<code>_a</code>后缀来替代<code>py::arg</code>，例如，上面的一条<code>m.def</code>函数可以写成：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+<hr>
+<p>除了包装函数外，通过使用<code>module_::attr</code>函数可以将C++中的变量暴露给Python，例如下面的C++程序：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* where = <span class="hljs-string">"This is a message from C++ library!"</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* cst = <span class="hljs-string">"This is an auto cast string by pybind11."</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"where"</span>) = where;<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"cast"</span>) = py::<span class="hljs-built_in">cast</span>(cst);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>Python中运行效果：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.where)<br>This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.cast)<br>This <span class="hljs-keyword">is</span> an auto cast string by pybind11.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(hello.cast)<br>&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> '<span class="hljs-title">str</span>'&gt;</span><br></code></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>Python学习笔记</category>
       </categories>
@@ -287,53 +281,6 @@
       </categories>
   </entry>
   <entry>
-    <title>使用Pybind11进行C++与python的混合编程</title>
-    <url>/python-xue-xi-bi-ji/introduce-pybind11/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><center>本文使用Anaconda环境进行演示，python版本为3.8，若读者不使用Anaconda，需自行配置环境。</center>
-
-<p><code>Pybind11</code>是一个纯头文件库，用于将C++函数封装出Python接口。该库可以很方便地使用<code>conda</code>进行安装，执行命令<code>conda install pybind11 pytest</code>。完成安装后，我们开始编写第一个程序，命名为<code>hello.cpp</code>。</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"! This is a message from C++ library!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
-<p>上面的cpp文件中，<code>say_hello</code>为程序函数，<code>PYBIND11_MODULE</code>为包装函数，此二者在实际应用中一般会分别存放在不同的文件中，但在本例中为演示需要，我将他们放在了同一个文件中。</p>
-<p><code>PYBIND11_MODULE</code>是一个宏定义，其功能是创建一个函数，这个函数会在Python执行<code>import</code>语句时被调用，其接受两个参数，第一个参数为模块名称，这里我们直接将<code>hello</code>填入，稍候可以在Python中使用<code>import hello</code>导入该模块；第二个参数<code>m</code>是创建Python关联代码的主接口，其类型为<code>py::module_</code>。<code>module_::def()</code>用于生成能够将<code>say_hello</code>函数暴露给Python的代码，其第一个参数为<strong>字符串</strong>，将会成为Python中调用的函数名；第二个参数是<strong>C++函数</strong>的引用；第三个参数是<strong>说明字符串</strong>，在Python中可以使用<code>help(say_hello)</code>查看。</p>
-<p>现在，我们可以着手编译这个库了，这里我使用<code>g++</code>进行编译，通过<code>-shared</code>参数将其编译为共享库，在Linux和MacOS上的编译命令稍有不同：</p>
-<ul>
-<li>Linux</li>
-</ul>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix)<br></code></pre></td></tr></tbody></table></figure>
-
-<ul>
-<li>MacOS</li>
-</ul>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">g++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) hello.cpp -o hello$(python3-config --extension-suffix) -undefined dynamic_lookup<br></code></pre></td></tr></tbody></table></figure>
-
-<p>在我的系统中，会生成一个名为<code>hello.cpython-38-darwin.so</code>的文件，这就是编译产生的共享库文件。现在，在当前目录进入python解释器，即可导入包并运行函数：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">$ python<br>Python <span class="hljs-number">3.8</span><span class="hljs-number">.12</span> (default, Oct <span class="hljs-number">12</span> <span class="hljs-number">2021</span>, 06:<span class="hljs-number">23</span>:<span class="hljs-number">56</span>) <br>[Clang <span class="hljs-number">10.0</span><span class="hljs-number">.0</span> ] :: Anaconda, Inc. on darwin<br><span class="hljs-type">Type</span> <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br></code></pre></td></tr></tbody></table></figure>
-
-<p>除了手动编译外，还可以使用<code>cmake</code>工具进行跨平台编译配置，在当前目录下新建一个<code>CMakeLists.txt</code>文件，然后写入下面的命令：</p>
-<figure class="highlight cmake"><table><tbody><tr><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.4</span>...<span class="hljs-number">3.18</span>)<br><span class="hljs-keyword">project</span>(hello)<br><span class="hljs-keyword">find_package</span>(Python COMPONENTS Interpreter Development REQUIRED)<br><span class="hljs-keyword">find_package</span>(pybind11 REQUIRED)<br>pybind11_add_module(hello hello.cpp)<br></code></pre></td></tr></tbody></table></figure>
-
-<p>其中，<code>find_package</code>函数会自动找到正确的依赖包，<code>pybind11_add_module</code>函数添加了一个名为<code>hello</code>的模块。</p>
-<p>保存退出后，执行<code>cmake . &amp;&amp; make</code>命令，即可看到编译产生的共享库文件。</p>
-<hr>
-<p>使用<code>py::arg</code>参数可以将变量名也暴露给python，同时，若有需要，还可以设置参数默认值：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"Print hello to the name."</span>, py::<span class="hljs-built_in">arg</span>(<span class="hljs-string">"name"</span>)=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
-
-<p>Python运行效果：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello()<br>Hello, Jack! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Nic"</span>)<br>Hello, Nic! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(name=<span class="hljs-string">"George"</span>)<br>Hello, George! This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">help</span>(hello.say_hello)<br>Help on built-<span class="hljs-keyword">in</span> function say_hello <span class="hljs-keyword">in</span> module hello:<br><br>say_hello(...) method of builtins.PyCapsule instance<br>    say_hello(name: str = 'Jack') -&gt; None<br>    <br>    Print hello to the name.<br>(END)<br></code></pre></td></tr></tbody></table></figure>
-
-<p><code>py::arg</code>参数还有一种简化写法，通过引入名称空间<code>pybind11::literals</code>，可以使用<code>_a</code>后缀来替代<code>py::arg</code>，例如，上面的一条<code>m.def</code>函数可以写成：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
-<hr>
-<p>除了包装函数外，通过使用<code>module_::attr</code>函数可以将C++中的变量暴露给Python，例如下面的C++程序：</p>
-<figure class="highlight cpp"><table><tbody><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// hello.cpp</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pybind11/pybind11.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">namespace</span> py = pybind11;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> pybind11::literals;<br><br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* where = <span class="hljs-string">"This is a message from C++ library!"</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* cst = <span class="hljs-string">"This is an auto cast string by pybind11."</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span></span><br><span class="hljs-function"></span>{<br>    cout &lt;&lt; <span class="hljs-string">"Hello, "</span> &lt;&lt; name &lt;&lt; <span class="hljs-string">"!"</span> &lt;&lt; endl;<br>}<br><br><span class="hljs-built_in">PYBIND11_MODULE</span>(hello, m)<br>{<br>    m.<span class="hljs-built_in">def</span>(<span class="hljs-string">"say_hello"</span>, &amp;say_hello, <span class="hljs-string">"name"</span>_a=<span class="hljs-string">"Jack"</span>);<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"where"</span>) = where;<br>    m.<span class="hljs-built_in">attr</span>(<span class="hljs-string">"cast"</span>) = py::<span class="hljs-built_in">cast</span>(cst);<br>}<br></code></pre></td></tr></tbody></table></figure>
-
-<p>Python中运行效果：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> hello<br><span class="hljs-meta">&gt;&gt;&gt; </span>hello.say_hello(<span class="hljs-string">"Tom"</span>)<br>Hello, Tom!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.where)<br>This <span class="hljs-keyword">is</span> a message <span class="hljs-keyword">from</span> C++ library!<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hello.cast)<br>This <span class="hljs-keyword">is</span> an auto cast string by pybind11.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(hello.cast)<br>&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> '<span class="hljs-title">str</span>'&gt;</span><br></code></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>Python学习笔记</category>
-      </categories>
-  </entry>
-  <entry>
     <title>youtube-dl的使用及编程应用</title>
     <url>/python-xue-xi-bi-ji/youtube-dl-de-shi-yong-ji-bian-cheng-ying-yong/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>YouTube上有许多精彩视频，曾经chrome的应用商店里有一个叫VideoDownloader的插件可以一键下载YouTube视频，但是已经被Google封杀了。后来我发现了youtube-dl这个工具，它不仅可以用来下载YouTube视频，国内的一些视频站也可以用它进行下载。 </p>
@@ -383,6 +330,299 @@
 ]]></content>
       <categories>
         <category>Python学习笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用Vina进行分子对接</title>
+    <url>/ji-suan-hua-xue/docking-vina/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>使用Vina进行分子对接，各种蛋白与配体文件均需使用pdbqt格式，scripps研究所提供了Autodock Tools可以进行可视化转换。下面是使用adt准备文件的步骤：</p>
+<ul>
+<li>安装好adt后，在终端内输入adt以启动。</li>
+</ul>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ adt<br></code></pre></td></tr></tbody></table></figure>
+
+<img src="https://tvax1.sinaimg.cn/large/005Vgpymly1gjv1llzrwjj317e0xsgpd.jpg" title="Autodock Tools" width="50%" height="50%">
+
+<hr>
+<ul>
+<li><p>处理大分子</p>
+<p>  <strong>File -&gt; Read Molecule -&gt; Open</strong></p>
+<p>  <strong>Edit -&gt; Hydrogens -&gt; Add -&gt; Polar Only -&gt; OK</strong></p>
+<p>  <strong>Grid -&gt; Macromolecule -&gt; Choose -&gt; Select molecule -&gt; Save</strong></p>
+</li>
+</ul>
+<p>将大分子保存为pdbqt文件后，大分子的处理就完成了。</p>
+<hr>
+<ul>
+<li><p>限定搜索区域</p>
+<p>  <strong>Grid -&gt; Grid Box</strong> </p>
+</li>
+</ul>
+<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjv1llr4k7j31800ww79p.jpg" title="划定搜索区域" width="50%" height="50%">
+
+<p>这里调整好后不用保存，需要把它们记录在文本文件中备用。</p>
+<p><font color="#FF0000"><strong>注意</strong></font>：与Autodock4不同，Vina中的空间单位为埃（Å），需先将<code>Spacing</code>调至1再调整xyz。</p>
+<hr>
+<ul>
+<li><p>处理小分子</p>
+<p>  <strong>Ligand -&gt; Input -&gt; Open</strong> </p>
+<p>  <strong>Ligand -&gt; Torsion Tree -&gt; Choose Torsion</strong></p>
+<p>  按住Shift再单击键以切换扭转类型，可以先在DashBoard中将大分子隐藏。</p>
+<p>  <strong>Ligand -&gt; Output -&gt; Save as PDBQT -&gt; Save</strong></p>
+</li>
+</ul>
+<p>处理完文件后即可进行分子对接</p>
+<hr>
+<ul>
+<li>Redocking</li>
+</ul>
+<p>运行Vina需要给它提供一个配置文件，写法如下，random seed是可选项：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">receptor = ./PDBQT/5un1.pdbqt<br>ligand = ./PDBQT/mk-801.pdbqt<br><br>center_x = 24.188<br>center_y = -14.09<br>center_z = 108.227<br><br>size_x = 20<br>size_y = 20<br>size_z = 20<br><br>out = ./DockingResult/rslt-mk801.pdbqt<br>log = ./log/log-mk801.log<br><br>seed = -1661955048<br>exhaustiveness = 30<br></code></pre></td></tr></tbody></table></figure>
+<p>保存为mk801-conf.txt，然后就可以运行vina了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ vina --config mk801-conf.txt<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>对接目标化合物</li>
+</ul>
+<p>对接目标化合物的过程同上。对于分子对接的结果一定要谨慎对待，因为无论给定的分子有没有活性、是否契合活性口袋，程序都能给出一个结果，一定要根据相互作用知识来进行判断。</p>
+<p>最后，需要调用<code>MGLTools</code>里的python脚本将pdbqt转换成pdb，就可以在各种可视化程序中查看了。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ convertqt=mglTools/MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py<br>$ pythonsh <span class="hljs-variable">$convertqt</span> -s rslt-mk801.pdbqt<br></code></pre></td></tr></tbody></table></figure>
+<p>原始的脚本只能将对接产生的能量最低的一个结构输出出来，如果你需要把所有结构都输出的话，需要修改两个函数：</p>
+<p>找到<code>MolKit/pdbWriter.py</code>，在<code>write</code>函数后面定义一个新函数，名叫<code>write2</code>，函数定义如下：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write2</span>(<span class="hljs-params">self, filename, nodes, sort=<span class="hljs-literal">False</span>, sortFunc=<span class="hljs-literal">None</span>,</span></span><br><span class="hljs-function"><span class="hljs-params">          records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'CONECT'</span>], bondOrigin=(<span class="hljs-params"><span class="hljs-string">'File'</span>,<span class="hljs-string">'UserDefined'</span></span>),</span></span><br><span class="hljs-function"><span class="hljs-params">          ssOrigin=<span class="hljs-string">'File'</span></span>):</span><br>    <span class="hljs-string">"""</span><br><span class="hljs-string">    required argument:</span><br><span class="hljs-string">    filename  -- path to the new file, a .pdb extension will be added</span><br><span class="hljs-string">                 when missing.</span><br><span class="hljs-string">    nodes     -- TreeNode, TreeNodeSet instance to save as PDB</span><br><span class="hljs-string"></span><br><span class="hljs-string">    optional arguments:</span><br><span class="hljs-string">    sort  -- (False) Boolean flag to specify whether or not to sort the</span><br><span class="hljs-string">             given nodes</span><br><span class="hljs-string">    sortFunc  -- (None) sort function that will be used to sort the nodes</span><br><span class="hljs-string">                 when specified.This function has to return (-1, 0 or 1).</span><br><span class="hljs-string">    records -- list of PDB record to write out</span><br><span class="hljs-string">    bondOrigin -- (('File', 'UserDefined')) This will be used if the CONECT records are</span><br><span class="hljs-string">                  written out. Can be any combination of 'File',</span><br><span class="hljs-string">                  'BuiltByDistance' and 'UserDefined'.</span><br><span class="hljs-string">    ssOrigin -- 'File' This will be used if the TURN, HELIX and SHEET</span><br><span class="hljs-string">                 records are written. Can be either from the originating</span><br><span class="hljs-string">                 PDB file or from the data structure.</span><br><span class="hljs-string">    """</span><br>    self.records = records<br>    <span class="hljs-comment"># If the filename doesn't have a pdb extension add it</span><br>    fileExt = os.path.splitext(filename)[<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">if</span> fileExt==<span class="hljs-string">''</span>:<br>        filename = <span class="hljs-string">'%s.pdb'</span> %filename<br>    <span class="hljs-comment"># Nodes need to be either a TreeNode or a TreeNodeSet instance.</span><br>    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNode) <span class="hljs-keyword">or</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNodeSet)<br>    <br>    <span class="hljs-comment"># sort the nodes</span><br>    <span class="hljs-keyword">if</span> sort <span class="hljs-keyword">and</span> <span class="hljs-built_in">hasattr</span>(nodes, <span class="hljs-string">'sort'</span>):<br>        nodes.sort(sortFunc)<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNode): mol = nodes.top   <br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNodeSet): mol = nodes.top.uniq()[<span class="hljs-number">0</span>]<br>    <span class="hljs-comment"># get a handle on the molecule parser</span><br>    parser = mol.parser<br><br>    <span class="hljs-comment"># get the atoms in nodes</span><br>    atmInNode = nodes.findType(Atom)<br>    <br>    <span class="hljs-comment"># Create all the records to be written out.</span><br>    <span class="hljs-comment"># Get the from file records this is possible only if the file</span><br>    <span class="hljs-comment"># comes from a PDB parser.</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(parser, PdbParser):<br>        fileRec = <span class="hljs-built_in">filter</span>(<span class="hljs-keyword">lambda</span> x: <span class="hljs-keyword">not</span> x <span class="hljs-keyword">in</span> self.FROMDATASTRUCT, records)<br>        <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> fileRec:<br>            self.recordsToWrite[rec] = parser.getRecords(parser.allLines,rec)<br><br>    <span class="hljs-comment"># Create the records from the data structure:</span><br>    <span class="hljs-comment"># secondary structure 'HELIX', 'SHEET', 'TURN', 'REMARK 650 HELIX',</span><br>    <span class="hljs-comment"># 'REMARK 700 SHEET', 'REMARK 750 TURN'</span><br>    ssRec = <span class="hljs-built_in">filter</span>(<span class="hljs-keyword">lambda</span> x: x <span class="hljs-keyword">in</span> [<span class="hljs-string">'HELIX'</span>, <span class="hljs-string">'SHEET'</span>, <span class="hljs-string">'TURN'</span>], records)<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(ssRec):<br>        self.defineSecondaryStructureSection(mol, origin=ssOrigin)<br><br>    <span class="hljs-comment"># Atom records (ATOM, TER and HETATM)</span><br>    atmRec = <span class="hljs-string">'ATOM'</span> <span class="hljs-keyword">in</span> records<br>    hetRec = <span class="hljs-string">'HETATM'</span> <span class="hljs-keyword">in</span> records<br>    <span class="hljs-keyword">if</span> atmRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">or</span> hetRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> : <br>        <span class="hljs-comment">#self.defineCoordsSection(nodes, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)</span><br>        self.defineCoordsSection(atmInNode, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)<br>        <br>    <span class="hljs-comment"># Hydrogen bonds (HYDBND)</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'HYDBND'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineHYDBNDRecords(atmInNode)<br><br>    <span class="hljs-comment"># CONECT records</span><br>    <span class="hljs-comment">#build excluded Bonds from recType here</span><br>    <span class="hljs-comment">#possible recTypes are:</span><br>    <span class="hljs-comment">#all, fileUser, fileDist, file, user, userDist, dist, none</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'CONECT'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineConnectSection(atmInNode, bondOrigin)<br><br>    file = <span class="hljs-built_in">open</span>(filename, <span class="hljs-string">'a'</span>)      <br><br>    <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> self.PDBRECORDS:<br>        <span class="hljs-keyword">if</span> self.recordsToWrite.has_key(rec):<br>            recLine = self.recordsToWrite[rec]<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(recLine) <span class="hljs-keyword">is</span> types.ListType:<br>                <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> recLine:<br>                    file.write(line)<br>            <span class="hljs-keyword">else</span>:<br>                file.write(line)<br>    file.close()<br>    <br>    <span class="hljs-comment">#self.recordsToWrite = {}</span><br></code></pre></td></tr></tbody></table></figure>
+<p>然后找到<code>MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py</code>，把它复制一份，命名为<code>pdbqt_to_pdb2.py</code>，将里面的<code>mols = Read(pdbqt_filename)</code>一直到最后的代码替换成如下所示：</p>
+<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">mols = Read(pdbqt_filename)<br>mol2 = []<br><br><span class="hljs-keyword">if</span> verbose: <span class="hljs-built_in">print</span> <span class="hljs-string">'read '</span>, pdbqt_filename    <br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> mols:<br>    mol = i<br>    mol.buildBondsByDistance()<br>    <span class="hljs-comment">#fix number for problem files with alternative positions</span><br>    mol.allAtoms.number = <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(mol.allAtoms)+<span class="hljs-number">1</span>)<br>    mol2.append(mol)<br>    <br><span class="hljs-comment">#pdb_filename = mol.name + '.pdb'</span><br>writer = PdbWriter()<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(mol2)):<br>    file = <span class="hljs-built_in">open</span>(pdb_filename, <span class="hljs-string">'a'</span>)<br>    file.write(<span class="hljs-string">'MODEL '</span>)<br>    file.write(<span class="hljs-built_in">str</span>(i+<span class="hljs-number">1</span>))<br>    file.write(<span class="hljs-string">'\n'</span>)<br>    file.close()<br>    writer.write2(pdb_filename, mol2[i].allAtoms, records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'HETATM'</span>])<br><br><span class="hljs-keyword">if</span> verbose:<br>    <span class="hljs-built_in">print</span> <span class="hljs-string">"wrote "</span>, ctr, <span class="hljs-string">" atoms to"</span>, pdb_filename<br></code></pre></td></tr></tbody></table></figure>
+<p>最后运行脚本的时候就用<code>pdbqt_to_pdb2.py</code>就可以了，其他的照抄，就能把对接出的所有结构都转换出来了。</p>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在Discovery Studio中进行同源模建</title>
+    <url>/ji-suan-hua-xue/homologymodeling-ds/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在药物设计中，如果目标蛋白质还没有被结晶出来，我们无法对其进行分子对接，但是，同源蛋白质三级结构的保守性远高于一级结构，因此可以通过已知三级结构的同源蛋白来模拟目标蛋白的空间结构，这就是同源模建技术。</p>
+<p>商业软件如<code>Discovery Studio 2016</code>中集成了同源模建功能，我们可以通过操作图形界面很方便的使用。要进行同源模建，通常需要进行以下几个步骤：</p>
+<ol>
+<li>使用BLAST或PSI-BLAST查找模板。这是一种基于序列相似度的搜索算法。</li>
+<li>使用结构对齐工具将找到的模板叠合在一起。</li>
+<li>使用序列对齐工具将我们研究的蛋白模型的序列与模板序列对齐。</li>
+<li>使用MODELER创建同源模型。</li>
+</ol>
+<p>在本例中，我们使用淀粉酶P41131演示。其序列可以点击<a href="http://www.uniprot.org/uniprot/P41131.fasta">这里下载</a>。</p>
+<h1 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h1><p><font color="#FF0000">在菜单栏点击 <strong>File -&gt; Open</strong>，打开<code>p41131.fasta</code>，P41131的序列会显示在序列窗口中。</font></p>
+<p>在序列比对算法中，BLAST是常用的方法。</p>
+<p><font color="#FF0000">在<strong>Macromolecules</strong>选项卡中选择<strong>Search Sequences by Similarity -&gt; BLAST Search</strong></font></p>
+<p>PDB和PDB_nr95数据库都可以检索，但最常用的是非冗余(non-redundant, nr)的PDB_nr95数据库。</p>
+<p><font color="#FF0000">在弹出的BLAST对话框中选择<strong>Input Sequence</strong>为<code>P41131:P41131</code>，<strong>Input Database</strong>为<code>PDB_nr95</code></font></p>
+<p>运行完后，关闭弹出的对话框，在右侧的Blast窗口可以看到检索到的模板，在下方的选项卡<strong>Table View</strong>中可以看到hits，每行都是一个序列；<strong>Map View</strong>中的bar的排序和Table View中是一一对应的，每条bar以评分高低着色，评分高的靠上，大于400的红色hits是最好的。</p>
+<p><font color="#FF0000">按住shift键选中前五个最好的模板，右键单击并选择<strong>Load Structure and Alignment</strong></font></p>
+<p>软件会自动从网站上下载蛋白质，然后将他们叠合在一起。如果想看二级结构，可以在菜单栏选择<font color="#FF0000"><strong>Sequence -&gt; Secondary Structure -&gt; Visibility</strong></font>，然后把<strong>Kabsch Sander</strong>和<strong>PDB</strong>都打勾，再点OK，下方序列窗口就会显示二级结构，蓝色的箭头是beta折叠，橙色的是alpha螺旋。</p>
+<h1 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h1><p>要进行同源模建，我们首先需要将相同或相似度高的序列片段对齐，这样作出的模型才会最接近实验结果。要对齐序列，最好是先生成一个序列预设，然后将预设应用到叠合好的结构上，这种序列预设以包含最多同源结构为好。</p>
+<p>接下来我们使用BLAST搜索Swiss-Prot数据库来创建序列预设。</p>
+<p><font color="#FF0000">点击序列窗口的P41131(1)选项卡，展开<strong>Macromolecules -&gt; Create Homology Models</strong>，点击<strong>Align Sequence to Templates</strong></font></p>
+<p>在弹出的对话框中设置：</p>
+<p><font color="#FF0000"><strong>Input Model Sequence</strong>为<code>P41131-(1):P41131</code></font></p><font color="#FF0000">
+<p><strong>Input Template Structures</strong>为<code>1G94A::All</code>（这样可以指定我们加载的全部5个结构）</p>
+</font><p><font color="#FF0000"><strong>Create Sequence Profile</strong>为<code>Ture</code></font></p>
+<p>若本地没有安装<strong>Swiss-Prot BLAST</strong>数据库，此时无法启动对齐作业，但软件为我们提供的在线搜索功能，可以展开<font color="#FF0000"><strong>Create Sequence Profile</strong>，将<strong>server</strong>改为<strong>NCBI</strong>，下一个选项选择swissprot，然后点击Run。</font>待软件执行完后，点击Report可以查看RMSD值。</p>
+<h1 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h1><p>点击分子窗口中的1G94A(1)选项卡，使其处于活跃状态。</p>
+<p><font color="#FF0000">点击<strong>Macromolecules -&gt; Create Homology Models -&gt; Build Homology Models</strong></font><br>在弹出的对话框中设置：</p>
+<p><font color="#FF0000"><strong>Input Sequence Alignment</strong>为<code>P41131_templates:All</code></font></p><font color="#FF0000">
+<p><strong>Input Template Structures</strong>中5个结构都被选中</p>
+<p><strong>Input Model Sequence</strong>为<code>P41131</code></p>
+<p><strong>Number of Models</strong>为<code>2</code></p>
+</font><p><font color="#FF0000"><strong>Optimization Level</strong>为<code>Low</code></font></p>
+<p>Optimization Level越高，模型越准确，但运行速度也越慢。建模完成后，点击Report，在右侧会出现报告，结果以<strong>PDF Total Energy</strong>排序，能量越低越好，如果能量相差很小，可以看最右侧的DOPE得分，同样的越低越好。</p>
+<p>最佳的模型会自动被显示在分子窗口中，此时你可以检查一下这个结构。</p>
+<p><font color="#FF0000">在分子窗口下方点击<strong>AminoAcid</strong>选项卡，然后把滚动条拉到最右边，可以看到<strong>PDF Total</strong>的那一列，选中这一列，在菜单栏选择<strong>Chart -&gt; Line Plot</strong></font></p>
+<p>这时右侧会出现一个曲线图，这个图里的Peak是需要注意的，鼠标左键画圈选中以后，下方序列窗口里相应的氨基酸残基会被高亮显示，检查一下有无异样。</p>
+<h1 id="结构评估"><a href="#结构评估" class="headerlink" title="结构评估"></a>结构评估</h1><p>DS中提供了一个评估结构的工具，它可以评价蛋白模型的三级结构与其序列的相容性。</p>
+<p><font color="#FF0000">按Ctrl + H打开分类视图，选择P41131.M0001分子，然后点击<strong>Macromolecules -&gt; Create Homology Models -&gt; Verify Protein (Profiles-3D)</strong></font></p><font color="#FF0000">
+</font><p><font color="#FF0000">在弹出的对话框中<strong>Input Protein Molecules</strong>设定为<strong>P41131:Selected</strong>，点Run启动分析</font></p>
+<p>运行结束后在弹出的对话框中点击Report，分析结果会被添加到AminoAcid选项卡中。现在分子窗口的蛋白模型会被重新着色，蓝色表示高分，白色表示中等，红色得分较低。在这里，得分越高越好。接下来可以在AminoAcid选项卡中找到Verify Score列，然后按之前提到过的方法创建曲线图，检查得分低的地方的氨基酸残基有无异样。</p>
+<p>到这里就完成了DS中同源模型的创建与检查工作。</p>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>从零开始学习ECD计算</title>
+    <url>/ji-suan-hua-xue/ecd-ji-suan/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本文介绍了一种完全使用免费软件计算ECD光谱的较详细过程，产生的结果具有较好的理论意义，阅读本文需要掌握基本的Linux指令，否则可能会对本文的命令操作产生困惑。</p>
+<h1 id="计算ECD的大致过程为："><a href="#计算ECD的大致过程为：" class="headerlink" title="计算ECD的大致过程为："></a>计算ECD的大致过程为：</h1><ul>
+<li><ol>
+<li>产生数个优势构象。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>对优势构象做振动分析，得到其对应的自由能校正量。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>计算优势构象的高精度电子能量，即单点能(Single Point Energy)。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>将自由能校正量和高精度单点能相加，得到构象的精确自由能，以此计算玻尔兹曼分布。</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>计算各个构象的激发态。</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>根据激发态和玻尔兹曼分布绘制出最终的ECD图像。</li>
+</ol>
+</li>
+</ul>
+<p>下面将分步骤详细介绍软件操作。</p>
+<h2 id="产生优势构象"><a href="#产生优势构象" class="headerlink" title="产生优势构象"></a>产生优势构象</h2><p>需要用到软件有，molclus软件包（包括<code>gentor</code>、<code>molclus</code>、<code>isostat</code>）、<code>Gaussian</code>（可选）、<code>MOPAC</code>、<code>ORCA</code>。</p>
+<p>登录进服务器主节点后输入<code>cd molclus_1.9.6/</code>，再输入<code>ls</code>可以看到其包含的文件：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 给新手的提示："$"为提示符，其后跟的字符串是要输入的命令，下方没有$的行是命令的输出结果</span><br>$ <span class="hljs-built_in">cd</span> molclus_1.9.6/<br>$ ls<br>LICENSE.txt*   gentor/        molclus*       template.gjf*  template.mop*  xyz2QC*<br>genmer/        isostat*       settings.ini*  template.inp*  template2.gjf*<br></code></pre></td></tr></tbody></table></figure>
+<p>其中<code>gentor</code>可以用来产生分子的各种构象，将3D的分子结构根据<code>gentor.ini</code>中的设定进行枚举，产生大量构象；<code>molclus</code>可以调用各类计算软件对构象进行优化，并计算其自由能；<code>isostat</code>可以统计优化后的各个构象能量，并对他们进行排序；<code>genmer</code>可以用来生成分子团簇的构象；其他<code>template</code>文件则为计算软件的输入模版文件。</p>
+<p>在本文中，使用了<code>gentor</code>来产生初始构象，如果分子的柔性特别好，可旋转的键数量太多，需要用<code>gromacs</code>生成最初的构象，如果使用<code>gentor</code>则计算量过于庞大。在<code>GaussView</code>里可以观察到原子标号，以此作为<code>gentor.ini</code>的设定时的标号方式，具体设定方式可以参见文章<a href="http://bbs.keinsci.com/thread-2388-1-1.html">gentor构象扫描</a>。</p>
+<p>设定好<code>gentor.ini</code>后，把分子转换成xyz格式移动到<code>gentor</code>所在的目录下。 此处可以调用<code>openbabel</code>进行转换，假如待转换的分子文件名为<code>aaa.mol</code>，则输入<code>obabel aaa.mol -O mol.xyz</code>。完成后即可在当前目录下看到<code>mol.xyz</code>，必须是这个名字，一个字母都不能差：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span> gentor<br>$ ls<br>gentor*  gentor.ini*  aaa.mol<br>$ obabel aaa.mol -O mol.xyz <br>1 molecule converted<br>$ ls<br>gentor*  gentor.ini*  aaa.mol mol.xyz<br></code></pre></td></tr></tbody></table></figure>
+<p>启动<code>gentor</code>：输入<code>./gentor</code>，完成后即可在当前目录下看到<code>traj.xyz</code>文件：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./gentor<br>$ ls<br>gentor*  gentor.ini*  aaa.mol mol.xyz  traj.xyz<br></code></pre></td></tr></tbody></table></figure>
+<p>如果产生的构象数量特别多，就需要先用<code>Gaussian</code>初步优化一下，如果构象数量不是很多，仅有数百个，那么直接使用<code>MOPAC</code>优化。此处对于我的分子，<code>traj.xyz</code>中含有9000多个构象，所以先用<code>Gaussian</code>优化。将<code>traj.xyz</code>移动到<code>molclus</code>目录下，修改<code>settings.ini</code>和<code>template.gjf</code>，关键词写<code>UFF=qeq opt</code>，然后运行<code>molclus</code>。可以参考<a href="http://bbs.keinsci.com/thread-577-1-1.html">molclus构象搜索</a>。这里我的机器上<code>Gaussian</code>配置了<code>Default.route</code>，所以在模板文件中就不单独指定%mem和%cpu了，你可以根据自己的情况决定使用哪种方式。</p>
+<p>如果你的机器只有一个节点，那么可以像下面这样编辑好设置直接运行：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ mv traj.xyz ../<br>$ <span class="hljs-built_in">cd</span> ../<br>$ vi settings.ini <br>$ vi template.gjf<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
+<p>但是如果你像我一样在计算集群上运行，有好几个节点，可以使用我编写的脚本<code>split_molclus.sh</code>，在<a href="https://github.com/SSSSSimon/ECD-widgets">我的github</a>上可以下载到。此脚本接受三个参数，分别是“份数”、“总构象数”、“程序编号”。<br>例如，<code>settings.ini</code>中<code>Gaussian</code>对于的程序编号为1，我的集群有3个节点，每节点都支持超线程，构象总共有9000个，那么就输入：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./split_molclus.sh 6 9000 1<br></code></pre></td></tr></tbody></table></figure>
+<p>完成后就可以在当前目录下看到1 2 3 4 5 6共六个目录，每个目录中都有相同的文件，不同的是<code>settings.ini</code>中要计算的结构都被平均分了，这样在相应的节点运行目录内的<code>molclus</code>程序即可。运行完成后将六个目录中生成的<code>isomers.xyz</code>全部输出到一起去，可以编写一个循环：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> {1..6}<br>&gt; <span class="hljs-keyword">do</span><br>&gt; cat <span class="hljs-variable">$i</span>/isomer* &gt;&gt; isomers.xyz<br>&gt; <span class="hljs-keyword">done</span><br></code></pre></td></tr></tbody></table></figure>
+<p>这样，六个目录中的<code>isomers.xyz</code>就被汇总到了一起，现在可以输入<code>rm -rf {1..6}</code>把六个目录删掉了。接下来就要对汇总后的<code>isomers.xyz</code>进行分析，科音的sob老师编写的<code>isostat</code>程序就是用来干这个的，但是他这个程序遇到构象多的文件的时候就会特别慢，而且排序的时候会把整个文件里的构象全部进行排序。虽然没有开源，但是根据程序的输出可以推测就是使用了一个for循环加getline()函数读取文件，然后用了个sort()给数组排序。我之前用它统计过一个2万构象的文件，硬生生耗了我2个小时，这其实完全没有必要，因为我们给到下一步的构象只需要取能量最低的100个就可以了，把整个数组排序费事费力还做大量无用功，因此我编写了一个名为<code>get_first_100_geoms</code>的程序，使用了随机存取技术读取<code>isomers.xyz</code>，并只输出其中能量最低的100个构象到<code>isomers100.xyz</code>，笔者尝试过最高30万个构象的文件，即使是如此庞大的文件也可以在瞬间完成操作。文本文件其实按道理来说是不适合随机访问的，但是仔细观察sob老师的<code>molclus</code>输出的<code>isomers.xyz</code>可以发现其中的输出都是经过格式化的，这就给随机访问创造了可能，程序源代码同样可以在上文的github链接中下载到。需要注意的是，由于程序使用了某些C++11的特性，如果你的g++版本太低是没法编译的，比如CentOS自带的g++就不行，如果你使用CentOS需要先升级g++。要编译该程序，输入<code>g++ get_first_100_geoms.cpp -o get_first_100_geoms</code>即可。</p>
+<p>运行完<code>get_first_100_geoms</code>，再输入<code>./isostat</code>运行<code>isostat</code>，分析<code>isomers100.xyz</code>，会得到<code>cluster.xyz</code>。然后使用<code>MOPAC</code>在<code>PM7</code>级别下进行优化，同样，这个也可以并行，根据自己的机器选择合适的方式：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./get_first_100_geoms<br>$ ./isostat<br>$ rm traj.xyz<br>$ mv cluster.xyz traj.xyz<br>$ vi settings.ini<br>$ vi template.mop<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
+<p>输入<code>./isostat</code>运行<code>isostat</code>，敲三次回车开始分析，最后查看一下300K的玻尔兹曼分布。取几个占比高的构象（2kcal/mol以内）进行下一步，使用<code>ORCA</code>进行优化+振动分析，根据你的机器情况选择内存数量和CPU核心数量，对单个任务不要使用多于CPU物理核心的核心数量，<code>template.inp</code>关键词如下：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">! B3LYP D3 6-311G* RIJCOSX opt freq tightSCF miniprint nopop noautostart<br>%maxcore 2000<br>%pal nprocs 36 end<br></code></pre></td></tr></tbody></table></figure>
+<p>然后按照同样的方法设置<code>settings.ini</code>，这里建议把备份输出文件的选项打开，然后再运行<code>molclus</code>：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./isostat<br>$ rm traj.xyz<br>$ mv cluster.xyz traj.xyz<br>$ vi settings.ini<br>$ vi template.inp<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
+
+<h2 id="计算电子能量"><a href="#计算电子能量" class="headerlink" title="计算电子能量"></a>计算电子能量</h2><p>以下是<code>ORCA</code>输入文件的关键词，可以使用<code>Multiwfn</code>来生成输入文件，但记得添加<code>CFLOAT</code>关键词，否则会报内存不足的错误，我的机器上36核心128G内存会报错，如果你的内存更大可以不用加；另外，<strong>还需要加入SMD溶剂模型</strong>。参见<a href="http://sobereva.com/490">Multiwfn产生ORCA输入文件详解</a>：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">! PWPB95 D3 def2-TZVPP def2/J def2-TZVPP/C RIJCOSX CFLOAT grid4 gridx4 tightSCF noautostart miniprint nopop<br>%maxcore 2000<br>%pal nprocs 36 end<br>%cpcm<br>smd <span class="hljs-literal">true</span><br>SMDsolvent <span class="hljs-string">"methanol"</span><br>end<br></code></pre></td></tr></tbody></table></figure>
+<p>然后在此处运行<code>xyz2QC</code>，选4生成分离的ORCA输入文件，载入上一步生成的<code>cluster.xyz</code>，选择要计算的构象，然后就会生成许多inp文件，ORCA官方建议为每个inp都建一个文件夹，然后把inp文件移进去计算。假设构象1的输入文件命名为<code>SP00001.inp</code>，输入以下命令运行<code>ORCA</code>：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 下面的命令会运行orca，将SP1.inp作为输入，把结果输出到SP1.out中，并忽略错误输出</span><br><span class="hljs-comment"># 一定要使用绝对路径调用orca</span><br>$ nohup <span class="hljs-variable">$HOME</span>/orca/orca SP1.inp &gt; SP1.out 2&gt; /dev/null &amp;<br></code></pre></td></tr></tbody></table></figure>
+<p>计算完成后，输入以下命令即可看到电子能量：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ tail SP1.out -n 100 | grep <span class="hljs-string">"FINAL"</span><br>FINAL SINGLE POINT ENERGY     -1970.760258748528<br></code></pre></td></tr></tbody></table></figure>
+<p>将此电子能量保存下来以备下一步使用，同样的方法可以获得构象2和构象3的电子能量。<br>##计算自由能和玻尔兹曼分布<br>详细用法看这里：<a href="http://sobereva.com/552">Shermo计算自由能和玻尔兹曼分布</a></p>
+<p>在<code>Shermo</code>的目录下建立一个名为<code>list.txt</code>的文件。</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span><br>$ <span class="hljs-built_in">cd</span> Shermo_2.0.3/<br>$ touch list.txt<br>$ vi list.txt<br></code></pre></td></tr></tbody></table></figure>
+<p>将优化+振动分析一步的输出文件和得到的电子能量写入其中，格式为：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">/home/visitor/research/simon/orca1.out;-1970.760258748528<br>/home/visitor/research/simon/orca2.out;-1970.755539822519<br>/home/visitor/research/simon/orca3.out;-1970.754969829706<br></code></pre></td></tr></tbody></table></figure>
+<p>保存并退出<code>vi</code>，这里也可以使用我编写的脚本<code>write_list.sh</code>，用法非常简单，看下脚本的内容应该也知道怎么用了，就不在这再说一遍了。运行<code>Shermo</code>，将<code>list.txt</code>载入，即可自动算出玻尔兹曼分布：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ Shermo list.txt<br>...<br>...<br>Low frequencies treatment: Harmonic approximation<br>Processing /home/visitor/research/simon/orca1.out... (    1  of    3 )<br>Processing /home/visitor/research/simon/orca2.out... (    2  of    3 )<br>Processing /home/visitor/research/simon/orca3.out... (    3  of    3 )<br><br><span class="hljs-comment">#System       U               H               G             S          CV</span><br>             a.u.            a.u.            a.u.        J/mol/K     J/mol/K<br>   1    -1969.815591    -1969.814647    -1969.948557    1179.203     783.166<br>   2    -1969.809359    -1969.808415    -1969.940882    1166.504     789.267<br>   3    -1969.809932    -1969.808988    -1969.937499    1131.665     781.476<br><br>System    1     Relative G=    0.000 kJ/mol     Boltzmann weight=  99.970 %<br>System    2     Relative G=   20.149 kJ/mol     Boltzmann weight=   0.030 %<br>System    3     Relative G=   29.033 kJ/mol     Boltzmann weight=   0.001 %<br><br>Conformation weighted data:<br>Electronic energy:     -1970.760257 a.u.<br>U:     -1969.815590 a.u.<br>H:     -1969.814645 a.u.<br>G:     -1969.948557 a.u.<br>S:      1179.222 J/mol/K    Conformation entropy:     0.023 J/mol/K<br>CV:      783.168 J/mol/K<br>CP:      791.483 J/mol/K<br></code></pre></td></tr></tbody></table></figure>
+<p>另外可看参考文章：<a href="http://bbs.keinsci.com/thread-3805-1-1.html">频率校正因子</a>、<a href="http://sobereva.com/327">隐式溶剂模型和自由能计算</a></p>
+<h2 id="计算激发态能量"><a href="#计算激发态能量" class="headerlink" title="计算激发态能量"></a>计算激发态能量</h2><p><code>ORCA</code> 使用 <code>TDDFT</code> 在 <code>RI-wB2GP-PLYP/def2-TZVP</code> 级别下计算激发态，还是使用<code>Multiwfn</code>生成输入文件，关键词为：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">! PBE0 def2-SV(P) def2/J RIJCOSX CFLOAT grid4 gridx4 tightSCF noautostart miniprint nopop<br>%maxcore  1600<br>%pal nprocs 36 end<br>%cpcm<br>smd true<br>SMDsolvent "methanol"<br>end<br>%tddft<br>nroots 30<br>TDA false<br>end<br></code></pre></td></tr></tbody></table></figure>
+<p>一般算30个states就够了，仅需要把<code>Multiwfn</code>生成的文件中的<code>nroots</code>改为30，然后运行<code>ORCA</code>，完成后得到<code>tddft1.out</code>。</p>
+<h2 id="绘制平均光谱"><a href="#绘制平均光谱" class="headerlink" title="绘制平均光谱"></a>绘制平均光谱</h2><p>如果计算得到的能量最低的结构的玻尔兹曼分布占比很高，那么就不需要计算其他的构象了，反之则需要计算多个构象，再绘制其平均化之后的光谱，具体可参考<a href="http://sobereva.com/383">Multiwfn绘制平均光谱</a>。</p>
+<p>启动<code>Multiwfn</code>，先绘制<code>UV-Vis</code>光谱，然后再绘制<code>ECD</code>光谱，并根据<code>UV-Vis</code>计算光谱和实际值的偏移量给<code>ECD</code>光谱加上同样的偏移量。</p>
+<p>本文中使用的软件<code>Molclus</code>、<code>MOPAC</code>、<code>Multiwfn</code>、<code>Shermo</code>、<code>ORCA</code>均为免费软件，将其使用在自己的工作中一定需要引用对应的文献，如果你使用了我开发的小工具，别忘了在github上给我一个star😜</p>
+<blockquote>
+<p>Molclus引用文献：Tian Lu, molclus program, Version 1.9.6, <a href="http://www.keinsci.com/research/molclus.html">http://www.keinsci.com/research/molclus.html</a> (accessed Sep 2, 2020)</p>
+</blockquote>
+<blockquote>
+<p>MOPAC2016引用文献：MOPAC2016, James J. P. Stewart, Stewart Computational Chemistry, Colorado Springs, CO, USA, HTTP://OpenMOPAC.net (2016).</p>
+</blockquote>
+<blockquote>
+<p>Multiwfn引用文献：Tian Lu, Feiwu Chen, J. Comput. Chem., 33, 580-592 (2012).</p>
+</blockquote>
+<blockquote>
+<p>Shermo引用文献：Tian Lu, Qinxue Chen, Shermo: A general code for calculating molecular thermodynamic properties, ChemRxiv (2020) DOI: 10.26434/chemrxiv.12278801</p>
+</blockquote>
+<blockquote>
+<p>ORCA引用文献：WIREs Comput Mol Sci 2012, 2: 73–78 doi: 10.1002/wcms.81</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Homology Modeling——同源模建简介</title>
+    <url>/ji-suan-hua-xue/homologymodeling/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
+<h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
+<h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
+<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg" title="一种得分矩阵" width="50%" height="50%">
+
+<p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
+<h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>
+<p>在建模时我们自然希望模板链和目标链重合的越多越好，那样我们的模型就越可靠，但是事情并不总是我们期待的那样。设想一下这种情况：我们的模板链由100个氨基酸残基，通过查询，有3条蛋白链分别有一部分与未知链重合，那么最好的情况就是我们把这最好的三个部分分别作为目标链对应区域的模板。MSA可以生成一种称为“序列谱”（profile）的东西<a href="#ref-5"><sup>5</sup></a>，也被称为“位置特异性得分矩阵”，它可以在搜索时匹配到更多的模板，在建模时把最佳的模板赋给目标链，保证保守区域不会发生变化。</p>
+<p>在Discovery Studio中，同源模建时查询的数据库都是非冗余数据库。例如查找模板时查询的不是PDB数据库，而是<code>PDB_nr95</code>数据库（nr即non-redundant），多重序列对齐时查询的是<code>SWISS-Prot</code>数据库，这些数据库都经过人工审查，没有重复数据，能节省查询时间，同时它们中的数据还经过人工校对，可以使建模效果更好。</p>
+<h2 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h2><p>序列对齐好后，我们的建模工作就可以开始了。同源模建工作发展到现在已经实现了自动化，执行这一步只需要点几下鼠标，但是其内部的工作过程其实可以分成三步：<strong>生成主链（Backbone）、生成回环（Loop）、生成侧链（Side-Chain）</strong>。</p>
+<p>在主链建模时，只需要简单地把对齐好的模版链片段的坐标赋给目标链。与多重序列对齐相同，主链建模时使用一种叫“多模板建模”的思想，即将各个模版中的最优部分作为模型赋给目标链。对于蛋白上的保守区域，同源蛋白间的序列一致度很高，侧链构象也倾向于保守，因此可以把这些氨基酸残基上携带的侧链一并复制到目标链中，这种直接复制坐标的方法被称作“刚体装配法”。还有一种方法是“空间限制法”，它根据几何和约束关系进行建模，使模型满足空间限制，<code>MODELLER</code>就是使用这种方法。</p>
+<p>Loop区的建模一直是同源模建工作的难点，原因在于Loop区不保守，有着很大的变动性，准确预测其结构较为困难。目前对Loop区进行建模主要有两种方法：基于现有知识的数据库查询和基于能量的构象搜索。查询数据库虽然简单快捷，但是由于数据不完整，能不能找到好模板还是要看运气，并且随着Loop的增长，匹配难度也越发增加。因此对于Loop区的预测主要还是应用能量计算，对于5-8个氨基酸残基的Loop，已经能给出比较准确的预测，例如蒙特卡洛方法<a href="#ref-6"><sup>6</sup></a>、模拟退火<a href="#ref-7"><sup>7</sup></a>等。近年来新发展了一些构象搜索方法<a href="#ref-8"><sup>8</sup></a>，使得通过计算得到的模型越来越精准，10-12个氨基酸残基的Loop的预测准确度有了较大的改善。</p>
+<p>当主链构象固定后，保守区的侧链氨基酸残基可以直接复制到模型中，因此侧链建模准确的前提是主链构象准确。基本上所有的侧链建模都会依赖于片段搜索，因为利用实验手段测出的结构都符合能量约束，构建侧链时先从未知特异性旋转异构体库中搜索相似构象，然后使用能量约束进行优化。</p>
+<h2 id="优化与验证"><a href="#优化与验证" class="headerlink" title="优化与验证"></a>优化与验证</h2><p>对整个蛋白质进行构象扫描来优化，即使是以今天的计算机水平也是几乎不可能完成的任务，而侧链建模依赖于主链，主链又会受到侧链影响，这似乎陷入了一个死循环。为了解决模型的优化问题，一种方法是先使用已有的主链预测一次侧链，然后根据侧链的空间与能量关系对主链进行调整，如此反复，直至结果自洽。使用这种方法进行预测，能量方程越精确，模型质量自然也就越高，即使是最直接的分子动力学模拟也是有赖于力场数据。在Discovery Studio中，模型的优化与验证都是依靠自由能数据的，但是仅仅能量低并不够，在有些情况下，错误折叠的蛋白质会带来比正确结构更加稳定的能量，因此，在进行同源模建工作时，每一步都应当考虑如何能够最少地引入错误，才能使我们的模型更佳具有实用性。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><div id="ref-1">1. C. Chothial, A. M.Lesk, “The relation between the divergence of sequence and structure in proteins”. EMBO J. (1986) Vol.5: 823-836.</div>
+<div id="ref-2">2. Sander C, Schneider R, “Database of homology-derived protein structures and the structural meaning of sequence alignment”. Proteins (1991). Vol.9: 56–68.</div>
+<div id="ref-3">3. Lipman, DJ; Pearson, WR. "Rapid and sensitive protein similarity searches". Science (1985). 227 (4693): 1435–1341.</div>
+<div id="ref-4">4. Altschul SF. “Basic local alignment search tool.” J Mol Biol. (1990 Oct 5);215(3): 403-410.</div>
+<div id="ref-5">5. Taylor WR. “Identification of protein sequence homology by consensus template alignment.” J Mol Biol. (1986 Mar 20); 188(2):233-258.</div>
+<div id="ref-6">6. Hansmann UH. “ew Monte Carlo algorithms for protein folding.” Curr Opin Struct Biol. 1999 Apr;9(2):177-183.</div>
+<div id="ref-7">7. Kim T. Simons. “Assembly of Protein Tertiary Structures from Fragments with Similar Local Sequences using Simulated Annealing and Bayesian Scoring Functions” J. Mol. Biol. (1997) 268, 209-225</div>
+<div id="ref-8">8. 袁飞. “基于氨基酸位置特异性的蛋白质Loop区结构预测” Acta Phys. Sin. Vol. 65, No. 15 (2016) 158701</div>
+]]></content>
+      <categories>
+        <category>计算化学</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>安装PyMOL</title>
+    <url>/pymol-xi-lie-jiao-cheng/an-zhuang-pymol/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h1><p>PyMOL是由Warren Lyford DeLano编写的一个分子结构显示软件，由于生成的图片质量极高，受到了科研工作者的广泛好评；由PyMOL制作的图像屡次出现在Nature、Science等杂志的封面上，作者自己则称所有发表的蛋白质结构图像中，有1/4的是有PyMOL制作的。2010年，Schrödinger公司从DeLano Scientific LLC手中买下了PyMOL，继续发行PyMOL的商业版。与此同时，PyMOL还有一个由用户赞助的开源版本，相比商业版功能虽然少了一些，但是功能依旧强大。</p>
+<p>PyMOL具有图形界面，在图形界面上具有命令行接口，可以输入指令来修改图形参数，同时还兼容少量bash的目录指令。</p>
+<img src="https://tvax3.sinaimg.cn/large/005Vgpymly1gjv1m21qpbj315o0pj7wh.jpg" title="PyMOL的图形界面" width="70%" height="70%">
+
+
+<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p>PyMOL名字里虽然有一个Py，但是python代码只占其代码总量的10%，C/C++代码占了绝大多数。作为开源软件，它可以在全平台进行安装，我将依次介绍他们的安装方式。</p>
+<ul>
+<li><strong>Windows</strong></li>
+</ul>
+<p>在Windows下，如果你的电脑没有安装过python环境，首先需要安装python。完成之后直接运行Schrödinger的PyMOL安装包即可，Schrödinger的安装包应该会顺带安装一个python环境。虽然Windows下的安装包不是免费软件，但是你可以去申请一个education license使用，到期了还可以再申请。如果你想从源代码编译使用，那么可以尝试使用Cygwin。</p>
+<ul>
+<li><strong>Linux</strong></li>
+</ul>
+<p>虽然Schrödinger也提供了Linux下的安装包，但是在Linux下从源代码编译安装是十分方便的，因此我们来讲一下编译安装步骤。<br>（本文发布时源代码版本为2.4.0）</p>
+<p>首先安装依赖，下面列出了各个系统的命令，需要使用root权限进行安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Debian/Ubuntu/Mint</span><br>apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br><br><span class="hljs-comment"># CentOS</span><br>yum install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Fedora</span><br>dnf install gcc gcc-c++ kernel-devel python-devel tkinter python-pmw glew-devel \<br>  freeglut-devel libpng-devel freetype-devel libxml2-devel glm-devel<br><br><span class="hljs-comment"># Gentoo</span><br>emerge -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype media-libs/glm<br><br><span class="hljs-comment"># openSUSE</span><br>zypper install python-devel freeglut-devel gcc-c++ glew-devel libpng-devel python-pmw glm<br><br><span class="hljs-comment"># Sabayon</span><br>equo i -av dev-lang/python dev-python/pmw media-libs/glew \<br>  media-libs/freeglut media-libs/libpng media-libs/freetype<br></code></pre></td></tr></tbody></table></figure>
+
+<p>以Ubuntu为例，在terminal中输入：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install build-essential python-dev python-pmw libglew-dev \<br>  freeglut3-dev libpng-dev libfreetype6-dev libxml2-dev \<br>  libmsgpack-dev python-pyqt5.qtopengl libglm-dev<br></code></pre></td></tr></tbody></table></figure>
+
+<p>安装git，然后将源代码拷贝到本地：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">sudo apt-get install git<br>git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br></code></pre></td></tr></tbody></table></figure>
+
+<p>完成后，cd进源代码目录，下载mmtf-cpp，然后运行setup.py：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> pymol-open-source<br>git <span class="hljs-built_in">clone</span> https://github.com/rcsb/mmtf-cpp.git<br>cp -r mmtf-cpp/include/* layer3/<br>python setup.py build install --home=<span class="hljs-variable">$HOME</span>/pymol<br></code></pre></td></tr></tbody></table></figure>
+
+<p>等待编译完成以后，将<code>pymol/bin</code>添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bashrc<br></code></pre></td></tr></tbody></table></figure>
+
+<p>至此，程序就安装完成了，在一个新的terminal中输入<code>pymol</code>即可打开程序。</p>
+<ul>
+<li><strong>Mac OS X</strong></li>
+</ul>
+<p>在Mac上最简便的安装方式还是使用Schrödinger提供的dmg镜像，所以这里会着重介绍一下在mac上进行编译安装的步骤。本文使用的MacOS版本为10.13.3。<br>在安装PyMOL之前，你的电脑上需要安装有<a href="https://www.xquartz.org/">XQuartz</a>和<a href="https://brew.sh/">Homebrew</a>，当然如果你使用Fink或者MacPorts，只要能正确安装所有依赖，不使用Homebrew也是没问题的。目前pymol已经全面停止了对python2的支持，本文默认读者已经安装了python3.6以上的版本。Mac系统自带的gcc编译器的版本是4.2.1，而pymol要求最低4.7，因此需要先升级gcc，具体可以参考<a href="https://wangxin1248.github.io/life/2019/06/mac-update-gcc.html">这篇文章</a>。</p>
+<p>首先安装依赖：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">xcode-select --install<br>brew install git glm libpng freetype glew libxml2<br></code></pre></td></tr></tbody></table></figure>
+<p>安装Pmw：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pmw-patched.git<br><span class="hljs-built_in">cd</span> pmw-patched<br>sudo python setup.py install<br><span class="hljs-built_in">cd</span> ..<br>rm -rf pmw-patched<br></code></pre></td></tr></tbody></table></figure>
+<p>获取pymol源代码并编译安装：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/schrodinger/pymol-open-source.git<br><span class="hljs-built_in">cd</span> pymol-open-source<br><span class="hljs-built_in">export</span> PREFIX_PATH=/usr/<span class="hljs-built_in">local</span><br>python3 setup.py build install --home=<span class="hljs-variable">$HOME</span>/Applications/pymol --no-vmd-plugins --<span class="hljs-built_in">jobs</span> 4<br></code></pre></td></tr></tbody></table></figure>
+
+<p>最后将路径添加到<code>PATH</code>:</p>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">'export PATH=$PATH:$HOME/Applications/pymol/bin'</span> &gt;&gt; <span class="hljs-variable">$HOME</span>/.bash_profile<br></code></pre></td></tr></tbody></table></figure>
+
+<p>编译成功后的版本没有命令行窗口，只有预览窗口，所以不建议在Mac上编译pymol进行绘制，把做好的工程文件拿来渲染出个图还行，编辑绘图还是去用Schrödinger的发行版吧。<br><img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m0saybj30o60r1wxf.jpg" title="基于X11的PyMOL界面"></p>
+]]></content>
+      <categories>
+        <category>PyMOL系列教程</category>
       </categories>
   </entry>
   <entry>
@@ -588,246 +828,6 @@
 ]]></content>
       <categories>
         <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用Vina进行分子对接</title>
-    <url>/ji-suan-hua-xue/docking-vina/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>使用Vina进行分子对接，各种蛋白与配体文件均需使用pdbqt格式，scripps研究所提供了Autodock Tools可以进行可视化转换。下面是使用adt准备文件的步骤：</p>
-<ul>
-<li>安装好adt后，在终端内输入adt以启动。</li>
-</ul>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ adt<br></code></pre></td></tr></tbody></table></figure>
-
-<img src="https://tvax1.sinaimg.cn/large/005Vgpymly1gjv1llzrwjj317e0xsgpd.jpg" title="Autodock Tools" width="50%" height="50%">
-
-<hr>
-<ul>
-<li><p>处理大分子</p>
-<p>  <strong>File -&gt; Read Molecule -&gt; Open</strong></p>
-<p>  <strong>Edit -&gt; Hydrogens -&gt; Add -&gt; Polar Only -&gt; OK</strong></p>
-<p>  <strong>Grid -&gt; Macromolecule -&gt; Choose -&gt; Select molecule -&gt; Save</strong></p>
-</li>
-</ul>
-<p>将大分子保存为pdbqt文件后，大分子的处理就完成了。</p>
-<hr>
-<ul>
-<li><p>限定搜索区域</p>
-<p>  <strong>Grid -&gt; Grid Box</strong> </p>
-</li>
-</ul>
-<img src="https://tvax2.sinaimg.cn/large/005Vgpymly1gjv1llr4k7j31800ww79p.jpg" title="划定搜索区域" width="50%" height="50%">
-
-<p>这里调整好后不用保存，需要把它们记录在文本文件中备用。</p>
-<p><font color="#FF0000"><strong>注意</strong></font>：与Autodock4不同，Vina中的空间单位为埃（Å），需先将<code>Spacing</code>调至1再调整xyz。</p>
-<hr>
-<ul>
-<li><p>处理小分子</p>
-<p>  <strong>Ligand -&gt; Input -&gt; Open</strong> </p>
-<p>  <strong>Ligand -&gt; Torsion Tree -&gt; Choose Torsion</strong></p>
-<p>  按住Shift再单击键以切换扭转类型，可以先在DashBoard中将大分子隐藏。</p>
-<p>  <strong>Ligand -&gt; Output -&gt; Save as PDBQT -&gt; Save</strong></p>
-</li>
-</ul>
-<p>处理完文件后即可进行分子对接</p>
-<hr>
-<ul>
-<li>Redocking</li>
-</ul>
-<p>运行Vina需要给它提供一个配置文件，写法如下，random seed是可选项：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">receptor = ./PDBQT/5un1.pdbqt<br>ligand = ./PDBQT/mk-801.pdbqt<br><br>center_x = 24.188<br>center_y = -14.09<br>center_z = 108.227<br><br>size_x = 20<br>size_y = 20<br>size_z = 20<br><br>out = ./DockingResult/rslt-mk801.pdbqt<br>log = ./log/log-mk801.log<br><br>seed = -1661955048<br>exhaustiveness = 30<br></code></pre></td></tr></tbody></table></figure>
-<p>保存为mk801-conf.txt，然后就可以运行vina了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ vina --config mk801-conf.txt<br></code></pre></td></tr></tbody></table></figure>
-
-<ul>
-<li>对接目标化合物</li>
-</ul>
-<p>对接目标化合物的过程同上。对于分子对接的结果一定要谨慎对待，因为无论给定的分子有没有活性、是否契合活性口袋，程序都能给出一个结果，一定要根据相互作用知识来进行判断。</p>
-<p>最后，需要调用<code>MGLTools</code>里的python脚本将pdbqt转换成pdb，就可以在各种可视化程序中查看了。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ convertqt=mglTools/MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py<br>$ pythonsh <span class="hljs-variable">$convertqt</span> -s rslt-mk801.pdbqt<br></code></pre></td></tr></tbody></table></figure>
-<p>原始的脚本只能将对接产生的能量最低的一个结构输出出来，如果你需要把所有结构都输出的话，需要修改两个函数：</p>
-<p>找到<code>MolKit/pdbWriter.py</code>，在<code>write</code>函数后面定义一个新函数，名叫<code>write2</code>，函数定义如下：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write2</span>(<span class="hljs-params">self, filename, nodes, sort=<span class="hljs-literal">False</span>, sortFunc=<span class="hljs-literal">None</span>,</span></span><br><span class="hljs-function"><span class="hljs-params">          records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'CONECT'</span>], bondOrigin=(<span class="hljs-params"><span class="hljs-string">'File'</span>,<span class="hljs-string">'UserDefined'</span></span>),</span></span><br><span class="hljs-function"><span class="hljs-params">          ssOrigin=<span class="hljs-string">'File'</span></span>):</span><br>    <span class="hljs-string">"""</span><br><span class="hljs-string">    required argument:</span><br><span class="hljs-string">    filename  -- path to the new file, a .pdb extension will be added</span><br><span class="hljs-string">                 when missing.</span><br><span class="hljs-string">    nodes     -- TreeNode, TreeNodeSet instance to save as PDB</span><br><span class="hljs-string"></span><br><span class="hljs-string">    optional arguments:</span><br><span class="hljs-string">    sort  -- (False) Boolean flag to specify whether or not to sort the</span><br><span class="hljs-string">             given nodes</span><br><span class="hljs-string">    sortFunc  -- (None) sort function that will be used to sort the nodes</span><br><span class="hljs-string">                 when specified.This function has to return (-1, 0 or 1).</span><br><span class="hljs-string">    records -- list of PDB record to write out</span><br><span class="hljs-string">    bondOrigin -- (('File', 'UserDefined')) This will be used if the CONECT records are</span><br><span class="hljs-string">                  written out. Can be any combination of 'File',</span><br><span class="hljs-string">                  'BuiltByDistance' and 'UserDefined'.</span><br><span class="hljs-string">    ssOrigin -- 'File' This will be used if the TURN, HELIX and SHEET</span><br><span class="hljs-string">                 records are written. Can be either from the originating</span><br><span class="hljs-string">                 PDB file or from the data structure.</span><br><span class="hljs-string">    """</span><br>    self.records = records<br>    <span class="hljs-comment"># If the filename doesn't have a pdb extension add it</span><br>    fileExt = os.path.splitext(filename)[<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">if</span> fileExt==<span class="hljs-string">''</span>:<br>        filename = <span class="hljs-string">'%s.pdb'</span> %filename<br>    <span class="hljs-comment"># Nodes need to be either a TreeNode or a TreeNodeSet instance.</span><br>    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNode) <span class="hljs-keyword">or</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNodeSet)<br>    <br>    <span class="hljs-comment"># sort the nodes</span><br>    <span class="hljs-keyword">if</span> sort <span class="hljs-keyword">and</span> <span class="hljs-built_in">hasattr</span>(nodes, <span class="hljs-string">'sort'</span>):<br>        nodes.sort(sortFunc)<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNode): mol = nodes.top   <br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">isinstance</span>(nodes, TreeNodeSet): mol = nodes.top.uniq()[<span class="hljs-number">0</span>]<br>    <span class="hljs-comment"># get a handle on the molecule parser</span><br>    parser = mol.parser<br><br>    <span class="hljs-comment"># get the atoms in nodes</span><br>    atmInNode = nodes.findType(Atom)<br>    <br>    <span class="hljs-comment"># Create all the records to be written out.</span><br>    <span class="hljs-comment"># Get the from file records this is possible only if the file</span><br>    <span class="hljs-comment"># comes from a PDB parser.</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(parser, PdbParser):<br>        fileRec = <span class="hljs-built_in">filter</span>(<span class="hljs-keyword">lambda</span> x: <span class="hljs-keyword">not</span> x <span class="hljs-keyword">in</span> self.FROMDATASTRUCT, records)<br>        <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> fileRec:<br>            self.recordsToWrite[rec] = parser.getRecords(parser.allLines,rec)<br><br>    <span class="hljs-comment"># Create the records from the data structure:</span><br>    <span class="hljs-comment"># secondary structure 'HELIX', 'SHEET', 'TURN', 'REMARK 650 HELIX',</span><br>    <span class="hljs-comment"># 'REMARK 700 SHEET', 'REMARK 750 TURN'</span><br>    ssRec = <span class="hljs-built_in">filter</span>(<span class="hljs-keyword">lambda</span> x: x <span class="hljs-keyword">in</span> [<span class="hljs-string">'HELIX'</span>, <span class="hljs-string">'SHEET'</span>, <span class="hljs-string">'TURN'</span>], records)<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(ssRec):<br>        self.defineSecondaryStructureSection(mol, origin=ssOrigin)<br><br>    <span class="hljs-comment"># Atom records (ATOM, TER and HETATM)</span><br>    atmRec = <span class="hljs-string">'ATOM'</span> <span class="hljs-keyword">in</span> records<br>    hetRec = <span class="hljs-string">'HETATM'</span> <span class="hljs-keyword">in</span> records<br>    <span class="hljs-keyword">if</span> atmRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">or</span> hetRec <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> : <br>        <span class="hljs-comment">#self.defineCoordsSection(nodes, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)</span><br>        self.defineCoordsSection(atmInNode, sort=sort, sortFunc=sortFunc, atmRec=atmRec, hetRec=hetRec)<br>        <br>    <span class="hljs-comment"># Hydrogen bonds (HYDBND)</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'HYDBND'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineHYDBNDRecords(atmInNode)<br><br>    <span class="hljs-comment"># CONECT records</span><br>    <span class="hljs-comment">#build excluded Bonds from recType here</span><br>    <span class="hljs-comment">#possible recTypes are:</span><br>    <span class="hljs-comment">#all, fileUser, fileDist, file, user, userDist, dist, none</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">'CONECT'</span> <span class="hljs-keyword">in</span> records:<br>        self.defineConnectSection(atmInNode, bondOrigin)<br><br>    file = <span class="hljs-built_in">open</span>(filename, <span class="hljs-string">'a'</span>)      <br><br>    <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> self.PDBRECORDS:<br>        <span class="hljs-keyword">if</span> self.recordsToWrite.has_key(rec):<br>            recLine = self.recordsToWrite[rec]<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(recLine) <span class="hljs-keyword">is</span> types.ListType:<br>                <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> recLine:<br>                    file.write(line)<br>            <span class="hljs-keyword">else</span>:<br>                file.write(line)<br>    file.close()<br>    <br>    <span class="hljs-comment">#self.recordsToWrite = {}</span><br></code></pre></td></tr></tbody></table></figure>
-<p>然后找到<code>MGLToolsPckgs/AutoDockTools/Utilities24/pdbqt_to_pdb.py</code>，把它复制一份，命名为<code>pdbqt_to_pdb2.py</code>，将里面的<code>mols = Read(pdbqt_filename)</code>一直到最后的代码替换成如下所示：</p>
-<figure class="highlight py"><table><tbody><tr><td class="code"><pre><code class="hljs py">mols = Read(pdbqt_filename)<br>mol2 = []<br><br><span class="hljs-keyword">if</span> verbose: <span class="hljs-built_in">print</span> <span class="hljs-string">'read '</span>, pdbqt_filename    <br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> mols:<br>    mol = i<br>    mol.buildBondsByDistance()<br>    <span class="hljs-comment">#fix number for problem files with alternative positions</span><br>    mol.allAtoms.number = <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(mol.allAtoms)+<span class="hljs-number">1</span>)<br>    mol2.append(mol)<br>    <br><span class="hljs-comment">#pdb_filename = mol.name + '.pdb'</span><br>writer = PdbWriter()<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(mol2)):<br>    file = <span class="hljs-built_in">open</span>(pdb_filename, <span class="hljs-string">'a'</span>)<br>    file.write(<span class="hljs-string">'MODEL '</span>)<br>    file.write(<span class="hljs-built_in">str</span>(i+<span class="hljs-number">1</span>))<br>    file.write(<span class="hljs-string">'\n'</span>)<br>    file.close()<br>    writer.write2(pdb_filename, mol2[i].allAtoms, records=[<span class="hljs-string">'ATOM'</span>, <span class="hljs-string">'HETATM'</span>])<br><br><span class="hljs-keyword">if</span> verbose:<br>    <span class="hljs-built_in">print</span> <span class="hljs-string">"wrote "</span>, ctr, <span class="hljs-string">" atoms to"</span>, pdb_filename<br></code></pre></td></tr></tbody></table></figure>
-<p>最后运行脚本的时候就用<code>pdbqt_to_pdb2.py</code>就可以了，其他的照抄，就能把对接出的所有结构都转换出来了。</p>
-]]></content>
-      <categories>
-        <category>计算化学</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>从零开始学习ECD计算</title>
-    <url>/ji-suan-hua-xue/ecd-ji-suan/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本文介绍了一种完全使用免费软件计算ECD光谱的较详细过程，产生的结果具有较好的理论意义，阅读本文需要掌握基本的Linux指令，否则可能会对本文的命令操作产生困惑。</p>
-<h1 id="计算ECD的大致过程为："><a href="#计算ECD的大致过程为：" class="headerlink" title="计算ECD的大致过程为："></a>计算ECD的大致过程为：</h1><ul>
-<li><ol>
-<li>产生数个优势构象。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>对优势构象做振动分析，得到其对应的自由能校正量。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>计算优势构象的高精度电子能量，即单点能(Single Point Energy)。</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>将自由能校正量和高精度单点能相加，得到构象的精确自由能，以此计算玻尔兹曼分布。</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>计算各个构象的激发态。</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>根据激发态和玻尔兹曼分布绘制出最终的ECD图像。</li>
-</ol>
-</li>
-</ul>
-<p>下面将分步骤详细介绍软件操作。</p>
-<h2 id="产生优势构象"><a href="#产生优势构象" class="headerlink" title="产生优势构象"></a>产生优势构象</h2><p>需要用到软件有，molclus软件包（包括<code>gentor</code>、<code>molclus</code>、<code>isostat</code>）、<code>Gaussian</code>（可选）、<code>MOPAC</code>、<code>ORCA</code>。</p>
-<p>登录进服务器主节点后输入<code>cd molclus_1.9.6/</code>，再输入<code>ls</code>可以看到其包含的文件：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 给新手的提示："$"为提示符，其后跟的字符串是要输入的命令，下方没有$的行是命令的输出结果</span><br>$ <span class="hljs-built_in">cd</span> molclus_1.9.6/<br>$ ls<br>LICENSE.txt*   gentor/        molclus*       template.gjf*  template.mop*  xyz2QC*<br>genmer/        isostat*       settings.ini*  template.inp*  template2.gjf*<br></code></pre></td></tr></tbody></table></figure>
-<p>其中<code>gentor</code>可以用来产生分子的各种构象，将3D的分子结构根据<code>gentor.ini</code>中的设定进行枚举，产生大量构象；<code>molclus</code>可以调用各类计算软件对构象进行优化，并计算其自由能；<code>isostat</code>可以统计优化后的各个构象能量，并对他们进行排序；<code>genmer</code>可以用来生成分子团簇的构象；其他<code>template</code>文件则为计算软件的输入模版文件。</p>
-<p>在本文中，使用了<code>gentor</code>来产生初始构象，如果分子的柔性特别好，可旋转的键数量太多，需要用<code>gromacs</code>生成最初的构象，如果使用<code>gentor</code>则计算量过于庞大。在<code>GaussView</code>里可以观察到原子标号，以此作为<code>gentor.ini</code>的设定时的标号方式，具体设定方式可以参见文章<a href="http://bbs.keinsci.com/thread-2388-1-1.html">gentor构象扫描</a>。</p>
-<p>设定好<code>gentor.ini</code>后，把分子转换成xyz格式移动到<code>gentor</code>所在的目录下。 此处可以调用<code>openbabel</code>进行转换，假如待转换的分子文件名为<code>aaa.mol</code>，则输入<code>obabel aaa.mol -O mol.xyz</code>。完成后即可在当前目录下看到<code>mol.xyz</code>，必须是这个名字，一个字母都不能差：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span> gentor<br>$ ls<br>gentor*  gentor.ini*  aaa.mol<br>$ obabel aaa.mol -O mol.xyz <br>1 molecule converted<br>$ ls<br>gentor*  gentor.ini*  aaa.mol mol.xyz<br></code></pre></td></tr></tbody></table></figure>
-<p>启动<code>gentor</code>：输入<code>./gentor</code>，完成后即可在当前目录下看到<code>traj.xyz</code>文件：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./gentor<br>$ ls<br>gentor*  gentor.ini*  aaa.mol mol.xyz  traj.xyz<br></code></pre></td></tr></tbody></table></figure>
-<p>如果产生的构象数量特别多，就需要先用<code>Gaussian</code>初步优化一下，如果构象数量不是很多，仅有数百个，那么直接使用<code>MOPAC</code>优化。此处对于我的分子，<code>traj.xyz</code>中含有9000多个构象，所以先用<code>Gaussian</code>优化。将<code>traj.xyz</code>移动到<code>molclus</code>目录下，修改<code>settings.ini</code>和<code>template.gjf</code>，关键词写<code>UFF=qeq opt</code>，然后运行<code>molclus</code>。可以参考<a href="http://bbs.keinsci.com/thread-577-1-1.html">molclus构象搜索</a>。这里我的机器上<code>Gaussian</code>配置了<code>Default.route</code>，所以在模板文件中就不单独指定%mem和%cpu了，你可以根据自己的情况决定使用哪种方式。</p>
-<p>如果你的机器只有一个节点，那么可以像下面这样编辑好设置直接运行：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ mv traj.xyz ../<br>$ <span class="hljs-built_in">cd</span> ../<br>$ vi settings.ini <br>$ vi template.gjf<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
-<p>但是如果你像我一样在计算集群上运行，有好几个节点，可以使用我编写的脚本<code>split_molclus.sh</code>，在<a href="https://github.com/SSSSSimon/ECD-widgets">我的github</a>上可以下载到。此脚本接受三个参数，分别是“份数”、“总构象数”、“程序编号”。<br>例如，<code>settings.ini</code>中<code>Gaussian</code>对于的程序编号为1，我的集群有3个节点，每节点都支持超线程，构象总共有9000个，那么就输入：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./split_molclus.sh 6 9000 1<br></code></pre></td></tr></tbody></table></figure>
-<p>完成后就可以在当前目录下看到1 2 3 4 5 6共六个目录，每个目录中都有相同的文件，不同的是<code>settings.ini</code>中要计算的结构都被平均分了，这样在相应的节点运行目录内的<code>molclus</code>程序即可。运行完成后将六个目录中生成的<code>isomers.xyz</code>全部输出到一起去，可以编写一个循环：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> {1..6}<br>&gt; <span class="hljs-keyword">do</span><br>&gt; cat <span class="hljs-variable">$i</span>/isomer* &gt;&gt; isomers.xyz<br>&gt; <span class="hljs-keyword">done</span><br></code></pre></td></tr></tbody></table></figure>
-<p>这样，六个目录中的<code>isomers.xyz</code>就被汇总到了一起，现在可以输入<code>rm -rf {1..6}</code>把六个目录删掉了。接下来就要对汇总后的<code>isomers.xyz</code>进行分析，科音的sob老师编写的<code>isostat</code>程序就是用来干这个的，但是他这个程序遇到构象多的文件的时候就会特别慢，而且排序的时候会把整个文件里的构象全部进行排序。虽然没有开源，但是根据程序的输出可以推测就是使用了一个for循环加getline()函数读取文件，然后用了个sort()给数组排序。我之前用它统计过一个2万构象的文件，硬生生耗了我2个小时，这其实完全没有必要，因为我们给到下一步的构象只需要取能量最低的100个就可以了，把整个数组排序费事费力还做大量无用功，因此我编写了一个名为<code>get_first_100_geoms</code>的程序，使用了随机存取技术读取<code>isomers.xyz</code>，并只输出其中能量最低的100个构象到<code>isomers100.xyz</code>，笔者尝试过最高30万个构象的文件，即使是如此庞大的文件也可以在瞬间完成操作。文本文件其实按道理来说是不适合随机访问的，但是仔细观察sob老师的<code>molclus</code>输出的<code>isomers.xyz</code>可以发现其中的输出都是经过格式化的，这就给随机访问创造了可能，程序源代码同样可以在上文的github链接中下载到。需要注意的是，由于程序使用了某些C++11的特性，如果你的g++版本太低是没法编译的，比如CentOS自带的g++就不行，如果你使用CentOS需要先升级g++。要编译该程序，输入<code>g++ get_first_100_geoms.cpp -o get_first_100_geoms</code>即可。</p>
-<p>运行完<code>get_first_100_geoms</code>，再输入<code>./isostat</code>运行<code>isostat</code>，分析<code>isomers100.xyz</code>，会得到<code>cluster.xyz</code>。然后使用<code>MOPAC</code>在<code>PM7</code>级别下进行优化，同样，这个也可以并行，根据自己的机器选择合适的方式：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./get_first_100_geoms<br>$ ./isostat<br>$ rm traj.xyz<br>$ mv cluster.xyz traj.xyz<br>$ vi settings.ini<br>$ vi template.mop<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
-<p>输入<code>./isostat</code>运行<code>isostat</code>，敲三次回车开始分析，最后查看一下300K的玻尔兹曼分布。取几个占比高的构象（2kcal/mol以内）进行下一步，使用<code>ORCA</code>进行优化+振动分析，根据你的机器情况选择内存数量和CPU核心数量，对单个任务不要使用多于CPU物理核心的核心数量，<code>template.inp</code>关键词如下：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">! B3LYP D3 6-311G* RIJCOSX opt freq tightSCF miniprint nopop noautostart<br>%maxcore 2000<br>%pal nprocs 36 end<br></code></pre></td></tr></tbody></table></figure>
-<p>然后按照同样的方法设置<code>settings.ini</code>，这里建议把备份输出文件的选项打开，然后再运行<code>molclus</code>：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ ./isostat<br>$ rm traj.xyz<br>$ mv cluster.xyz traj.xyz<br>$ vi settings.ini<br>$ vi template.inp<br>$ ./molclus<br></code></pre></td></tr></tbody></table></figure>
-
-<h2 id="计算电子能量"><a href="#计算电子能量" class="headerlink" title="计算电子能量"></a>计算电子能量</h2><p>以下是<code>ORCA</code>输入文件的关键词，可以使用<code>Multiwfn</code>来生成输入文件，但记得添加<code>CFLOAT</code>关键词，否则会报内存不足的错误，我的机器上36核心128G内存会报错，如果你的内存更大可以不用加；另外，<strong>还需要加入SMD溶剂模型</strong>。参见<a href="http://sobereva.com/490">Multiwfn产生ORCA输入文件详解</a>：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">! PWPB95 D3 def2-TZVPP def2/J def2-TZVPP/C RIJCOSX CFLOAT grid4 gridx4 tightSCF noautostart miniprint nopop<br>%maxcore 2000<br>%pal nprocs 36 end<br>%cpcm<br>smd <span class="hljs-literal">true</span><br>SMDsolvent <span class="hljs-string">"methanol"</span><br>end<br></code></pre></td></tr></tbody></table></figure>
-<p>然后在此处运行<code>xyz2QC</code>，选4生成分离的ORCA输入文件，载入上一步生成的<code>cluster.xyz</code>，选择要计算的构象，然后就会生成许多inp文件，ORCA官方建议为每个inp都建一个文件夹，然后把inp文件移进去计算。假设构象1的输入文件命名为<code>SP00001.inp</code>，输入以下命令运行<code>ORCA</code>：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 下面的命令会运行orca，将SP1.inp作为输入，把结果输出到SP1.out中，并忽略错误输出</span><br><span class="hljs-comment"># 一定要使用绝对路径调用orca</span><br>$ nohup <span class="hljs-variable">$HOME</span>/orca/orca SP1.inp &gt; SP1.out 2&gt; /dev/null &amp;<br></code></pre></td></tr></tbody></table></figure>
-<p>计算完成后，输入以下命令即可看到电子能量：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ tail SP1.out -n 100 | grep <span class="hljs-string">"FINAL"</span><br>FINAL SINGLE POINT ENERGY     -1970.760258748528<br></code></pre></td></tr></tbody></table></figure>
-<p>将此电子能量保存下来以备下一步使用，同样的方法可以获得构象2和构象3的电子能量。<br>##计算自由能和玻尔兹曼分布<br>详细用法看这里：<a href="http://sobereva.com/552">Shermo计算自由能和玻尔兹曼分布</a></p>
-<p>在<code>Shermo</code>的目录下建立一个名为<code>list.txt</code>的文件。</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span><br>$ <span class="hljs-built_in">cd</span> Shermo_2.0.3/<br>$ touch list.txt<br>$ vi list.txt<br></code></pre></td></tr></tbody></table></figure>
-<p>将优化+振动分析一步的输出文件和得到的电子能量写入其中，格式为：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">/home/visitor/research/simon/orca1.out;-1970.760258748528<br>/home/visitor/research/simon/orca2.out;-1970.755539822519<br>/home/visitor/research/simon/orca3.out;-1970.754969829706<br></code></pre></td></tr></tbody></table></figure>
-<p>保存并退出<code>vi</code>，这里也可以使用我编写的脚本<code>write_list.sh</code>，用法非常简单，看下脚本的内容应该也知道怎么用了，就不在这再说一遍了。运行<code>Shermo</code>，将<code>list.txt</code>载入，即可自动算出玻尔兹曼分布：</p>
-<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><code class="hljs sh">$ Shermo list.txt<br>...<br>...<br>Low frequencies treatment: Harmonic approximation<br>Processing /home/visitor/research/simon/orca1.out... (    1  of    3 )<br>Processing /home/visitor/research/simon/orca2.out... (    2  of    3 )<br>Processing /home/visitor/research/simon/orca3.out... (    3  of    3 )<br><br><span class="hljs-comment">#System       U               H               G             S          CV</span><br>             a.u.            a.u.            a.u.        J/mol/K     J/mol/K<br>   1    -1969.815591    -1969.814647    -1969.948557    1179.203     783.166<br>   2    -1969.809359    -1969.808415    -1969.940882    1166.504     789.267<br>   3    -1969.809932    -1969.808988    -1969.937499    1131.665     781.476<br><br>System    1     Relative G=    0.000 kJ/mol     Boltzmann weight=  99.970 %<br>System    2     Relative G=   20.149 kJ/mol     Boltzmann weight=   0.030 %<br>System    3     Relative G=   29.033 kJ/mol     Boltzmann weight=   0.001 %<br><br>Conformation weighted data:<br>Electronic energy:     -1970.760257 a.u.<br>U:     -1969.815590 a.u.<br>H:     -1969.814645 a.u.<br>G:     -1969.948557 a.u.<br>S:      1179.222 J/mol/K    Conformation entropy:     0.023 J/mol/K<br>CV:      783.168 J/mol/K<br>CP:      791.483 J/mol/K<br></code></pre></td></tr></tbody></table></figure>
-<p>另外可看参考文章：<a href="http://bbs.keinsci.com/thread-3805-1-1.html">频率校正因子</a>、<a href="http://sobereva.com/327">隐式溶剂模型和自由能计算</a></p>
-<h2 id="计算激发态能量"><a href="#计算激发态能量" class="headerlink" title="计算激发态能量"></a>计算激发态能量</h2><p><code>ORCA</code> 使用 <code>TDDFT</code> 在 <code>RI-wB2GP-PLYP/def2-TZVP</code> 级别下计算激发态，还是使用<code>Multiwfn</code>生成输入文件，关键词为：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><code class="hljs plain">! PBE0 def2-SV(P) def2/J RIJCOSX CFLOAT grid4 gridx4 tightSCF noautostart miniprint nopop<br>%maxcore  1600<br>%pal nprocs 36 end<br>%cpcm<br>smd true<br>SMDsolvent "methanol"<br>end<br>%tddft<br>nroots 30<br>TDA false<br>end<br></code></pre></td></tr></tbody></table></figure>
-<p>一般算30个states就够了，仅需要把<code>Multiwfn</code>生成的文件中的<code>nroots</code>改为30，然后运行<code>ORCA</code>，完成后得到<code>tddft1.out</code>。</p>
-<h2 id="绘制平均光谱"><a href="#绘制平均光谱" class="headerlink" title="绘制平均光谱"></a>绘制平均光谱</h2><p>如果计算得到的能量最低的结构的玻尔兹曼分布占比很高，那么就不需要计算其他的构象了，反之则需要计算多个构象，再绘制其平均化之后的光谱，具体可参考<a href="http://sobereva.com/383">Multiwfn绘制平均光谱</a>。</p>
-<p>启动<code>Multiwfn</code>，先绘制<code>UV-Vis</code>光谱，然后再绘制<code>ECD</code>光谱，并根据<code>UV-Vis</code>计算光谱和实际值的偏移量给<code>ECD</code>光谱加上同样的偏移量。</p>
-<p>本文中使用的软件<code>Molclus</code>、<code>MOPAC</code>、<code>Multiwfn</code>、<code>Shermo</code>、<code>ORCA</code>均为免费软件，将其使用在自己的工作中一定需要引用对应的文献，如果你使用了我开发的小工具，别忘了在github上给我一个star😜</p>
-<blockquote>
-<p>Molclus引用文献：Tian Lu, molclus program, Version 1.9.6, <a href="http://www.keinsci.com/research/molclus.html">http://www.keinsci.com/research/molclus.html</a> (accessed Sep 2, 2020)</p>
-</blockquote>
-<blockquote>
-<p>MOPAC2016引用文献：MOPAC2016, James J. P. Stewart, Stewart Computational Chemistry, Colorado Springs, CO, USA, HTTP://OpenMOPAC.net (2016).</p>
-</blockquote>
-<blockquote>
-<p>Multiwfn引用文献：Tian Lu, Feiwu Chen, J. Comput. Chem., 33, 580-592 (2012).</p>
-</blockquote>
-<blockquote>
-<p>Shermo引用文献：Tian Lu, Qinxue Chen, Shermo: A general code for calculating molecular thermodynamic properties, ChemRxiv (2020) DOI: 10.26434/chemrxiv.12278801</p>
-</blockquote>
-<blockquote>
-<p>ORCA引用文献：WIREs Comput Mol Sci 2012, 2: 73–78 doi: 10.1002/wcms.81</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>计算化学</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>在Discovery Studio中进行同源模建</title>
-    <url>/ji-suan-hua-xue/homologymodeling-ds/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在药物设计中，如果目标蛋白质还没有被结晶出来，我们无法对其进行分子对接，但是，同源蛋白质三级结构的保守性远高于一级结构，因此可以通过已知三级结构的同源蛋白来模拟目标蛋白的空间结构，这就是同源模建技术。</p>
-<p>商业软件如<code>Discovery Studio 2016</code>中集成了同源模建功能，我们可以通过操作图形界面很方便的使用。要进行同源模建，通常需要进行以下几个步骤：</p>
-<ol>
-<li>使用BLAST或PSI-BLAST查找模板。这是一种基于序列相似度的搜索算法。</li>
-<li>使用结构对齐工具将找到的模板叠合在一起。</li>
-<li>使用序列对齐工具将我们研究的蛋白模型的序列与模板序列对齐。</li>
-<li>使用MODELER创建同源模型。</li>
-</ol>
-<p>在本例中，我们使用淀粉酶P41131演示。其序列可以点击<a href="http://www.uniprot.org/uniprot/P41131.fasta">这里下载</a>。</p>
-<h1 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h1><p><font color="#FF0000">在菜单栏点击 <strong>File -&gt; Open</strong>，打开<code>p41131.fasta</code>，P41131的序列会显示在序列窗口中。</font></p>
-<p>在序列比对算法中，BLAST是常用的方法。</p>
-<p><font color="#FF0000">在<strong>Macromolecules</strong>选项卡中选择<strong>Search Sequences by Similarity -&gt; BLAST Search</strong></font></p>
-<p>PDB和PDB_nr95数据库都可以检索，但最常用的是非冗余(non-redundant, nr)的PDB_nr95数据库。</p>
-<p><font color="#FF0000">在弹出的BLAST对话框中选择<strong>Input Sequence</strong>为<code>P41131:P41131</code>，<strong>Input Database</strong>为<code>PDB_nr95</code></font></p>
-<p>运行完后，关闭弹出的对话框，在右侧的Blast窗口可以看到检索到的模板，在下方的选项卡<strong>Table View</strong>中可以看到hits，每行都是一个序列；<strong>Map View</strong>中的bar的排序和Table View中是一一对应的，每条bar以评分高低着色，评分高的靠上，大于400的红色hits是最好的。</p>
-<p><font color="#FF0000">按住shift键选中前五个最好的模板，右键单击并选择<strong>Load Structure and Alignment</strong></font></p>
-<p>软件会自动从网站上下载蛋白质，然后将他们叠合在一起。如果想看二级结构，可以在菜单栏选择<font color="#FF0000"><strong>Sequence -&gt; Secondary Structure -&gt; Visibility</strong></font>，然后把<strong>Kabsch Sander</strong>和<strong>PDB</strong>都打勾，再点OK，下方序列窗口就会显示二级结构，蓝色的箭头是beta折叠，橙色的是alpha螺旋。</p>
-<h1 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h1><p>要进行同源模建，我们首先需要将相同或相似度高的序列片段对齐，这样作出的模型才会最接近实验结果。要对齐序列，最好是先生成一个序列预设，然后将预设应用到叠合好的结构上，这种序列预设以包含最多同源结构为好。</p>
-<p>接下来我们使用BLAST搜索Swiss-Prot数据库来创建序列预设。</p>
-<p><font color="#FF0000">点击序列窗口的P41131(1)选项卡，展开<strong>Macromolecules -&gt; Create Homology Models</strong>，点击<strong>Align Sequence to Templates</strong></font></p>
-<p>在弹出的对话框中设置：</p>
-<p><font color="#FF0000"><strong>Input Model Sequence</strong>为<code>P41131-(1):P41131</code></font></p><font color="#FF0000">
-<p><strong>Input Template Structures</strong>为<code>1G94A::All</code>（这样可以指定我们加载的全部5个结构）</p>
-</font><p><font color="#FF0000"><strong>Create Sequence Profile</strong>为<code>Ture</code></font></p>
-<p>若本地没有安装<strong>Swiss-Prot BLAST</strong>数据库，此时无法启动对齐作业，但软件为我们提供的在线搜索功能，可以展开<font color="#FF0000"><strong>Create Sequence Profile</strong>，将<strong>server</strong>改为<strong>NCBI</strong>，下一个选项选择swissprot，然后点击Run。</font>待软件执行完后，点击Report可以查看RMSD值。</p>
-<h1 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h1><p>点击分子窗口中的1G94A(1)选项卡，使其处于活跃状态。</p>
-<p><font color="#FF0000">点击<strong>Macromolecules -&gt; Create Homology Models -&gt; Build Homology Models</strong></font><br>在弹出的对话框中设置：</p>
-<p><font color="#FF0000"><strong>Input Sequence Alignment</strong>为<code>P41131_templates:All</code></font></p><font color="#FF0000">
-<p><strong>Input Template Structures</strong>中5个结构都被选中</p>
-<p><strong>Input Model Sequence</strong>为<code>P41131</code></p>
-<p><strong>Number of Models</strong>为<code>2</code></p>
-</font><p><font color="#FF0000"><strong>Optimization Level</strong>为<code>Low</code></font></p>
-<p>Optimization Level越高，模型越准确，但运行速度也越慢。建模完成后，点击Report，在右侧会出现报告，结果以<strong>PDF Total Energy</strong>排序，能量越低越好，如果能量相差很小，可以看最右侧的DOPE得分，同样的越低越好。</p>
-<p>最佳的模型会自动被显示在分子窗口中，此时你可以检查一下这个结构。</p>
-<p><font color="#FF0000">在分子窗口下方点击<strong>AminoAcid</strong>选项卡，然后把滚动条拉到最右边，可以看到<strong>PDF Total</strong>的那一列，选中这一列，在菜单栏选择<strong>Chart -&gt; Line Plot</strong></font></p>
-<p>这时右侧会出现一个曲线图，这个图里的Peak是需要注意的，鼠标左键画圈选中以后，下方序列窗口里相应的氨基酸残基会被高亮显示，检查一下有无异样。</p>
-<h1 id="结构评估"><a href="#结构评估" class="headerlink" title="结构评估"></a>结构评估</h1><p>DS中提供了一个评估结构的工具，它可以评价蛋白模型的三级结构与其序列的相容性。</p>
-<p><font color="#FF0000">按Ctrl + H打开分类视图，选择P41131.M0001分子，然后点击<strong>Macromolecules -&gt; Create Homology Models -&gt; Verify Protein (Profiles-3D)</strong></font></p><font color="#FF0000">
-</font><p><font color="#FF0000">在弹出的对话框中<strong>Input Protein Molecules</strong>设定为<strong>P41131:Selected</strong>，点Run启动分析</font></p>
-<p>运行结束后在弹出的对话框中点击Report，分析结果会被添加到AminoAcid选项卡中。现在分子窗口的蛋白模型会被重新着色，蓝色表示高分，白色表示中等，红色得分较低。在这里，得分越高越好。接下来可以在AminoAcid选项卡中找到Verify Score列，然后按之前提到过的方法创建曲线图，检查得分低的地方的氨基酸残基有无异样。</p>
-<p>到这里就完成了DS中同源模型的创建与检查工作。</p>
-]]></content>
-      <categories>
-        <category>计算化学</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Homology Modeling——同源模建简介</title>
-    <url>/ji-suan-hua-xue/homologymodeling/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>同源模建是药物研发中的一种常用方法。对一个靶点进行研究，通常需要得到它的单晶，并用X-射线衍射测出其三维结构，之后我们便可以在计算机中使用软件针对其开展诸如分子对接、动力学模拟等一系列工作。然而，有的蛋白含量低，纯化困难，有的不易结晶，使得我们有时拿不到目标蛋白的结构。不过，幸运的是，对大量蛋白进行研究之后，人们发现同源蛋白中存在着相同的折叠方式，即便是一级结构相似度只有20%左右的同源蛋白，他们的空间结构也有不少重合之处，这就为用已知结构的蛋白预测目标蛋白结构的方法提供了理论基础<a href="#ref-1"><sup>1</sup></a>。更加深入的研究发现，蛋白的氨基酸数量越多，对序列相似度的要求就越低。例如，在一个有60个氨基酸等蛋白中，只需要有30%的序列相同，就可进行“安全”的同源模建；而若氨基酸数量是30个，就要求大于40%的相似度<a href="#ref-2"><sup>2</sup></a>。</p>
-<h1 id="同源模建基本流程"><a href="#同源模建基本流程" class="headerlink" title="同源模建基本流程"></a>同源模建基本流程</h1><p>现在要进行同源模建工作可以说是很方便的，有许多免费的工具可以使用，例如在线的<code>SWISS-MODEL</code>，只要提交了氨基酸序列就能返回建模结果；在本地运行的程序例如<code>WHAT IF</code>和<code>MODELLER</code>，它们都是免费的，其中<code>MODELLER</code>的商业版本由<code>BIOVIA</code>公司运营，整合在<code>Discovery Studio</code>中并提供了图形化界面。尽管软件各式各样，但是同源模建大体上可以概括为以下四个步骤：查找模板、对齐序列、建模、模型优化与验证。</p>
-<h2 id="查找模板"><a href="#查找模板" class="headerlink" title="查找模板"></a>查找模板</h2><p>自20世纪以来，得益于各种测定技术的发展，人们开始掌握了越来越多的生物大分子的空间结构。1968年，人们开发出了在计算机上显示蛋白质的程序，由此，便催生出了<code>PDB</code>（Protein Data Bank）数据库，它是目前唯一收载了生物大分子三维结构信息的数据库，其中主要是蛋白质，也有少量的核酸。PDB创建的早期阶段，人们为了搜索结构会去比对整个序列，这在当时数据量少的时候倒也行得通，然而截至目前，PDB共收载了132900余个条目，即便是以今天的计算机算力，全序列比对仍然是一项庞大费事的任务。于是为了解决这个问题，David J. Lipman和William R. Pearson在1985年开发了<code>FASTP</code>算法<a href="#ref-3"><sup>3</sup></a>，后来又演变成<code>FASTA</code>，意为”Fast-All”，表明了其快速性与通用性，对蛋白质和核酸都适用。1990年，Altschul等人开发了比FASTA更快一些的<code>BLAST</code> (Basic Local Alignment Search Tool)方法<a href="#ref-4"><sup>4</sup></a>，在今天的研究中有着广泛的应用。BLAST利用20种氨基酸制作了一个20*20的得分矩阵，如图所示，对角线上匹配的氨基酸得分最高。</p>
-<img src="https://tvax4.sinaimg.cn/large/005Vgpymly1gjv1m1k0q3j30s00j4qfe.jpg" title="一种得分矩阵" width="50%" height="50%">
-
-<p>然后将我们查询的序列分成若干等长的字段，配合得分矩阵进行评分，并经过一系列评价后找到所求序列。</p>
-<h2 id="对齐序列"><a href="#对齐序列" class="headerlink" title="对齐序列"></a>对齐序列</h2><p>前面查找序列时所用的<code>BLAST</code>其实就可以对齐序列，我们称其为“简单序列对齐程序”，它在查找的过程中能顺便对齐一下序列。然而对于某些蛋白来说，尽管他们是同源的，但是由于某些区域的序列差异使得<code>BLAST</code>无法对齐，这时就需要用到“多重序列对齐(MSA)”程序，该程序可以进行一定同源性推导，而帮助我们进行对齐。</p>
-<p>在建模时我们自然希望模板链和目标链重合的越多越好，那样我们的模型就越可靠，但是事情并不总是我们期待的那样。设想一下这种情况：我们的模板链由100个氨基酸残基，通过查询，有3条蛋白链分别有一部分与未知链重合，那么最好的情况就是我们把这最好的三个部分分别作为目标链对应区域的模板。MSA可以生成一种称为“序列谱”（profile）的东西<a href="#ref-5"><sup>5</sup></a>，也被称为“位置特异性得分矩阵”，它可以在搜索时匹配到更多的模板，在建模时把最佳的模板赋给目标链，保证保守区域不会发生变化。</p>
-<p>在Discovery Studio中，同源模建时查询的数据库都是非冗余数据库。例如查找模板时查询的不是PDB数据库，而是<code>PDB_nr95</code>数据库（nr即non-redundant），多重序列对齐时查询的是<code>SWISS-Prot</code>数据库，这些数据库都经过人工审查，没有重复数据，能节省查询时间，同时它们中的数据还经过人工校对，可以使建模效果更好。</p>
-<h2 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h2><p>序列对齐好后，我们的建模工作就可以开始了。同源模建工作发展到现在已经实现了自动化，执行这一步只需要点几下鼠标，但是其内部的工作过程其实可以分成三步：<strong>生成主链（Backbone）、生成回环（Loop）、生成侧链（Side-Chain）</strong>。</p>
-<p>在主链建模时，只需要简单地把对齐好的模版链片段的坐标赋给目标链。与多重序列对齐相同，主链建模时使用一种叫“多模板建模”的思想，即将各个模版中的最优部分作为模型赋给目标链。对于蛋白上的保守区域，同源蛋白间的序列一致度很高，侧链构象也倾向于保守，因此可以把这些氨基酸残基上携带的侧链一并复制到目标链中，这种直接复制坐标的方法被称作“刚体装配法”。还有一种方法是“空间限制法”，它根据几何和约束关系进行建模，使模型满足空间限制，<code>MODELLER</code>就是使用这种方法。</p>
-<p>Loop区的建模一直是同源模建工作的难点，原因在于Loop区不保守，有着很大的变动性，准确预测其结构较为困难。目前对Loop区进行建模主要有两种方法：基于现有知识的数据库查询和基于能量的构象搜索。查询数据库虽然简单快捷，但是由于数据不完整，能不能找到好模板还是要看运气，并且随着Loop的增长，匹配难度也越发增加。因此对于Loop区的预测主要还是应用能量计算，对于5-8个氨基酸残基的Loop，已经能给出比较准确的预测，例如蒙特卡洛方法<a href="#ref-6"><sup>6</sup></a>、模拟退火<a href="#ref-7"><sup>7</sup></a>等。近年来新发展了一些构象搜索方法<a href="#ref-8"><sup>8</sup></a>，使得通过计算得到的模型越来越精准，10-12个氨基酸残基的Loop的预测准确度有了较大的改善。</p>
-<p>当主链构象固定后，保守区的侧链氨基酸残基可以直接复制到模型中，因此侧链建模准确的前提是主链构象准确。基本上所有的侧链建模都会依赖于片段搜索，因为利用实验手段测出的结构都符合能量约束，构建侧链时先从未知特异性旋转异构体库中搜索相似构象，然后使用能量约束进行优化。</p>
-<h2 id="优化与验证"><a href="#优化与验证" class="headerlink" title="优化与验证"></a>优化与验证</h2><p>对整个蛋白质进行构象扫描来优化，即使是以今天的计算机水平也是几乎不可能完成的任务，而侧链建模依赖于主链，主链又会受到侧链影响，这似乎陷入了一个死循环。为了解决模型的优化问题，一种方法是先使用已有的主链预测一次侧链，然后根据侧链的空间与能量关系对主链进行调整，如此反复，直至结果自洽。使用这种方法进行预测，能量方程越精确，模型质量自然也就越高，即使是最直接的分子动力学模拟也是有赖于力场数据。在Discovery Studio中，模型的优化与验证都是依靠自由能数据的，但是仅仅能量低并不够，在有些情况下，错误折叠的蛋白质会带来比正确结构更加稳定的能量，因此，在进行同源模建工作时，每一步都应当考虑如何能够最少地引入错误，才能使我们的模型更佳具有实用性。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><div id="ref-1">1. C. Chothial, A. M.Lesk, “The relation between the divergence of sequence and structure in proteins”. EMBO J. (1986) Vol.5: 823-836.</div>
-<div id="ref-2">2. Sander C, Schneider R, “Database of homology-derived protein structures and the structural meaning of sequence alignment”. Proteins (1991). Vol.9: 56–68.</div>
-<div id="ref-3">3. Lipman, DJ; Pearson, WR. "Rapid and sensitive protein similarity searches". Science (1985). 227 (4693): 1435–1341.</div>
-<div id="ref-4">4. Altschul SF. “Basic local alignment search tool.” J Mol Biol. (1990 Oct 5);215(3): 403-410.</div>
-<div id="ref-5">5. Taylor WR. “Identification of protein sequence homology by consensus template alignment.” J Mol Biol. (1986 Mar 20); 188(2):233-258.</div>
-<div id="ref-6">6. Hansmann UH. “ew Monte Carlo algorithms for protein folding.” Curr Opin Struct Biol. 1999 Apr;9(2):177-183.</div>
-<div id="ref-7">7. Kim T. Simons. “Assembly of Protein Tertiary Structures from Fragments with Similar Local Sequences using Simulated Annealing and Bayesian Scoring Functions” J. Mol. Biol. (1997) 268, 209-225</div>
-<div id="ref-8">8. 袁飞. “基于氨基酸位置特异性的蛋白质Loop区结构预测” Acta Phys. Sin. Vol. 65, No. 15 (2016) 158701</div>
-]]></content>
-      <categories>
-        <category>计算化学</category>
       </categories>
   </entry>
   <entry>
